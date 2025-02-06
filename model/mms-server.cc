@@ -4,6 +4,7 @@
 
 #include "mms-server.h"
 #include "ns3/hal_time.h"
+#include "ns3/simulator.h"
 
 using namespace ns3;
 
@@ -35,7 +36,8 @@ MmsServer::~MmsServer()
 void
 MmsServer::StartApplication()
 {
-
+    std::cout << libiec61850::msSinceEpoch() << std::endl;
+    Simulator::Schedule(Seconds(1), &MmsServer::print_time, this);
 }
 
 void
@@ -44,3 +46,10 @@ MmsServer::StopApplication()
 
 }
 
+void MmsServer::print_time()
+{
+    auto now = libiec61850::Hal_getTimeInMs();
+    std::cout << now << std::endl;
+
+    Simulator::Schedule(Seconds(1), &MmsServer::print_time, this);
+}

@@ -19,6 +19,8 @@ class MmsServer : public Application
   private:
     void StartApplication();
     void StopApplication();
+
+    void print_time();
 };
 
 #endif //MMS_SERVER_H
