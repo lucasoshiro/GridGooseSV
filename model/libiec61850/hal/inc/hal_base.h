@@ -40,4 +40,6 @@
     #endif
 #endif
 
+namespace libiec61850 {}
+
 #endif /* HAL_INC_HAL_BASE_H_ */

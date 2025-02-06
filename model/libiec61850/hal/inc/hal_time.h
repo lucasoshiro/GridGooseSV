@@ -16,6 +16,8 @@
 extern "C" {
 #endif
 
+namespace libiec61850 {
+
 /**
  * \file hal_time.h
  * \brief Abstraction layer for system time access
@@ -72,9 +74,9 @@ Hal_setTimeInNs(nsSinceEpoch nsTime);
 
 /*! @} */
 
+}
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* HAL_C_ */

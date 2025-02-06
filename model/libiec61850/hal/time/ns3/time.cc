@@ -1,6 +1,8 @@
 #include "ns3/hal_time.h"
 #include "ns3/core-module.h"
 
+using namespace libiec61850;
+
 PAL_API msSinceEpoch
 Hal_getTimeInMs(void)
 {
