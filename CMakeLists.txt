@@ -13,11 +13,17 @@ endif()
 build_lib(
     LIBNAME libiec61850-ns3
     SOURCE_FILES model/libiec61850-ns3.cc
+                 model/mms-server.cc
+
                  model/libiec61850/hal/time/ns3/time.cc
 
                  helper/libiec61850-ns3-helper.cc
+                 helper/mms-server-helper.cc
+
     HEADER_FILES model/libiec61850-ns3.h
+                 model/mms-server.h
                  helper/libiec61850-ns3-helper.h
+                 helper/mms-server-helper.h
 
     PRIVATE_HEADER_FILES model/libiec61850/hal/inc/hal_base.h
 
