@@ -10,24 +10,31 @@ if(${ENABLE_EXAMPLES})
         )
 endif()
 
+set(source_files
+        model/libiec61850-ns3.cc
+        model/mms-server.cc
+        model/libiec61850/hal/time/ns3/time.cc
+
+        helper/libiec61850-ns3-helper.cc
+        helper/mms-server-helper.cc
+)
+
+set(header_files
+        model/libiec61850-ns3.h
+        model/mms-server.h
+        helper/libiec61850-ns3-helper.h
+        helper/mms-server-helper.h
+)
+
+set(private_header_files
+        model/libiec61850/hal/inc/hal_base.h
+)
+
 build_lib(
     LIBNAME libiec61850-ns3
-    SOURCE_FILES model/libiec61850-ns3.cc
-                 model/mms-server.cc
-
-                 model/libiec61850/hal/time/ns3/time.cc
-
-                 helper/libiec61850-ns3-helper.cc
-                 helper/mms-server-helper.cc
-
-    HEADER_FILES model/libiec61850-ns3.h
-                 model/mms-server.h
-                 helper/libiec61850-ns3-helper.h
-                 helper/mms-server-helper.h
-
-    PRIVATE_HEADER_FILES model/libiec61850/hal/inc/hal_base.h
-
-
+    SOURCE_FILES ${source_files}
+    HEADER_FILES ${header_files}
+    PRIVATE_HEADER_FILES ${private_header_files}
     LIBRARIES_TO_LINK ${libcore}
     TEST_SOURCES test/libiec61850-ns3-test-suite.cc
                  ${examples_as_tests_sources}
