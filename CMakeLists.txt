@@ -10,24 +10,47 @@ if(${ENABLE_EXAMPLES})
         )
 endif()
 
-set(source_files
-        model/libiec61850-ns3.cc
-        model/mms-server.cc
+set(libiec61850_source_files
         model/libiec61850/hal/time/ns3/time.cc
+)
 
+set(libiec61850_header_files
+        model/libiec61850/hal/inc/hal_base.h
+)
+
+set(helper_source_files
         helper/libiec61850-ns3-helper.cc
         helper/mms-server-helper.cc
 )
 
-set(header_files
-        model/libiec61850-ns3.h
-        model/mms-server.h
+set(helper_header_files
         helper/libiec61850-ns3-helper.h
         helper/mms-server-helper.h
 )
 
+set(model_source_files
+        model/libiec61850-ns3.cc
+        model/mms-server.cc
+)
+
+set(model_header_files
+        model/libiec61850-ns3.h
+        model/mms-server.h
+)
+
+set(source_files
+        ${helper_source_files}
+        ${model_source_files}
+        ${libiec61850_source_files}
+)
+
+set(header_files
+        ${helper_header_files}
+        ${model_header_files}
+)
+
 set(private_header_files
-        model/libiec61850/hal/inc/hal_base.h
+        ${libiec61850_header_files}
 )
 
 build_lib(
