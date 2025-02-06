@@ -12,10 +12,13 @@ endif()
 
 set(libiec61850_source_files
         model/libiec61850/hal/time/ns3/time.cc
+        model/libiec61850/hal/thread/ns3/thread.cc
 )
 
 set(libiec61850_header_files
         model/libiec61850/hal/inc/hal_base.h
+        model/libiec61850/hal/inc/hal_time.h
+        model/libiec61850/hal/inc/hal_thread.h
 )
 
 set(helper_source_files
