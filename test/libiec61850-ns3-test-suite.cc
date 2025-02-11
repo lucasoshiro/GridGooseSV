@@ -77,8 +77,15 @@ class Libiec61850Ns3TestSuite : public TestSuite
 Libiec61850Ns3TestSuite::Libiec61850Ns3TestSuite()
     : TestSuite("libiec61850-ns3", Type::UNIT)
 {
-    AddTestCase(reinterpret_cast<TestCase*>(new HalTimeTest), TestCase::Duration::QUICK);
-    AddTestCase(reinterpret_cast<TestCase*>(new TestThread), TestCase::Duration::QUICK);
+    TestCase *testCases[] = {
+        reinterpret_cast<TestCase*>(new HalTimeTest),
+        reinterpret_cast<TestCase*>(new TestThread)
+    };
+
+    for (TestCase *testCase : testCases)
+    {
+        AddTestCase(testCase, TestCase::Duration::QUICK);
+    }
 }
 
 // Do not forget to allocate an instance of this TestSuite
