@@ -23,6 +23,10 @@ set(libiec61850_header_files
         model/libiec61850/hal/inc/lib_memory.h
 )
 
+set(libiec61850_test_sources
+        test/model/libiec61850/hal/time/test-time.cc
+)
+
 set(helper_source_files
         helper/libiec61850-ns3-helper.cc
         helper/mms-server-helper.cc
@@ -58,13 +62,17 @@ set(private_header_files
         ${libiec61850_header_files}
 )
 
+set(test_sources
+        test/libiec61850-ns3-test-suite.cc
+        ${libiec61850_test_sources}
+)
+
 build_lib(
     LIBNAME libiec61850-ns3
     SOURCE_FILES ${source_files}
     HEADER_FILES ${header_files}
     PRIVATE_HEADER_FILES ${private_header_files}
     LIBRARIES_TO_LINK ${libcore}
-    TEST_SOURCES test/libiec61850-ns3-test-suite.cc
-                 test/test-time.cc
+    TEST_SOURCES ${test_sources}
                  ${examples_as_tests_sources}
 )
