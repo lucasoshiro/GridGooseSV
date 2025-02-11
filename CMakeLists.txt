@@ -24,6 +24,7 @@ set(libiec61850_header_files
         model/libiec61850/hal/inc/lib_memory.h
         model/libiec61850/hal/inc/hal_filesystem.h
         model/libiec61850/hal/inc/hal_socket.h
+        model/libiec61850/hal/inc/hal_ethernet.h
 )
 
 set(libiec61850_test_sources
@@ -52,10 +53,19 @@ set(model_header_files
         model/mms-server.h
 )
 
+set(util_source_files
+        util/device-util.cc
+)
+
+set(util_header_files
+        util/device-util.h
+)
+
 set(source_files
         ${helper_source_files}
         ${model_source_files}
         ${libiec61850_source_files}
+        ${util_source_files}
 )
 
 set(header_files
@@ -65,6 +75,7 @@ set(header_files
 
 set(private_header_files
         ${libiec61850_header_files}
+        ${util_header_files}
 )
 
 set(test_sources
