@@ -56,6 +56,8 @@ Thread_start(Thread thread)
     {
         thread->thread = new std::thread(threadJob, thread);
     }
+
+    thread->state = true;
 }
 
 PAL_API void
