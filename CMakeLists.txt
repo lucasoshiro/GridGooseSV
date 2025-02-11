@@ -23,6 +23,7 @@ set(libiec61850_header_files
         model/libiec61850/hal/inc/hal_thread.h
         model/libiec61850/hal/inc/lib_memory.h
         model/libiec61850/hal/inc/hal_filesystem.h
+        model/libiec61850/hal/inc/hal_socket.h
 )
 
 set(libiec61850_test_sources
