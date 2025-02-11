@@ -65,5 +65,6 @@ build_lib(
     PRIVATE_HEADER_FILES ${private_header_files}
     LIBRARIES_TO_LINK ${libcore}
     TEST_SOURCES test/libiec61850-ns3-test-suite.cc
+                 test/test-time.cc
                  ${examples_as_tests_sources}
 )
