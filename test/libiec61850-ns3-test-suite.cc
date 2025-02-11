@@ -3,6 +3,7 @@
 #include "ns3/libiec61850-ns3.h"
 
 // An essential include is test.h
+#include "model/libiec61850/hal/filesystem/test-filesystem.h"
 #include "model/libiec61850/hal/thread/test-thread.h"
 #include "model/libiec61850/hal/time/test-time.h"
 
@@ -79,7 +80,8 @@ Libiec61850Ns3TestSuite::Libiec61850Ns3TestSuite()
 {
     TestCase *testCases[] = {
         reinterpret_cast<TestCase*>(new HalTimeTest),
-        reinterpret_cast<TestCase*>(new TestThread)
+        reinterpret_cast<TestCase*>(new TestThread),
+        reinterpret_cast<TestCase*>(new TestFilesystem)
     };
 
     for (TestCase *testCase : testCases)
