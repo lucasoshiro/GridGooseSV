@@ -61,6 +61,10 @@ set(util_header_files
         util/device-util.h
 )
 
+set(util_test_sources
+        test/util/test-device-util.cc
+)
+
 set(source_files
         ${helper_source_files}
         ${model_source_files}
@@ -80,6 +84,7 @@ set(private_header_files
 
 set(test_sources
         test/libiec61850-ns3-test-suite.cc
+        ${util_test_sources}
         ${libiec61850_test_sources}
 )
 
