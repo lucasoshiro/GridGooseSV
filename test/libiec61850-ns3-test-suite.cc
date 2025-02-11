@@ -3,9 +3,10 @@
 #include "ns3/libiec61850-ns3.h"
 
 // An essential include is test.h
-#include "ns3/test.h"
-
+#include "model/libiec61850/hal/thread/test-thread.h"
 #include "model/libiec61850/hal/time/test-time.h"
+
+#include "ns3/test.h"
 
 // Do not put your test classes in namespace ns3.  You may find it useful
 // to use the using directive to access the ns3 namespace directly
@@ -77,6 +78,7 @@ Libiec61850Ns3TestSuite::Libiec61850Ns3TestSuite()
     : TestSuite("libiec61850-ns3", Type::UNIT)
 {
     AddTestCase(reinterpret_cast<TestCase*>(new HalTimeTest), TestCase::Duration::QUICK);
+    AddTestCase(reinterpret_cast<TestCase*>(new TestThread), TestCase::Duration::QUICK);
 }
 
 // Do not forget to allocate an instance of this TestSuite
