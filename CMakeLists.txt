@@ -55,14 +55,17 @@ set(model_header_files
 
 set(util_source_files
         util/device-util.cc
+        util/address-util.cc
 )
 
 set(util_header_files
         util/device-util.h
+        util/address-util.h
 )
 
 set(util_test_sources
         test/util/test-device-util.cc
+        test/util/test-address-util.cc
 )
 
 set(source_files

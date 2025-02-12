@@ -6,6 +6,7 @@
 #include "model/libiec61850/hal/filesystem/test-filesystem.h"
 #include "model/libiec61850/hal/thread/test-thread.h"
 #include "model/libiec61850/hal/time/test-time.h"
+#include "util/test-address-util.h"
 #include "util/test-device-util.h"
 
 #include "ns3/test.h"
@@ -85,7 +86,8 @@ Libiec61850Ns3TestSuite::Libiec61850Ns3TestSuite()
         reinterpret_cast<TestCase*>(new TestFilesystem),
         reinterpret_cast<TestCase*>(new TestGetDevice),
         reinterpret_cast<TestCase*>(new TestGetNode),
-        reinterpret_cast<TestCase*>(new Libiec61850Ns3TestCase1),
+        reinterpret_cast<TestCase*>(new TestFormatAddress),
+        reinterpret_cast<TestCase*>(new Libiec61850Ns3TestCase1)
     };
 
     for (TestCase *testCase : testCases)
