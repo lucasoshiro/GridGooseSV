@@ -9,7 +9,10 @@ namespace ns3
 
 // TODO: write a real documentation
 // Get a path in format /NodeList/<n>/DeviceList/<m>. Doesn't work with other formats
-Ptr<ns3::NetDevice> GetNetDevice(std::string path);
+Ptr<NetDevice> GetNetDevice(std::string path);
+
+// Get a path in format /NodeList/<n>. Doesn't work with other formats
+Ptr<Node> GetNode(std::string path);
 
 }
 

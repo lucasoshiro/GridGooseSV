@@ -3,12 +3,21 @@
 
 #include "ns3/test.h"
 
-class TestDeviceUtil : ns3::TestCase
+class TestGetDevice : ns3::TestCase
 {
   public:
-    TestDeviceUtil() : TestCase("TestDeviceUtil") {}
+    TestGetDevice() : TestCase("TestGetDevice") {}
 
   private:
+    void DoRun() override;
+};
+
+class TestGetNode : ns3::TestCase
+{
+public:
+    TestGetNode() : TestCase("TestGetNode") {}
+
+private:
     void DoRun() override;
 };
 

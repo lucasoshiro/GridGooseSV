@@ -11,11 +11,10 @@
 namespace ns3
 {
 
-Ptr<ns3::NetDevice>
+Ptr<NetDevice>
 GetNetDevice(std::string path)
 {
     // TODO: write assertions!
-
     const int firstSlash = path.find('/', 1);
     const int secondSlash = path.find('/', firstSlash + 1);
 
@@ -24,10 +23,19 @@ GetNetDevice(std::string path)
     const int lastSlash = path.find_last_of('/');
     const int deviceIndex = std::stoi(path.substr(lastSlash + 1));
 
-    auto node = ns3::NodeList::GetNode(nodeIndex);
+    auto node = NodeList::GetNode(nodeIndex);
     auto device = node->GetDevice(deviceIndex);
 
     return device;
 }
 
+Ptr<Node>
+GetNode(std::string path)
+{
+    const int firstSlash = path.find('/', 1);
+    const int nodeIndex = std::stoi(path.substr(firstSlash + 1));
+
+    return NodeList::GetNode(nodeIndex);
 }
+
+} // namespace ns3
