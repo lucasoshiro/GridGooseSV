@@ -23,3 +23,10 @@ formatMacAddress(uint8_t* mac)
 
     return s;
 }
+
+ns3::Mac48Address
+getMacAddress(uint8_t* mac)
+{
+    auto formatted = formatMacAddress(mac);
+    return ns3::Mac48Address(formatted);
+}

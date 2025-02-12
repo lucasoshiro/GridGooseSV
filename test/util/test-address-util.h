@@ -16,4 +16,13 @@ class TestFormatAddress : ns3::TestCase
     void DoRun() override;
 };
 
+class TestGetMacAddress : ns3::TestCase
+{
+public:
+    TestGetMacAddress() : TestCase("TestGetMacAddress") {};
+
+public:
+    void DoRun() override;
+};
+
 #endif //TEST_ADDRESS_UTIL_H
