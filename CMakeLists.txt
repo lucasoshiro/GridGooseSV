@@ -47,11 +47,16 @@ set(helper_header_files
 set(model_source_files
         model/libiec61850-ns3.cc
         model/mms-server.cc
+        model/ethernet-client.cc
 )
 
 set(model_header_files
         model/libiec61850-ns3.h
         model/mms-server.h
+)
+
+set(model_header_private_files
+        model/ethernet-client.h
 )
 
 set(util_source_files
@@ -83,6 +88,7 @@ set(header_files
 
 set(private_header_files
         ${libiec61850_header_files}
+        ${model_header_private_files}
         ${util_header_files}
 )
 
