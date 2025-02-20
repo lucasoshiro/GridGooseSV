@@ -7,7 +7,7 @@
 #include <format>
 
 char *
-formatMacAddress(uint8_t* mac)
+formatMacAddress(uint8_t mac[6])
 {
     const auto s = new char[18];
     sprintf(
@@ -25,8 +25,24 @@ formatMacAddress(uint8_t* mac)
 }
 
 ns3::Mac48Address
-getMacAddress(uint8_t* mac)
+getMacAddress(uint8_t mac[6])
 {
     auto formatted = formatMacAddress(mac);
     return ns3::Mac48Address(formatted);
+}
+
+ns3::PacketSocketAddress
+getPacketSocketAddress(ns3::Ptr<ns3::NetDevice> device, uint8_t destMac[6])
+{
+    auto formatted = formatMacAddress(destMac);
+    auto packetSocketAddr = ns3::PacketSocketAddress();
+    auto macAddr = getMacAddress(destMac);
+    auto addr = macAddr.ConvertTo();
+
+    packetSocketAddr.SetSingleDevice(device->GetIfIndex());
+    packetSocketAddr.SetPhysicalAddress(addr);
+
+    delete[] formatted;
+
+    return packetSocketAddr;
 }
