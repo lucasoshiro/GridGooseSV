@@ -12,16 +12,25 @@ class TestFormatAddress : ns3::TestCase
   public:
     TestFormatAddress() : TestCase("TestFormatAddress") {};
 
-  public:
+  private:
     void DoRun() override;
 };
 
 class TestGetMacAddress : ns3::TestCase
 {
-public:
+  public:
     TestGetMacAddress() : TestCase("TestGetMacAddress") {};
 
-public:
+  private:
+    void DoRun() override;
+};
+
+class TestGetPacketSocketAddress : ns3::TestCase
+{
+  public:
+    TestGetPacketSocketAddress() : TestCase("TestGetPacketSocketAddress") {};
+
+  private:
     void DoRun() override;
 };
 
