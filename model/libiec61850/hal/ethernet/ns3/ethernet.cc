@@ -53,10 +53,18 @@ Ethernet_createSocket(const char* interfaceId, uint8_t* destAddress)
         ns3::TypeId::LookupByName("ns3::PacketSocketFactory")
         );
 
-    const auto remoteAddress = getPacketSocketAddress(device, destAddress);
-
-    packetSocket->Bind(remoteAddress);
-    packetSocket->Connect(remoteAddress);
+    if (destAddress != nullptr)
+    {
+        const auto remoteAddress = getPacketSocketAddress(device, destAddress);
+        packetSocket->Bind(remoteAddress);
+        packetSocket->Connect(remoteAddress);
+    }
+    else
+    {
+        auto localAddr = ns3::PacketSocketAddress();
+        localAddr.SetPhysicalAddress(device->GetAddress());
+        packetSocket->Bind();
+    }
 
     socket->packetSocket = packetSocket;
 
