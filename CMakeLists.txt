@@ -31,6 +31,21 @@ set(libiec61850_hal_header_files
         model/libiec61850/hal/inc/platform_endian.h
 )
 
+# TODO: maybe we don't need all of them.
+set(libiec61850_common_header_files
+        model/libiec61850/src/common/inc/buffer_chain.h
+        model/libiec61850/src/common/inc/byte_buffer.h
+        model/libiec61850/src/common/inc/conversions.h
+        model/libiec61850/src/common/inc/libiec61850_common_api.h
+        model/libiec61850/src/common/inc/libiec61850_platform_includes.h
+        model/libiec61850/src/common/inc/linked_list.h
+        model/libiec61850/src/common/inc/map.h
+        model/libiec61850/src/common/inc/mem_alloc_linked_list.h
+        model/libiec61850/src/common/inc/simple_allocator.h
+        model/libiec61850/src/common/inc/string_map.h
+        model/libiec61850/src/common/inc/string_utilities.h
+)
+
 set(libiec61850_source_files
         ${libiec61850_hal_source_files}
 )
@@ -38,6 +53,7 @@ set(libiec61850_source_files
 set(libiec61850_header_files
         model/libiec61850/config/stack_config.h
         ${libiec61850_hal_header_files}
+        ${libiec61850_common_header_files}
 )
 
 set(libiec61850_test_sources
