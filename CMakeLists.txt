@@ -36,6 +36,7 @@ set(libiec61850_source_files
 )
 
 set(libiec61850_header_files
+        model/libiec61850/config/stack_config.h
         ${libiec61850_hal_header_files}
 )
 
