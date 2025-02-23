@@ -28,6 +28,7 @@ set(libiec61850_hal_header_files
         model/libiec61850/hal/inc/hal_filesystem.h
         model/libiec61850/hal/inc/hal_socket.h
         model/libiec61850/hal/inc/hal_ethernet.h
+        model/libiec61850/hal/inc/platform_endian.h
 )
 
 set(libiec61850_source_files
