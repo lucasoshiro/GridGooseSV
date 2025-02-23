@@ -10,7 +10,9 @@ if(${ENABLE_EXAMPLES})
         )
 endif()
 
-set(libiec61850_source_files
+########################### LIBIEC61850 SOURCE FILES ###########################
+
+set(libiec61850_hal_source_files
         model/libiec61850/hal/time/ns3/time.cc
         model/libiec61850/hal/thread/ns3/thread.cc
         model/libiec61850/hal/memory/lib_memory.cc
@@ -18,7 +20,7 @@ set(libiec61850_source_files
         model/libiec61850/hal/ethernet/ns3/ethernet.cc
 )
 
-set(libiec61850_header_files
+set(libiec61850_hal_header_files
         model/libiec61850/hal/inc/hal_base.h
         model/libiec61850/hal/inc/hal_time.h
         model/libiec61850/hal/inc/hal_thread.h
@@ -28,11 +30,21 @@ set(libiec61850_header_files
         model/libiec61850/hal/inc/hal_ethernet.h
 )
 
+set(libiec61850_source_files
+        ${libiec61850_hal_source_files}
+)
+
+set(libiec61850_header_files
+        ${libiec61850_hal_header_files}
+)
+
 set(libiec61850_test_sources
         test/model/libiec61850/hal/time/test-time.cc
         test/model/libiec61850/hal/thread/test-thread.cc
         test/model/libiec61850/hal/filesystem/test-filesystem.cc
 )
+
+################################# MODULE FILES #################################
 
 set(helper_source_files
         helper/libiec61850-ns3-helper.cc
@@ -63,6 +75,8 @@ set(util_header_files
         util/device-util.h
         util/address-util.h
 )
+
+############################# BUILD_LIB PARAMETERS #############################
 
 set(util_test_sources
         test/util/test-device-util.cc
