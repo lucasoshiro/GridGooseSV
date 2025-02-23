@@ -12,15 +12,15 @@
 
 #include "hal_base.h"
 
-#define CALLOC(nmemb, size) Memory_calloc(nmemb, size)
-#define MALLOC(size)        Memory_malloc(size)
-#define REALLOC(oldptr, size)   Memory_realloc(oldptr, size)
-#define FREEMEM(ptr)        Memory_free(ptr)
+#define CALLOC(nmemb, size) libiec61850::Memory_calloc(nmemb, size)
+#define MALLOC(size)        libiec61850::Memory_malloc(size)
+#define REALLOC(oldptr, size)   libiec61850::Memory_realloc(oldptr, size)
+#define FREEMEM(ptr)        libiec61850::Memory_free(ptr)
 
-#define GLOBAL_CALLOC(nmemb, size) Memory_calloc(nmemb, size)
-#define GLOBAL_MALLOC(size)        Memory_malloc(size)
-#define GLOBAL_REALLOC(oldptr, size)   Memory_realloc(oldptr, size)
-#define GLOBAL_FREEMEM(ptr)        Memory_free(ptr)
+#define GLOBAL_CALLOC(nmemb, size) libiec61850::Memory_calloc(nmemb, size)
+#define GLOBAL_MALLOC(size)        libiec61850::Memory_malloc(size)
+#define GLOBAL_REALLOC(oldptr, size)   libiec61850::Memory_realloc(oldptr, size)
+#define GLOBAL_FREEMEM(ptr)        libiec61850::Memory_free(ptr)
 
 #ifdef __cplusplus
 extern "C" {
