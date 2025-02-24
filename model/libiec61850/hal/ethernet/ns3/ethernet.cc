@@ -140,5 +140,8 @@ Ethernet_receivePacket(EthernetSocket ethSocket, uint8_t* buffer, int bufferSize
 }
 
 PAL_API bool
-Ethernet_isSupported(void);
+Ethernet_isSupported(void)
+{
+    return true;
+}
 }
