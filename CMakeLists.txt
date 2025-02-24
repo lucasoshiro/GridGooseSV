@@ -32,6 +32,7 @@ set(libiec61850_test_sources
         test/model/libiec61850/hal/time/test-time.cc
         test/model/libiec61850/hal/thread/test-thread.cc
         test/model/libiec61850/hal/filesystem/test-filesystem.cc
+        test/model/test-ethernet.cc
 )
 
 set(helper_source_files
