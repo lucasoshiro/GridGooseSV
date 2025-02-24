@@ -123,13 +123,22 @@ Ethernet_sendPacket(EthernetSocket ethSocket, uint8_t* buffer, int packetSize)
 }
 
 PAL_API void
-Ethernet_setMode(EthernetSocket ethSocket, EthernetSocketMode mode);
+Ethernet_setMode(EthernetSocket ethSocket, EthernetSocketMode mode)
+{
+    // Not implemented
+}
 
 PAL_API void
-Ethernet_addMulticastAddress(EthernetSocket ethSocket, uint8_t* multicastAddress);
+Ethernet_addMulticastAddress(EthernetSocket ethSocket, uint8_t* multicastAddress)
+{
+    // Not implemented
+}
 
 PAL_API void
-Ethernet_setProtocolFilter(EthernetSocket ethSocket, uint16_t etherType);
+Ethernet_setProtocolFilter(EthernetSocket ethSocket, uint16_t etherType)
+{
+    // Not implemented
+}
 
 PAL_API int
 Ethernet_receivePacket(EthernetSocket ethSocket, uint8_t* buffer, int bufferSize)
