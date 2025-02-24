@@ -77,12 +77,12 @@ void
 EthernetClient::Send()
 {
     NS_LOG_FUNCTION(this);
-    uint8_t bla[] = "foobar";
+    uint8_t body[] = "              foobar";
 
     libiec61850::Ethernet_sendPacket(
         this->ethSocket,
-        bla,
-        strlen(reinterpret_cast<char *>(bla))
+        body,
+        strlen(reinterpret_cast<char *>(body))
         );
 }
 

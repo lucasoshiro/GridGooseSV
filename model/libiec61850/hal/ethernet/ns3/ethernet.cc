@@ -86,7 +86,8 @@ Ethernet_createSocket(const char* interfaceId, uint8_t* destAddress)
 
     if (destAddress != nullptr)
     {
-        const auto remoteAddress = getPacketSocketAddress(device, destAddress);
+        auto remoteAddress = getPacketSocketAddress(device, destAddress);
+        remoteAddress.SetProtocol(0x8100);
         packetSocket->Bind(remoteAddress);
         packetSocket->Connect(remoteAddress);
     }
@@ -114,9 +115,11 @@ Ethernet_destroySocket(EthernetSocket ethSocket)
 PAL_API void
 Ethernet_sendPacket(EthernetSocket ethSocket, uint8_t* buffer, int packetSize)
 {
+    const int offset = 14;
+
     const auto packet = ns3::Create<ns3::Packet>(
-        buffer,
-        static_cast<uint32_t>(packetSize)
+        buffer + offset,
+        static_cast<uint32_t>(packetSize - offset)
         );
 
     ethSocket->packetSocket->Send(packet);
