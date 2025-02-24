@@ -54,6 +54,34 @@ set(libiec61850_mms_header_files
         model/libiec61850/src/mms/inc/mms_type_spec.h
         model/libiec61850/src/mms/inc/mms_types.h
         model/libiec61850/src/mms/inc/mms_value.h
+
+        model/libiec61850/src/mms/inc_private/acse.h
+        model/libiec61850/src/mms/inc_private/asn1_ber_primitive_value.h
+        model/libiec61850/src/mms/inc_private/ber_decode.h
+        model/libiec61850/src/mms/inc_private/ber_encoder.h
+        model/libiec61850/src/mms/inc_private/ber_integer.h
+        model/libiec61850/src/mms/inc_private/cotp.h
+        model/libiec61850/src/mms/inc_private/iso_client_connection.h
+        model/libiec61850/src/mms/inc_private/iso_presentation.h
+        model/libiec61850/src/mms/inc_private/iso_server.h
+        model/libiec61850/src/mms/inc_private/iso_server_private.h
+        model/libiec61850/src/mms/inc_private/iso_session.h
+        model/libiec61850/src/mms/inc_private/mms_client_internal.h
+        model/libiec61850/src/mms/inc_private/mms_common_internal.h
+        model/libiec61850/src/mms/inc_private/mms_device_model.h
+        model/libiec61850/src/mms/inc_private/mms_named_variable_list.h
+        model/libiec61850/src/mms/inc_private/mms_server_connection.h
+        model/libiec61850/src/mms/inc_private/mms_server_internal.h
+        model/libiec61850/src/mms/inc_private/mms_server_libinternal.h
+        model/libiec61850/src/mms/inc_private/mms_value_cache.h
+        model/libiec61850/src/mms/inc_private/mms_value_internal.h
+)
+
+set(libiec61850_mms_files
+        model/libiec61850/src/mms/asn1/ber_decode.cc
+        model/libiec61850/src/mms/asn1/asn1_ber_primitive_value.cc
+        model/libiec61850/src/mms/asn1/ber_encoder.cc
+        model/libiec61850/src/mms/asn1/ber_integer.cc
 )
 
 set(libiec61850_asn1_source_files
@@ -151,6 +179,7 @@ set(libiec61850_asn1_source_files
 
 set(libiec61850_source_files
         ${libiec61850_hal_source_files}
+        ${libiec61850_mms_files}
         ${libiec61850_asn1_source_files}
 )
 
