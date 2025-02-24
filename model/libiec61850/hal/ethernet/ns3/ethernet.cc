@@ -59,7 +59,16 @@ EthernetHandleSet_destroy(EthernetHandleSet self)
 }
 
 PAL_API void
-Ethernet_getInterfaceMACAddress(const char* interfaceId, uint8_t* addr);
+Ethernet_getInterfaceMACAddress(const char* interfaceId, uint8_t* addr)
+{
+    const std::string path(interfaceId);
+    auto device = ns3::GetNetDevice(path);
+    auto address = device->GetAddress();
+
+    uint8_t mac[20];
+    address.CopyTo(mac);
+    memcpy(addr, &mac[0], 6);
+}
 
 PAL_API EthernetSocket
 Ethernet_createSocket(const char* interfaceId, uint8_t* destAddress)
@@ -85,6 +94,8 @@ Ethernet_createSocket(const char* interfaceId, uint8_t* destAddress)
     {
         auto localAddr = ns3::PacketSocketAddress();
         localAddr.SetPhysicalAddress(device->GetAddress());
+
+        // TODO: shouldn't use localAddr?
         packetSocket->Bind();
     }
 

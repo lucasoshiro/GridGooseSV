@@ -38,6 +38,7 @@ Libiec61850Ns3TestSuite::Libiec61850Ns3TestSuite()
         reinterpret_cast<TestCase*>(new TestGetMacAddress),
         reinterpret_cast<TestCase*>(new TestGetPacketSocketAddress),
         reinterpret_cast<TestCase*>(new TestEthernet),
+        reinterpret_cast<TestCase*>(new TestGetInterfaceMACAddress)
     };
 
     for (TestCase *testCase : testCases)
