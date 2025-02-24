@@ -18,23 +18,45 @@ struct sEthernetSocket
 
 struct sEthernetHandleSet
 {
-
+    std::set<EthernetSocket> handleset;
 };
 
 PAL_API EthernetHandleSet
-EthernetHandleSet_new(void);
+EthernetHandleSet_new(void)
+{
+    return new sEthernetHandleSet;
+}
 
 PAL_API void
-EthernetHandleSet_addSocket(EthernetHandleSet self, const EthernetSocket sock);
+EthernetHandleSet_addSocket(EthernetHandleSet self, const EthernetSocket sock)
+{
+    if (sock != nullptr)
+    {
+        self->handleset.insert(sock);
+    }
+}
 
 PAL_API void
-EthernetHandleSet_removeSocket(EthernetHandleSet self, const EthernetSocket sock);
+EthernetHandleSet_removeSocket(EthernetHandleSet self, const EthernetSocket sock)
+{
+    if (sock != nullptr)
+    {
+        self->handleset.erase(sock);
+    }
+}
 
 PAL_API int
-EthernetHandleSet_waitReady(EthernetHandleSet self, unsigned int timeoutMs);
+EthernetHandleSet_waitReady(EthernetHandleSet self, unsigned int timeoutMs)
+{
+    // TODO: Not implemented. Probably won't be useful in an simulation environment
+    return -1;
+}
 
 PAL_API void
-EthernetHandleSet_destroy(EthernetHandleSet self);
+EthernetHandleSet_destroy(EthernetHandleSet self)
+{
+    delete self;
+}
 
 PAL_API void
 Ethernet_getInterfaceMACAddress(const char* interfaceId, uint8_t* addr);
