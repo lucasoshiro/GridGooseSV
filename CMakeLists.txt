@@ -223,6 +223,16 @@ set(libiec61850_asn1_source_files
         model/libiec61850/src/mms/iso_mms/asn1c/xer_support.cc
 )
 
+set(libiec61850_sv_source_files
+        model/libiec61850/src/sampled_values/sv_subscriber.cc
+        model/libiec61850/src/sampled_values/sv_publisher.cc
+)
+
+set(libiec61850_sv_header_files
+        model/libiec61850/src/sampled_values/sv_subscriber.h
+        model/libiec61850/src/sampled_values/sv_publisher.h
+)
+
 set(libiec61850_source_files
         ${libiec61850_logging_source_files}
         ${libiec61850_hal_source_files}
@@ -230,6 +240,7 @@ set(libiec61850_source_files
         ${libiec61850_iec61850_source_files}
         ${libiec61850_mms_files}
         ${libiec61850_asn1_source_files}
+        ${libiec61850_sv_source_files}
 )
 
 set(libiec61850_header_files
@@ -239,6 +250,7 @@ set(libiec61850_header_files
         ${libiec61850_iec61850_header_files}
         ${libiec61850_hal_header_files}
         ${libiec61850_mms_header_files}
+        ${libiec61850_sv_header_files}
 )
 
 set(libiec61850_test_sources
