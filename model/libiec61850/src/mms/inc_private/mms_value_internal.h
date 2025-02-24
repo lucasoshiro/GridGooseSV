@@ -24,8 +24,8 @@
 #ifndef MMS_VALUE_INTERNAL_H_
 #define MMS_VALUE_INTERNAL_H_
 
-#include "mms_value.h"
-#include "ber_integer.h"
+#include "ns3/mms_value.h"
+#include "ns3/ber_integer.h"
 
 struct ATTRIBUTE_PACKED sMmsValue {
     MmsType type;

@@ -43,6 +43,31 @@ set(libiec61850_common_files
         model/libiec61850/src/common/string_utilities.cc
 )
 
+set(libiec61850_iec61850_source_files
+        model/libiec61850/src/iec61850/common/iec61850_common.cc
+)
+
+# TODO: maybe we don't need all of them.
+set(libiec61850_iec61850_header_files
+        model/libiec61850/src/iec61850/inc/iec61850_cdc.h
+        model/libiec61850/src/iec61850/inc/iec61850_common.h
+        model/libiec61850/src/iec61850/inc/iec61850_config_file_parser.h
+        model/libiec61850/src/iec61850/inc/iec61850_dynamic_model.h
+        model/libiec61850/src/iec61850/inc/iec61850_model.h
+        model/libiec61850/src/iec61850/inc/iec61850_server.h
+        
+        model/libiec61850/src/iec61850/inc_private/control.h
+        model/libiec61850/src/iec61850/inc_private/iec61850_common_internal.h
+        model/libiec61850/src/iec61850/inc_private/ied_connection_private.h
+        model/libiec61850/src/iec61850/inc_private/ied_server_private.h
+        model/libiec61850/src/iec61850/inc_private/logging.h
+        model/libiec61850/src/iec61850/inc_private/mms_goose.h
+        model/libiec61850/src/iec61850/inc_private/mms_mapping.h
+        model/libiec61850/src/iec61850/inc_private/mms_mapping_internal.h
+        model/libiec61850/src/iec61850/inc_private/mms_sv.h
+        model/libiec61850/src/iec61850/inc_private/reporting.h
+)
+
 # TODO: maybe we don't need all of them.
 set(libiec61850_common_header_files
         model/libiec61850/src/common/inc/buffer_chain.h
@@ -202,6 +227,7 @@ set(libiec61850_source_files
         ${libiec61850_logging_source_files}
         ${libiec61850_hal_source_files}
         ${libiec61850_common_files}
+        ${libiec61850_iec61850_source_files}
         ${libiec61850_mms_files}
         ${libiec61850_asn1_source_files}
 )
@@ -210,6 +236,7 @@ set(libiec61850_header_files
         model/libiec61850/config/stack_config.h
         ${libiec61850_logging_header_files}
         ${libiec61850_common_header_files}
+        ${libiec61850_iec61850_header_files}
         ${libiec61850_hal_header_files}
         ${libiec61850_mms_header_files}
 )
