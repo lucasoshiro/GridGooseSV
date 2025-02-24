@@ -58,6 +58,15 @@ set(libiec61850_common_header_files
         model/libiec61850/src/common/inc/string_utilities.h
 )
 
+set(libiec61850_logging_source_files
+        model/libiec61850/src/logging/drivers/sqlite/log_storage_sqlite.cc
+        model/libiec61850/src/logging/log_storage.cc
+)
+
+set(libiec61850_logging_header_files
+        model/libiec61850/src/logging/logging_api.h
+)
+
 set(libiec61850_mms_header_files
         model/libiec61850/src/mms/inc/iso_connection_parameters.h
         model/libiec61850/src/mms/inc/mms_client_connection.h
@@ -190,6 +199,7 @@ set(libiec61850_asn1_source_files
 )
 
 set(libiec61850_source_files
+        ${libiec61850_logging_source_files}
         ${libiec61850_hal_source_files}
         ${libiec61850_common_files}
         ${libiec61850_mms_files}
@@ -198,6 +208,7 @@ set(libiec61850_source_files
 
 set(libiec61850_header_files
         model/libiec61850/config/stack_config.h
+        ${libiec61850_logging_header_files}
         ${libiec61850_common_header_files}
         ${libiec61850_hal_header_files}
         ${libiec61850_mms_header_files}
