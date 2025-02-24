@@ -259,6 +259,7 @@ set(libiec61850_test_sources
         test/model/libiec61850/hal/thread/test-thread.cc
         test/model/libiec61850/hal/filesystem/test-filesystem.cc
         test/model/test-ethernet.cc
+        test/model/test-sv.cc
 )
 
 ################################# MODULE FILES #################################
@@ -278,11 +279,13 @@ set(model_source_files
         model/mms-server.cc
         model/ethernet-client.cc
         model/ethernet-server.cc
+        model/sv-apps.cc
 )
 
 set(model_header_files
         model/libiec61850-ns3.h
         model/mms-server.h
+        model/sv-apps.h
 )
 
 set(model_header_private_files

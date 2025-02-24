@@ -1,10 +1,11 @@
-#include "ns3/libiec61850-ns3.h"
 #include "model/libiec61850/hal/filesystem/test-filesystem.h"
 #include "model/libiec61850/hal/thread/test-thread.h"
 #include "model/libiec61850/hal/time/test-time.h"
 #include "model/test-ethernet.h"
+#include "model/test-sv.h"
 #include "util/test-address-util.h"
 #include "util/test-device-util.h"
+
 #include "ns3/test.h"
 
 using namespace ns3;
@@ -38,7 +39,9 @@ Libiec61850Ns3TestSuite::Libiec61850Ns3TestSuite()
         reinterpret_cast<TestCase*>(new TestGetMacAddress),
         reinterpret_cast<TestCase*>(new TestGetPacketSocketAddress),
         reinterpret_cast<TestCase*>(new TestEthernet),
-        reinterpret_cast<TestCase*>(new TestGetInterfaceMACAddress)
+        reinterpret_cast<TestCase*>(new TestGetInterfaceMACAddress),
+        reinterpret_cast<TestCase*>(new TestSV)
+
     };
 
     for (TestCase *testCase : testCases)
