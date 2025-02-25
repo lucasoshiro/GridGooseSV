@@ -156,4 +156,11 @@ Ethernet_isSupported(void)
 {
     return true;
 }
+
+ns3::Ptr<ns3::Socket>
+Ethernet_getNS3Socket(EthernetSocket ethSocket)
+{
+    return ethSocket->packetSocket;
 }
+
+} // namespace libiec61850

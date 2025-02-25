@@ -11,6 +11,9 @@
 #define ETHERNET_HAL_H_
 
 #include "hal_base.h"
+#undef DEPRECATED
+#include "ns3/socket.h"
+#include "ns3/callback.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -180,6 +183,15 @@ Ethernet_receivePacket(EthernetSocket ethSocket, uint8_t* buffer, int bufferSize
  */
 PAL_API bool
 Ethernet_isSupported(void);
+
+
+/**
+ * \brief ns-3 only: get the underlying ns-3 socket
+ *
+ * \return the ns-3 socket
+ */
+ns3::Ptr<ns3::Socket>
+Ethernet_getNS3Socket(EthernetSocket ethSocket);
 
 /*! @} */
 
