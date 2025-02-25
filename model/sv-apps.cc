@@ -1,7 +1,11 @@
 #include "sv-apps.h"
 
-#include "ns3/simulator.h"
 #include "ethernet-client.h"
+
+#include "ns3/simulator.h"
+#include "ns3/uinteger.h"
+
+#include <fstream>
 
 ns3::SVClient::
 SVClient()
@@ -17,7 +21,21 @@ ns3::SVClient::GetTypeId()
     TypeId("ns3::SVClient")
         .SetParent<Application>()
         .SetGroupName("LibIEC61850")
-        .AddConstructor<SVClient>();
+        .AddConstructor<SVClient>()
+        .AddAttribute(
+            "MaxPackets",
+            "Maximum number of packets to send or 0 for inifinite",
+            UintegerValue(0),
+            MakeUintegerAccessor(&SVClient::count),
+            MakeUintegerChecker<u_int64_t>()
+            )
+        .AddAttribute(
+            "Interval",
+            "Interval between packet sent. Equivalent to the SV sample rate",
+            TimeValue(MilliSeconds(50)),
+            MakeTimeAccessor(&SVClient::interval),
+            MakeTimeChecker()
+            );
     return tid;
 }
 
@@ -53,7 +71,8 @@ ns3::SVClient::StartApplication()
     this->fVal1 = 1234.5678f;
     this->fVal2 = 0.12345f;
 
-    this->count = 10;
+    if (this->count <= 0) this->count = -1;
+
     Simulator::ScheduleNow(&SVClient::Send, this);
 }
 
@@ -69,7 +88,7 @@ ns3::SVClient::Send()
 {
     NS_LOG_FUNCTION(this);
 
-    if (this->count < 0) return;
+    if (this->count == 0) return;
 
     Timestamp ts;
     Timestamp_clearFlags(&ts);
@@ -91,5 +110,5 @@ ns3::SVClient::Send()
 
     this->count--;
 
-    Simulator::Schedule(MilliSeconds(50), &SVClient::Send, this);
+    Simulator::Schedule(this->interval, &SVClient::Send, this);
 }

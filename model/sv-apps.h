@@ -41,7 +41,8 @@ private:
     int ts1;
     int ts2;
 
-    int count;
+    uint64_t count;
+    ns3::Time interval;
 };
 
 } // namespace ns3
