@@ -8,39 +8,39 @@
 
 #include <fstream>
 
-ns3::SVClient::
-SVClient()
+ns3::SVPublisher::
+SVPublisher()
 {
     NS_LOG_FUNCTION(this);
     this->ethSocket = nullptr;
 }
 
 ns3::TypeId
-ns3::SVClient::GetTypeId()
+ns3::SVPublisher::GetTypeId()
 {
     static TypeId tid =
     TypeId("ns3::SVClient")
         .SetParent<Application>()
         .SetGroupName("LibIEC61850")
-        .AddConstructor<SVClient>()
+        .AddConstructor<SVPublisher>()
         .AddAttribute(
             "MaxPackets",
             "Maximum number of packets to send or 0 for inifinite",
             UintegerValue(0),
-            MakeUintegerAccessor(&SVClient::count),
+            MakeUintegerAccessor(&SVPublisher::count),
             MakeUintegerChecker<u_int64_t>()
             )
         .AddAttribute(
             "Interval",
             "Interval between packet sent. Equivalent to the SV sample rate",
             TimeValue(MilliSeconds(50)),
-            MakeTimeAccessor(&SVClient::interval),
+            MakeTimeAccessor(&SVPublisher::interval),
             MakeTimeChecker()
             )
         .AddTraceSource(
             "Sent",
             "Number of sent packages",
-            MakeTraceSourceAccessor(&SVClient::sent),
+            MakeTraceSourceAccessor(&SVPublisher::sent),
             "ns3::TracedValueCallback::Uint64"
             );
 
@@ -48,14 +48,14 @@ ns3::SVClient::GetTypeId()
 }
 
 void
-ns3::SVClient::SetServerAddress(PacketSocketAddress serverAddr)
+ns3::SVPublisher::SetServerAddress(PacketSocketAddress serverAddr)
 {
     NS_LOG_FUNCTION(this);
     this->serverAddr = serverAddr;
 }
 
 void
-ns3::SVClient::StartApplication()
+ns3::SVPublisher::StartApplication()
 {
     NS_LOG_FUNCTION(this);
 
@@ -82,18 +82,18 @@ ns3::SVClient::StartApplication()
     if (this->count <= 0) this->count = -1;
     this->sent.Set(0);
 
-    ns3::Simulator::ScheduleNow(&SVClient::Send, this);
+    ns3::Simulator::ScheduleNow(&SVPublisher::Send, this);
 }
 
 void
-ns3::SVClient::StopApplication()
+ns3::SVPublisher::StopApplication()
 {
     NS_LOG_FUNCTION(this);
     libiec61850::Ethernet_destroySocket(this->ethSocket);
 }
 
 void
-ns3::SVClient::Send()
+ns3::SVPublisher::Send()
 {
     NS_LOG_FUNCTION(this);
 
@@ -120,5 +120,5 @@ ns3::SVClient::Send()
     this->count--;
     this->sent++;
 
-    Simulator::Schedule(this->interval, &SVClient::Send, this);
+    Simulator::Schedule(this->interval, &SVPublisher::Send, this);
 }

@@ -9,10 +9,10 @@
 
 namespace ns3 {
 
-class SVClient : public Application
+class SVPublisher : public Application
 {
 public:
-    SVClient();
+    SVPublisher();
 
     static TypeId GetTypeId();
     void SetServerAddress(PacketSocketAddress serverAddr);

@@ -26,7 +26,7 @@ TestSV::DoRun()
     packetSocketAddr.SetSingleDevice(clientDevice->GetIfIndex());
     packetSocketAddr.SetPhysicalAddress(serverDevice->GetAddress());
 
-    auto client = ns3::CreateObject<ns3::SVClient>();
+    auto client = ns3::CreateObject<ns3::SVPublisher>();
     client->SetServerAddress(packetSocketAddr);
     clientNode->AddApplication(client);
 
