@@ -62,19 +62,19 @@ ns3::SVClient::StartApplication()
     auto nodeId = this->GetNode()->GetId();
     auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/0";
 
-    this->svPublisher = SVPublisher_create(nullptr, path.c_str());
+    this->svPublisher = libiec61850::SVPublisher_create(nullptr, path.c_str());
 
-    this->asdu1 = SVPublisher_addASDU(this->svPublisher, "svpub1", nullptr, 1);
-    this->float1 = SVPublisher_ASDU_addFLOAT(this->asdu1);
-    this->float2 = SVPublisher_ASDU_addFLOAT(this->asdu1);
-    this->ts1 = SVPublisher_ASDU_addTimestamp(this->asdu1);
+    this->asdu1 = libiec61850::SVPublisher_addASDU(this->svPublisher, "svpub1", nullptr, 1);
+    this->float1 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu1);
+    this->float2 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu1);
+    this->ts1 = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdu1);
 
-    this->asdu2 = SVPublisher_addASDU(this->svPublisher, "svpub2", nullptr, 1);
-    this->float3 = SVPublisher_ASDU_addFLOAT(this->asdu2);
-    this->float4 = SVPublisher_ASDU_addFLOAT(this->asdu2);
-    this->ts2 = SVPublisher_ASDU_addTimestamp(this->asdu2);
+    this->asdu2 = libiec61850::SVPublisher_addASDU(this->svPublisher, "svpub2", nullptr, 1);
+    this->float3 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu2);
+    this->float4 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu2);
+    this->ts2 = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdu2);
 
-    SVPublisher_setupComplete(svPublisher);
+    libiec61850::SVPublisher_setupComplete(svPublisher);
 
     this->fVal1 = 1234.5678f;
     this->fVal2 = 0.12345f;
@@ -82,7 +82,7 @@ ns3::SVClient::StartApplication()
     if (this->count <= 0) this->count = -1;
     this->sent.Set(0);
 
-    Simulator::ScheduleNow(&SVClient::Send, this);
+    ns3::Simulator::ScheduleNow(&SVClient::Send, this);
 }
 
 void

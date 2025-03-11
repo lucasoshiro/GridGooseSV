@@ -26,15 +26,15 @@ private:
     libiec61850::EthernetSocket ethSocket;
     PacketSocketAddress serverAddr;
 
-    SVPublisher svPublisher;
+    libiec61850::SVPublisher svPublisher;
 
     int float1;
     int float2;
     int float3;
     int float4;
 
-    SVPublisher_ASDU asdu1;
-    SVPublisher_ASDU asdu2;
+    libiec61850::SVPublisher_ASDU asdu1;
+    libiec61850::SVPublisher_ASDU asdu2;
 
     float fVal1;
     float fVal2;

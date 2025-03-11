@@ -42,8 +42,8 @@
 
 #define SV_MAX_MESSAGE_SIZE 1518
 
-using namespace libiec61850;
-
+namespace libiec61850
+{
 struct sSVPublisher_ASDU {
     const char* svID;
     const char* datset;
@@ -880,4 +880,6 @@ void
 SV_ASDU_setSmpRate(SVPublisher_ASDU self, uint16_t smpRate)
 {
     SVPublisher_ASDU_setSmpRate(self, smpRate);
+}
+
 }
