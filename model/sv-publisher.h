@@ -24,7 +24,7 @@ private:
     void Send();
 
     libiec61850::EthernetSocket ethSocket;
-    PacketSocketAddress serverAddr;
+    Address serverAddr;
 
     libiec61850::SVPublisher svPublisher;
 

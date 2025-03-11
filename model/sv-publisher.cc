@@ -37,6 +37,12 @@ ns3::SVPublisher::GetTypeId()
             MakeTimeAccessor(&SVPublisher::interval),
             MakeTimeChecker()
             )
+        .AddAttribute(
+            "SubscriberAddress",
+            "Subscriber Address",
+            AddressValue(),
+            MakeAddressAccessor(&SVPublisher::serverAddr),
+            MakeAddressChecker())
         .AddTraceSource(
             "Sent",
             "Number of sent packages",
@@ -51,7 +57,10 @@ void
 ns3::SVPublisher::SetServerAddress(PacketSocketAddress serverAddr)
 {
     NS_LOG_FUNCTION(this);
-    this->serverAddr = serverAddr;
+    this->SetAttribute(
+        "SubscriberAddress",
+        AddressValue(serverAddr)
+        );
 }
 
 void
