@@ -1,7 +1,7 @@
 #include "test-sv.h"
 #include "ns3/packet-socket-helper.h"
 #include "ns3/csma-helper.h"
-#include "ns3/sv-apps.h"
+#include "ns3/sv-publisher.h"
 #include "ns3/ethernet-server.h"
 
 void

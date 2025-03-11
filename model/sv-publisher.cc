@@ -1,4 +1,4 @@
-#include "sv-apps.h"
+#include "sv-publisher.h"
 
 #include "../../../src/core/model/integer.h"
 #include "ethernet-client.h"

@@ -275,11 +275,11 @@ set(helper_header_files
 set(model_source_files
         model/ethernet-client.cc
         model/ethernet-server.cc
-        model/sv-apps.cc
+        model/sv-publisher.cc
 )
 
 set(model_header_files
-        model/sv-apps.h
+        model/sv-publisher.h
 )
 
 set(model_header_private_files
