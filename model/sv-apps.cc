@@ -1,5 +1,6 @@
 #include "sv-apps.h"
 
+#include "../../../src/core/model/integer.h"
 #include "ethernet-client.h"
 
 #include "ns3/simulator.h"
@@ -35,7 +36,14 @@ ns3::SVClient::GetTypeId()
             TimeValue(MilliSeconds(50)),
             MakeTimeAccessor(&SVClient::interval),
             MakeTimeChecker()
+            )
+        .AddTraceSource(
+            "Sent",
+            "Number of sent packages",
+            MakeTraceSourceAccessor(&SVClient::sent),
+            "ns3::TracedValueCallback::Uint64"
             );
+
     return tid;
 }
 
@@ -72,6 +80,7 @@ ns3::SVClient::StartApplication()
     this->fVal2 = 0.12345f;
 
     if (this->count <= 0) this->count = -1;
+    this->sent.Set(0);
 
     Simulator::ScheduleNow(&SVClient::Send, this);
 }
@@ -109,6 +118,7 @@ ns3::SVClient::Send()
     SVPublisher_publish(svPublisher);
 
     this->count--;
+    this->sent++;
 
     Simulator::Schedule(this->interval, &SVClient::Send, this);
 }

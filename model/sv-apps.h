@@ -4,6 +4,7 @@
 #include "ns3/application.h"
 #include "ns3/hal_ethernet.h"
 #include "ns3/packet-socket-address.h"
+#include "ns3/traced-value.h"
 #include "libiec61850/src/sampled_values/sv_publisher.h"
 
 namespace ns3 {
@@ -42,6 +43,7 @@ private:
     int ts2;
 
     uint64_t count;
+    ns3::TracedValue<uint64_t> sent;
     ns3::Time interval;
 };
 
