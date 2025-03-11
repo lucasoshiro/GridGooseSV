@@ -265,26 +265,20 @@ set(libiec61850_test_sources
 ################################# MODULE FILES #################################
 
 set(helper_source_files
-        helper/libiec61850-ns3-helper.cc
-        helper/mms-server-helper.cc
+
 )
 
 set(helper_header_files
-        helper/libiec61850-ns3-helper.h
-        helper/mms-server-helper.h
+
 )
 
 set(model_source_files
-        model/libiec61850-ns3.cc
-        model/mms-server.cc
         model/ethernet-client.cc
         model/ethernet-server.cc
         model/sv-apps.cc
 )
 
 set(model_header_files
-        model/libiec61850-ns3.h
-        model/mms-server.h
         model/sv-apps.h
 )
 
