@@ -42,8 +42,8 @@
 
 #define ETH_P_SV 0x88ba
 
-using namespace libiec61850;
-
+namespace libiec61850
+{
 struct sSVReceiver {
     bool running;
     bool stopped;
@@ -166,17 +166,17 @@ svReceiverLoop(void* threadParameter)
     self->stopped = false;
 
     while (self->running) {
-            switch (EthernetHandleSet_waitReady(handleSet, 100))
-            {
-            case -1:
-                if (DEBUG_SV_SUBSCRIBER)
-                    printf("SV_SUBSCRIBER: EhtnernetHandleSet_waitReady() failure\n");
-                break;
-            case 0:
-                break;
-            default:
-                SVReceiver_tick(self);
-            }
+        switch (EthernetHandleSet_waitReady(handleSet, 100))
+        {
+        case -1:
+            if (DEBUG_SV_SUBSCRIBER)
+                printf("SV_SUBSCRIBER: EhtnernetHandleSet_waitReady() failure\n");
+            break;
+        case 0:
+            break;
+        default:
+            SVReceiver_tick(self);
+        }
 
     }
 
@@ -239,7 +239,7 @@ SVReceiver_destroy(SVReceiver self)
         GLOBAL_FREEMEM(self->interfaceId);
 
 #if (CONFIG_MMS_THREADLESS_STACK == 0)
-        Semaphore_destroy(self->subscriberListLock);
+    Semaphore_destroy(self->subscriberListLock);
 #endif
 
     GLOBAL_FREEMEM(self->buffer);
@@ -260,7 +260,7 @@ SVReceiver_startThreadless(SVReceiver self)
 
         self->running = true;
     }
-    
+
     return self->ethSocket;
 }
 
@@ -349,14 +349,14 @@ parseASDU(SVReceiver self, SVSubscriber subscriber, uint8_t* buffer, int length)
         asdu.svId[svIdLength] = 0;
     if (asdu.datSet != NULL)
         asdu.datSet[datSetLength] = 0;
-    
+
     if (DEBUG_SV_SUBSCRIBER) {
         printf("SV_SUBSCRIBER:   SV ASDU: ----------------\n");
         printf("SV_SUBSCRIBER:     DataLength: %d\n", asdu.dataBufferLength);
         printf("SV_SUBSCRIBER:     SvId: %s\n", asdu.svId);
         printf("SV_SUBSCRIBER:     SmpCnt: %u\n", SVSubscriber_ASDU_getSmpCnt(&asdu));
         printf("SV_SUBSCRIBER:     ConfRev: %u\n", SVSubscriber_ASDU_getConfRev(&asdu));
-        
+
         if (SVSubscriber_ASDU_hasDatSet(&asdu))
             printf("SV_SUBSCRIBER:     DatSet: %s\n", asdu.datSet);
 
@@ -364,7 +364,7 @@ parseASDU(SVReceiver self, SVSubscriber subscriber, uint8_t* buffer, int length)
 #ifndef _MSC_VER
             printf("SV_SUBSCRIBER:     RefrTm[ns]: %" PRIu64 "\n", SVSubscriber_ASDU_getRefrTmAsNs(&asdu));
 #else
-            printf("SV_SUBSCRIBER:     RefrTm[ns]: %llu\n", SVSubscriber_ASDU_getRefrTmAsNs(&asdu));
+                printf("SV_SUBSCRIBER:     RefrTm[ns]: %llu\n", SVSubscriber_ASDU_getRefrTmAsNs(&asdu));
 #endif
         if (SVSubscriber_ASDU_hasSmpMod(&asdu))
             printf("SV_SUBSCRIBER:     SmpMod: %d\n", SVSubscriber_ASDU_getSmpMod(&asdu));
@@ -435,7 +435,7 @@ parseSVPayload(SVReceiver self, SVSubscriber subscriber, uint8_t* buffer, int ap
             switch(tag) {
             case 0x80: /* noASDU (INTEGER) */
                 /* ignore */
-                break;
+                    break;
 
             case 0xa2: /* asdu (SEQUENCE) */
                 parseSequenceOfASDU(self, subscriber, buffer + bufPos, elementLength);
@@ -453,9 +453,9 @@ parseSVPayload(SVReceiver self, SVSubscriber subscriber, uint8_t* buffer, int ap
         return;
     }
 
-exit_error:
-    if (DEBUG_SV_SUBSCRIBER)
-        printf("SV_SUBSCRIBER: Invalid SV message!\n");
+    exit_error:
+        if (DEBUG_SV_SUBSCRIBER)
+            printf("SV_SUBSCRIBER: Invalid SV message!\n");
 
     return;
 }
@@ -1012,4 +1012,4 @@ SVClientASDU_getDataSize(SVSubscriber_ASDU self)
 {
     return SVSubscriber_ASDU_getDataSize(self);
 }
-
+}
