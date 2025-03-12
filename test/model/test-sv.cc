@@ -1,8 +1,9 @@
 #include "test-sv.h"
-#include "ns3/packet-socket-helper.h"
+
 #include "ns3/csma-helper.h"
-#include "ns3/sv-publisher.h"
 #include "ns3/ethernet-server.h"
+#include "ns3/packet-socket-helper.h"
+#include "ns3/sv-helper.h"
 
 void
 TestSV::DoRun()
@@ -26,9 +27,9 @@ TestSV::DoRun()
     packetSocketAddr.SetSingleDevice(clientDevice->GetIfIndex());
     packetSocketAddr.SetPhysicalAddress(serverDevice->GetAddress());
 
-    auto client = ns3::CreateObject<ns3::SVPublisher>();
-    client->SetAttribute("MaxPackets", ns3::UintegerValue(10));
-    clientNode->AddApplication(client);
+    auto publisher = ns3::SVPublisherHelper();
+    publisher.SetAttribute("MaxPackets", ns3::UintegerValue(10));
+    publisher.Install(clientNode);
 
     auto server = ns3::CreateObject<ns3::EthernetServer>();
     serverNode->AddApplication(server);

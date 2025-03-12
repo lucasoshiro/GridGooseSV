@@ -265,11 +265,11 @@ set(libiec61850_test_sources
 ################################# MODULE FILES #################################
 
 set(helper_source_files
-
+        helper/sv-helper.cc
 )
 
 set(helper_header_files
-
+        helper/sv-helper.h
 )
 
 set(model_source_files
