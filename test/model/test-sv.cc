@@ -23,10 +23,6 @@ TestSV::DoRun()
     auto clientDevice = devices.Get(0);
     auto serverDevice = devices.Get(1);
 
-    auto packetSocketAddr = ns3::PacketSocketAddress();
-    packetSocketAddr.SetSingleDevice(clientDevice->GetIfIndex());
-    packetSocketAddr.SetPhysicalAddress(serverDevice->GetAddress());
-
     auto publisher = ns3::SVPublisherHelper();
     publisher.SetAttribute("MaxPackets", ns3::UintegerValue(10));
     publisher.Install(clientNode);
