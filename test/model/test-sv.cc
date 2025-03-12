@@ -27,7 +27,6 @@ TestSV::DoRun()
     packetSocketAddr.SetPhysicalAddress(serverDevice->GetAddress());
 
     auto client = ns3::CreateObject<ns3::SVPublisher>();
-    client->SetServerAddress(packetSocketAddr);
     client->SetAttribute("MaxPackets", ns3::UintegerValue(10));
     clientNode->AddApplication(client);
 

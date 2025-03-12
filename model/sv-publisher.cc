@@ -21,7 +21,7 @@ ns3::SVPublisher::GetTypeId()
     static TypeId tid =
     TypeId("ns3::SVClient")
         .SetParent<Application>()
-        .SetGroupName("LibIEC61850")
+       .SetGroupName("LibIEC61850")
         .AddConstructor<SVPublisher>()
         .AddAttribute(
             "MaxPackets",
@@ -37,12 +37,6 @@ ns3::SVPublisher::GetTypeId()
             MakeTimeAccessor(&SVPublisher::interval),
             MakeTimeChecker()
             )
-        .AddAttribute(
-            "SubscriberAddress",
-            "Subscriber Address",
-            AddressValue(),
-            MakeAddressAccessor(&SVPublisher::serverAddr),
-            MakeAddressChecker())
         .AddTraceSource(
             "Sent",
             "Number of sent packages",
@@ -54,20 +48,9 @@ ns3::SVPublisher::GetTypeId()
 }
 
 void
-ns3::SVPublisher::SetServerAddress(PacketSocketAddress serverAddr)
-{
-    NS_LOG_FUNCTION(this);
-    this->SetAttribute(
-        "SubscriberAddress",
-        AddressValue(serverAddr)
-        );
-}
-
-void
 ns3::SVPublisher::StartApplication()
 {
     NS_LOG_FUNCTION(this);
-
     auto nodeId = this->GetNode()->GetId();
     auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/0";
 
@@ -83,7 +66,7 @@ ns3::SVPublisher::StartApplication()
     this->float4 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu2);
     this->ts2 = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdu2);
 
-    libiec61850::SVPublisher_setupComplete(svPublisher);
+    libiec61850::SVPublisher_setupComplete(this->svPublisher);
 
     this->fVal1 = 1234.5678f;
     this->fVal2 = 0.12345f;

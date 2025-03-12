@@ -13,9 +13,7 @@ class SVPublisher : public Application
 {
 public:
     SVPublisher();
-
     static TypeId GetTypeId();
-    void SetServerAddress(PacketSocketAddress serverAddr);
 
 private:
     void StartApplication() override;
@@ -24,7 +22,6 @@ private:
     void Send();
 
     libiec61850::EthernetSocket ethSocket;
-    Address serverAddr;
 
     libiec61850::SVPublisher svPublisher;
 
