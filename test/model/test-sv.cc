@@ -28,6 +28,7 @@ TestSV::DoRun()
 
     auto client = ns3::CreateObject<ns3::SVPublisher>();
     client->SetServerAddress(packetSocketAddr);
+    client->SetAttribute("MaxPackets", ns3::UintegerValue(10));
     clientNode->AddApplication(client);
 
     auto server = ns3::CreateObject<ns3::EthernetServer>();
