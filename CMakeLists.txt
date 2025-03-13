@@ -276,10 +276,12 @@ set(model_source_files
         model/ethernet-client.cc
         model/ethernet-server.cc
         model/sv-publisher.cc
+        model/sv-subscriber.cc
 )
 
 set(model_header_files
         model/sv-publisher.h
+        model/sv-subscriber.h
 )
 
 set(model_header_private_files

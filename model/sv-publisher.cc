@@ -52,6 +52,8 @@ ns3::SVPublisher::StartApplication()
 {
     NS_LOG_FUNCTION(this);
     auto nodeId = this->GetNode()->GetId();
+
+    // TODO: we should make this flexible for cases where the node has more than one net device!
     auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/0";
 
     this->svPublisher = libiec61850::SVPublisher_create(nullptr, path.c_str());
