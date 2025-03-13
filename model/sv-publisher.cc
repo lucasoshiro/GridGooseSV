@@ -19,9 +19,9 @@ ns3::TypeId
 ns3::SVPublisher::GetTypeId()
 {
     static TypeId tid =
-    TypeId("ns3::SVClient")
+    TypeId("ns3::SVPublisher")
         .SetParent<Application>()
-       .SetGroupName("LibIEC61850")
+        .SetGroupName("LibIEC61850")
         .AddConstructor<SVPublisher>()
         .AddAttribute(
             "MaxPackets",
