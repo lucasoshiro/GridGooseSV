@@ -147,8 +147,8 @@ PAL_API int
 Ethernet_receivePacket(EthernetSocket ethSocket, uint8_t* buffer, int bufferSize)
 {
     // TODO: libiec61850 does something with bind before this. Check it.
-    auto packet = ethSocket->packetSocket->Recv(bufferSize, 0);
-    return packet->CopyData(buffer, 0);
+    auto packet = ethSocket->packetSocket->Recv(bufferSize, bufferSize);
+    return packet->CopyData(buffer, bufferSize);
 }
 
 PAL_API bool
