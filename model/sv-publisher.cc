@@ -58,15 +58,11 @@ ns3::SVPublisher::StartApplication()
 
     this->svPublisher = libiec61850::SVPublisher_create(nullptr, path.c_str());
 
+    // TODO: we should allow the user to add as many ASDUs as wanted
     this->asdu1 = libiec61850::SVPublisher_addASDU(this->svPublisher, "svpub1", nullptr, 1);
     this->float1 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu1);
     this->float2 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu1);
     this->ts1 = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdu1);
-
-    this->asdu2 = libiec61850::SVPublisher_addASDU(this->svPublisher, "svpub2", nullptr, 1);
-    this->float3 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu2);
-    this->float4 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu2);
-    this->ts2 = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdu2);
 
     libiec61850::SVPublisher_setupComplete(this->svPublisher);
 
@@ -100,11 +96,7 @@ ns3::SVPublisher::Send()
     SVPublisher_ASDU_setFLOAT(this->asdu1, float1, fVal1);
     SVPublisher_ASDU_setFLOAT(this->asdu1, float2, fVal2);
 
-    SVPublisher_ASDU_setFLOAT(this->asdu2, float3, fVal1 * 2);
-    SVPublisher_ASDU_setFLOAT(this->asdu2, float4, fVal2 * 2);
-
     SVPublisher_ASDU_increaseSmpCnt(asdu1);
-    SVPublisher_ASDU_increaseSmpCnt(asdu2);
 
     fVal1 += 1.1f;
     fVal2 += 0.1f;
