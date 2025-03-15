@@ -426,23 +426,13 @@ parseSVPayload(SVReceiver self, SVSubscriber subscriber, uint8_t* buffer, int ap
 static void
 parseSVMessage(SVReceiver self, int numbytes)
 {
-    int bufPos;
+    int bufPos = 2;
     uint8_t* buffer = self->buffer;
 
     if (numbytes < 22) return;
 
     /* Ethernet source address */
     uint8_t* dstAddr = buffer;
-
-    /* skip ethernet addresses */
-    bufPos = 12;
-    int headerLength = 14;
-
-    /* check for VLAN tag */
-    if ((buffer[bufPos] == 0x81) && (buffer[bufPos + 1] == 0x00)) {
-        bufPos += 4; /* skip VLAN tag */
-        headerLength += 4;
-    }
 
     /* check for SV Ethertype */
     if (buffer[bufPos++] != 0x88)
@@ -464,12 +454,6 @@ parseSVMessage(SVReceiver self, int numbytes)
     bufPos += 4;
 
     int apduLength = length - 8;
-
-    if (numbytes < length + headerLength) {
-        if (DEBUG_SV_SUBSCRIBER)
-            printf("SV_SUBSCRIBER: Invalid PDU size\n");
-        return;
-    }
 
     if (DEBUG_SV_SUBSCRIBER) {
         printf("SV_SUBSCRIBER: SV message: ----------------\n");
