@@ -31,6 +31,7 @@
 #include "ns3/hal_thread.h"
 #include "ns3/ber_decode.h"
 #include "ns3/ber_encoder.h"
+#include "ns3/callback.h"
 
 #include "sv_subscriber.h"
 
@@ -156,59 +157,21 @@ SVReceiver_removeSubscriber(SVReceiver self, SVSubscriber subscriber)
 #endif
 }
 
-static void*
-svReceiverLoop(void* threadParameter)
+static void receiveCallback(
+    SVReceiver self,
+    ns3::Ptr<ns3::Socket> socket
+    )
 {
-    SVReceiver self = (SVReceiver) threadParameter;
-    EthernetHandleSet handleSet = EthernetHandleSet_new();
-    EthernetHandleSet_addSocket(handleSet, self->ethSocket);
-
-    self->stopped = false;
-
-    while (self->running) {
-        switch (EthernetHandleSet_waitReady(handleSet, 100))
-        {
-        case -1:
-            if (DEBUG_SV_SUBSCRIBER)
-                printf("SV_SUBSCRIBER: EhtnernetHandleSet_waitReady() failure\n");
-            break;
-        case 0:
-            break;
-        default:
-            SVReceiver_tick(self);
-        }
-
-    }
-
-    self->stopped = true;
-
-    EthernetHandleSet_destroy(handleSet);
-
-    return NULL;
+    SVReceiver_tick(self);
 }
 
 void
 SVReceiver_start(SVReceiver self)
 {
-    if (SVReceiver_startThreadless(self)) {
-
-        if (DEBUG_SV_SUBSCRIBER)
-            printf("SV_SUBSCRIBER: SV receiver started for interface %s\n", self->interfaceId);
-
-        Thread thread = Thread_create((ThreadExecutionFunction) svReceiverLoop, (void*) self, true);
-
-        if (thread) {
-            Thread_start(thread);
-        }
-        else {
-            if (DEBUG_SV_SUBSCRIBER)
-                printf("SV_SUBSCRIBER: Failed to start thread\n");
-        }
-    }
-    else {
-        if (DEBUG_SV_SUBSCRIBER)
-            printf("SV_SUBSCRIBER: Starting SV receiver failed for interface %s\n", self->interfaceId);
-    }
+    SVReceiver_startThreadless(self);
+    auto socket = Ethernet_getNS3Socket(self->ethSocket);
+    auto callback = ns3::MakeBoundCallback(receiveCallback, self);
+    socket->SetRecvCallback(callback);
 }
 
 bool
