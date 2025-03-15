@@ -31,7 +31,6 @@ private:
     int float4;
 
     libiec61850::SVPublisher_ASDU asdu1;
-    libiec61850::SVPublisher_ASDU asdu2;
 
     float fVal1;
     float fVal2;
