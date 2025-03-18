@@ -3,7 +3,6 @@
 #include "ns3/csma-helper.h"
 #include "ns3/packet-socket-helper.h"
 #include "ns3/sv-helper.h"
-#include "ns3/sv-subscriber.h"
 
 void
 TestSV::DoRun()
@@ -27,8 +26,8 @@ TestSV::DoRun()
     publisher.SetAttribute("MaxPackets", ns3::UintegerValue(10));
     publisher.Install(clientNode);
 
-    auto server = ns3::CreateObject<ns3::SVSubscriber>();
-    serverNode->AddApplication(server);
+    auto subscriber = ns3::SVSubscriberHelper();
+    subscriber.Install(serverNode);
 
     csmaHelper.EnablePcapAll("test-sv");
 
