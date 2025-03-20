@@ -3,6 +3,7 @@
 #include "ns3/mms_value.h"
 #include "ns3/mms_value_internal.h"
 #include "ns3/lib_memory.h"
+#include "ns3/string_utilities.h"
 
 static int
 bitStringByteSize(const MmsValue* value)
@@ -337,4 +338,270 @@ MmsValue_newBoolean(bool boolean)
     }
 
     return self;
+}
+
+MmsValue*
+MmsValue_newInteger(int size /*integer size in bits*/)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self) {
+        self->type = MMS_INTEGER;
+
+        if (size <= 32)
+            self->value.integer = BerInteger_createInt32();
+        else
+            self->value.integer = BerInteger_createInt64();
+
+        if (self->value.integer == NULL) {
+            GLOBAL_FREEMEM(self);
+            self = NULL;
+        }
+    }
+
+    return self;
+}
+
+void
+MmsValue_setDouble(MmsValue* self, double newDoubleValue)
+{
+    if (self->type == MMS_FLOAT) {
+        if (self->value.floatingPoint.formatWidth == 32) {
+            float newFloatValue = (float) newDoubleValue;
+
+            memcpy(self->value.floatingPoint.buf, &newFloatValue, sizeof(float));
+        }
+        else if (self->value.floatingPoint.formatWidth == 64) {
+            memcpy(self->value.floatingPoint.buf, &newDoubleValue, sizeof(double));
+        }
+    }
+}
+
+uint64_t
+MmsValue_getUtcTimeInMs(const MmsValue* self)
+{
+    uint32_t timeval32;
+    const uint8_t* valueArray = self->value.utcTime;
+
+#if (ORDER_LITTLE_ENDIAN == 1)
+    memcpyReverseByteOrder((uint8_t*) &timeval32, valueArray, 4);
+#else
+    memcpy((uint8_t*) &timeval32, valueArray, 4);
+#endif
+
+    uint32_t fractionOfSecond = 0;
+
+    fractionOfSecond = (valueArray[4] << 16);
+    fractionOfSecond += (valueArray[5] << 8);
+    fractionOfSecond += (valueArray[6]);
+
+    uint32_t remainder = fractionOfSecond / 16777;
+
+    uint64_t msVal = (timeval32 * 1000LL) + remainder;
+
+    return msVal;
+}
+
+MmsValue*
+MmsValue_newDouble(double value)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self) {
+        self->type = MMS_FLOAT;
+        self->value.floatingPoint.formatWidth = 64;
+        self->value.floatingPoint.exponentWidth = 11;
+
+        memcpy(self->value.floatingPoint.buf, &value, sizeof(double));
+    }
+
+    return self;
+}
+
+MmsValue*
+MmsValue_createEmptyArray(int size)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self == NULL)
+        goto exit_function;
+
+    self->type = MMS_ARRAY;
+    self->value.structure.size = size;
+    self->value.structure.components = (MmsValue**) GLOBAL_CALLOC(size, sizeof(MmsValue*));
+
+    if (self->value.structure.components == NULL) {
+        GLOBAL_FREEMEM(self);
+        self = NULL;
+        goto exit_function;
+    }
+
+    int i;
+    for (i = 0; i < size; i++) {
+        self->value.structure.components[i] = NULL;
+    }
+
+    exit_function:
+        return self;
+}
+
+void
+MmsValue_setFloat(MmsValue* self, float newFloatValue)
+{
+    if (self->type == MMS_FLOAT) {
+        if (self->value.floatingPoint.formatWidth == 32) {
+            memcpy(self->value.floatingPoint.buf, &newFloatValue, sizeof(float));
+        }
+        else if (self->value.floatingPoint.formatWidth == 64) {
+            double newDoubleValue = (double) newFloatValue;
+
+            memcpy(self->value.floatingPoint.buf, &newDoubleValue, sizeof(double));
+        }
+    }
+}
+
+void
+MmsValue_setUtcTimeByBuffer(MmsValue* self, const uint8_t* buffer)
+{
+    if (buffer) {
+        uint8_t* valueArray = self->value.utcTime;
+
+        int i;
+        for (i = 0; i < 8; i++) {
+            valueArray[i] = buffer[i];
+        }
+    }
+}
+
+void
+MmsValue_setBoolean(MmsValue* self, bool boolValue)
+{
+    self->value.boolean = boolValue;
+}
+
+MmsValue*
+MmsValue_newUnsigned(int size /*integer size in bits*/)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self) {
+        self->type = MMS_UNSIGNED;
+
+        if (size <= 32)
+            self->value.integer = BerInteger_createInt32();
+        else
+            self->value.integer = BerInteger_createInt64();
+
+        if (self->value.integer == NULL) {
+            GLOBAL_FREEMEM(self);
+            self = NULL;
+        }
+    }
+
+    return self;
+}
+
+MmsValue*
+MmsValue_createEmptyStructure(int size)
+{
+    MmsValue* self = MmsValue_createEmptyArray(size);
+
+    if (self == NULL)
+        return NULL;
+
+    self->type = MMS_STRUCTURE;
+
+    return self;
+}
+
+MmsValue*
+MmsValue_newOctetString(int size, int maxSize)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self) {
+        self->type = MMS_OCTET_STRING;
+        self->value.octetString.size = size;
+        self->value.octetString.maxSize = maxSize;
+        self->value.octetString.buf = (uint8_t*) GLOBAL_CALLOC(1, abs(maxSize));
+
+        if (self->value.octetString.buf == NULL) {
+            GLOBAL_FREEMEM(self);
+            self = NULL;
+        }
+    }
+
+    return self;
+}
+
+void
+MmsValue_setElement(MmsValue* complexValue, int index, MmsValue* elementValue)
+{
+    if ((complexValue->type != MMS_ARRAY) && (complexValue->type != MMS_STRUCTURE))
+        return;
+
+    if ((index < 0) || (index >= complexValue->value.structure.size))
+        return;
+
+    complexValue->value.structure.components[index] = elementValue;
+}
+
+MmsValue*
+MmsValue_setUtcTime(MmsValue* self, uint32_t timeval)
+{
+    uint8_t* timeArray = (uint8_t*) &timeval;
+    uint8_t* valueArray = self->value.utcTime;
+
+#if (ORDER_LITTLE_ENDIAN == 1)
+    memcpyReverseByteOrder(valueArray, timeArray, 4);
+#else
+    memcpy(valueArray, timeArray, 4);
+#endif
+
+    return self;
+}
+
+MmsValue*
+MmsValue_newFloat(float value)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_MALLOC(sizeof(MmsValue));
+
+    if (self) {
+        self->type = MMS_FLOAT;
+        self->value.floatingPoint.formatWidth = 32;
+        self->value.floatingPoint.exponentWidth = 8;
+
+        memcpy(self->value.floatingPoint.buf, &value, sizeof(float));
+    }
+
+    return self;
+}
+
+static MmsValue*
+MmsValue_newStringFromByteArray(const uint8_t* byteArray, int size, MmsType type)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self == NULL)
+        goto exit_function;
+
+    self->type = type;
+
+    self->value.visibleString.size = size;
+
+    self->value.visibleString.buf = StringUtils_createStringFromBuffer(byteArray, size);
+
+    if (self->value.visibleString.buf == NULL) {
+        GLOBAL_FREEMEM(self);
+        self = NULL;
+    }
+
+    exit_function:
+        return self;
+}
+
+MmsValue*
+MmsValue_newVisibleStringFromByteArray(const uint8_t* byteArray, int size)
+{
+    return MmsValue_newStringFromByteArray(byteArray, size, MMS_VISIBLE_STRING);
 }
