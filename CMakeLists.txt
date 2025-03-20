@@ -125,6 +125,7 @@ set(libiec61850_mms_header_files
 
 set(libiec61850_mms_files
         model/libiec61850/src/mms/iso_mms/common/mms_value.cc
+        model/libiec61850/src/mms/iso_mms/server/mms_access_result.cc
         model/libiec61850/src/mms/asn1/ber_decode.cc
         model/libiec61850/src/mms/asn1/asn1_ber_primitive_value.cc
         model/libiec61850/src/mms/asn1/ber_encoder.cc

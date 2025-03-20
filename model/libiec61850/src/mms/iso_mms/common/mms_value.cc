@@ -11,6 +11,32 @@ bitStringByteSize(const MmsValue* value)
     return (bitSize / 8) + ((bitSize % 8) > 0);
 }
 
+static void
+setUtcTimeMs(MmsValue* self, uint64_t timeval, uint8_t timeQuality)
+{
+    uint32_t timeval32 = (timeval / 1000LL);
+
+    uint8_t* timeArray = (uint8_t*) &timeval32;
+    uint8_t* valueArray = self->value.utcTime;
+
+#if (ORDER_LITTLE_ENDIAN == 1)
+    memcpyReverseByteOrder(valueArray, timeArray, 4);
+#else
+    memcpy(valueArray, timeArray, 4);
+#endif
+
+    uint32_t remainder = (timeval % 1000LL);
+    uint32_t fractionOfSecond = (remainder) * 16777 + ((remainder * 216) / 1000);
+
+    /* encode fraction of second */
+    valueArray[4] = ((fractionOfSecond >> 16) & 0xff);
+    valueArray[5] = ((fractionOfSecond >> 8) & 0xff);
+    valueArray[6] = (fractionOfSecond & 0xff);
+
+    /* encode time quality */
+    valueArray[7] = timeQuality;
+}
+
 void
 MmsValue_setBitStringFromInteger(MmsValue* self, uint32_t intValue)
 {
@@ -175,4 +201,88 @@ MmsValue_setBitStringFromIntegerBigEndian(MmsValue* self, uint32_t intValue)
 
         intValue = intValue >> 1;
     }
+}
+
+uint32_t
+MmsValue_getArraySize(const MmsValue* self)
+{
+    return self->value.structure.size;
+}
+
+void
+MmsValue_delete(MmsValue* self)
+{
+    if (self == NULL)
+        return;
+
+    switch (self->type)
+    {
+    case MMS_INTEGER:
+    case MMS_UNSIGNED:
+        Asn1PrimitiveValue_destroy(self->value.integer);
+        break;
+    case MMS_BIT_STRING:
+        if (self->value.bitString.buf != NULL)
+            GLOBAL_FREEMEM(self->value.bitString.buf);
+        break;
+    case MMS_OCTET_STRING:
+        GLOBAL_FREEMEM(self->value.octetString.buf);
+        break;
+    case MMS_VISIBLE_STRING:
+    case MMS_STRING:
+        if (self->value.visibleString.buf != NULL)
+            GLOBAL_FREEMEM(self->value.visibleString.buf);
+        break;
+    case MMS_ARRAY:
+    case MMS_STRUCTURE:
+    {
+        int componentCount = self->value.structure.size;
+        int i;
+
+        for (i = 0; i < componentCount; i++) {
+            if (self->value.structure.components[i] != NULL)
+                MmsValue_delete(self->value.structure.components[i]);
+        }
+    }
+        GLOBAL_FREEMEM(self->value.structure.components);
+        break;
+    default:
+        break;
+    }
+
+    GLOBAL_FREEMEM(self);
+}
+
+MmsValue*
+MmsValue_getElement(const MmsValue* complexValue, int index)
+{
+    if ((complexValue->type != MMS_ARRAY) && (complexValue->type != MMS_STRUCTURE))
+        return NULL;
+
+    if ((index < 0) || (index >= complexValue->value.structure.size))
+        return NULL;
+
+    return complexValue->value.structure.components[index];
+}
+
+MmsValue*
+MmsValue_setUtcTimeMs(MmsValue* self, uint64_t timeval)
+{
+    setUtcTimeMs(self, timeval, 0x0a); /*  set quality as 10 bit sub-second time accuracy */
+
+    return self;
+}
+
+MmsValue*
+MmsValue_newUtcTimeByMsTime(uint64_t timeval)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self == NULL)
+        return NULL;
+
+    self->type = MMS_UTC_TIME;
+    MmsValue_setUtcTimeMs(self, timeval);
+
+    return self;
 }

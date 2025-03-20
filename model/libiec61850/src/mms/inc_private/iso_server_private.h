@@ -24,8 +24,11 @@
 #ifndef ISO_SERVER_PRIVATE_H_
 #define ISO_SERVER_PRIVATE_H_
 
-#include "tls_config.h"
-#include "hal_socket.h"
+#include "ns3/libiec61850_common_api.h"
+#include "ns3/hal_socket.h"
+#include "ns3/iso_server.h"
+
+using namespace libiec61850;
 
 LIB61850_INTERNAL IsoConnection
 IsoConnection_create(Socket socket, IsoServer isoServer, bool isSingleThread);

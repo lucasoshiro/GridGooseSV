@@ -25,7 +25,7 @@
 #define MMS_VARIABLE_CACHE_H_
 
 #include "mms_device_model.h"
-#include "mms_value.h"
+#include "ns3/mms_value.h"
 
 typedef struct sMmsValueCache* MmsValueCache;
 
