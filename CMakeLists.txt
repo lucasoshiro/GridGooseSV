@@ -277,10 +277,12 @@ set(libiec61850_test_sources
 
 set(helper_source_files
         helper/sv-helper.cc
+        helper/goose-helper.cc
 )
 
 set(helper_header_files
         helper/sv-helper.h
+        helper/goose-helper.h
 )
 
 set(model_source_files
