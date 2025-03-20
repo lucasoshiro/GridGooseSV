@@ -227,10 +227,14 @@ set(libiec61850_asn1_source_files
 
 set(libiec61850_goose_source_files
         model/libiec61850/src/goose/goose_publisher.cc
+        model/libiec61850/src/goose/goose_receiver.cc
+        model/libiec61850/src/goose/goose_subscriber.cc
 )
 
 set(libiec61850_goose_header_files
         model/libiec61850/src/goose/goose_publisher.h
+        model/libiec61850/src/goose/goose_receiver.h
+        model/libiec61850/src/goose/goose_subscriber.h
 )
 
 set(libiec61850_sv_source_files

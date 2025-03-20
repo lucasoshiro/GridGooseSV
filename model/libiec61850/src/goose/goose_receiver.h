@@ -24,13 +24,15 @@
 #ifndef GOOSE_RECEIVER_H_
 #define GOOSE_RECEIVER_H_
 
+namespace libiec61850 {
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include <stdbool.h>
 
-#include "hal_ethernet.h"
+#include "ns3/hal_ethernet.h"
 #include "goose_subscriber.h"
 
 /**
@@ -185,5 +187,6 @@ GooseReceiver_handleMessage(GooseReceiver self, uint8_t* buffer, int size);
 }
 #endif
 
+}
 
 #endif /* GOOSE_RECEIVER_H_ */

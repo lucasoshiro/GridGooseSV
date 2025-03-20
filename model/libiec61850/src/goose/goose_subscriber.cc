@@ -21,19 +21,21 @@
  *  See COPYING file for the complete license text.
  */
 
-#include "libiec61850_platform_includes.h"
+#include "ns3/libiec61850_platform_includes.h"
 
-#include "stack_config.h"
+#include "ns3/stack_config.h"
 #include "goose_subscriber.h"
-#include "hal_ethernet.h"
-#include "hal_thread.h"
+#include "ns3/hal_ethernet.h"
+#include "ns3/hal_thread.h"
 
-#include "ber_decode.h"
+#include "ns3/ber_decode.h"
 
-#include "mms_value.h"
-#include "mms_value_internal.h"
+#include "ns3/mms_value.h"
+#include "ns3/mms_value_internal.h"
 
 #include "goose_receiver_internal.h"
+
+namespace libiec61850 {
 
 GooseSubscriber
 GooseSubscriber_create(char* goCbRef, MmsValue* dataSetValues)
@@ -220,4 +222,6 @@ void
 GooseSubscriber_setObserver(GooseSubscriber self)
 {
     self->isObserver = true;
+}
+
 }
