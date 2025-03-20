@@ -2,6 +2,7 @@
 #include "model/libiec61850/hal/thread/test-thread.h"
 #include "model/libiec61850/hal/time/test-time.h"
 #include "model/test-ethernet.h"
+#include "model/test-goose.h"
 #include "model/test-sv.h"
 #include "util/test-address-util.h"
 #include "util/test-device-util.h"
@@ -40,8 +41,8 @@ Libiec61850Ns3TestSuite::Libiec61850Ns3TestSuite()
         reinterpret_cast<TestCase*>(new TestGetPacketSocketAddress),
         reinterpret_cast<TestCase*>(new TestEthernet),
         reinterpret_cast<TestCase*>(new TestGetInterfaceMACAddress),
+        reinterpret_cast<TestCase*>(new TestGOOSE),
         reinterpret_cast<TestCase*>(new TestSV)
-
     };
 
     for (TestCase *testCase : testCases)
