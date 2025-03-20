@@ -28,7 +28,7 @@
 extern "C" {
 #endif
 
-#include "tls_config.h"
+#include "ns3/libiec61850_common_api.h"
 
 /**
  * \addtogroup mms_client_api_group
@@ -187,8 +187,8 @@ LIB61850_API void
 IsoConnectionParameters_destroy(IsoConnectionParameters self);
 
 
-LIB61850_API void
-IsoConnectionParameters_setTlsConfiguration(IsoConnectionParameters self, TLSConfiguration tlsConfig);
+//LIB61850_API void
+//IsoConnectionParameters_setTlsConfiguration(IsoConnectionParameters self, TLSConfiguration tlsConfig);
 
 /**
  * \brief set the authentication parameter

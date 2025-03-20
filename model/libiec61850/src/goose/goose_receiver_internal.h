@@ -33,6 +33,7 @@
 #define DEBUG_GOOSE_SUBSCRIBER 0
 #endif
 
+namespace libiec61850 {
 
 struct sGooseSubscriber {
     char goCBRef[130];
@@ -67,6 +68,6 @@ struct sGooseSubscriber {
     void* listenerParameter;
 };
 
-
+}
 
 #endif /* GOOSE_RECEIVER_INTERNAL_H_ */

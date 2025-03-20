@@ -21,19 +21,21 @@
  *  See COPYING file for the complete license text.
  */
 
-#include "libiec61850_platform_includes.h"
-#include "stack_config.h"
+#include "ns3/libiec61850_platform_includes.h"
+#include "ns3/stack_config.h"
 #include "goose_publisher.h"
-#include "hal_ethernet.h"
-#include "ber_encoder.h"
-#include "mms_server_internal.h"
-#include "mms_value_internal.h"
+#include "ns3/hal_ethernet.h"
+#include "ns3/ber_encoder.h"
+#include "ns3/mms_server_internal.h"
+#include "ns3/mms_value_internal.h"
 
 #ifndef DEBUG_GOOSE_PUBLISHER
 #define DEBUG_GOOSE_PUBLISHER 0
 #endif
 
 #define GOOSE_MAX_MESSAGE_SIZE 1518
+
+namespace libiec61850 {
 
 static bool
 prepareGooseBuffer(GoosePublisher self, CommParameters* parameters, const char* interfaceID, bool useVlanTags);
@@ -455,4 +457,6 @@ GoosePublisher_publishAndDump(GoosePublisher self, LinkedList dataSet, char *msg
     }
 
     return rc;
+}
+
 }

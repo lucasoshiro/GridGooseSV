@@ -24,11 +24,11 @@
 #ifndef MMS_COMMON_INTERNAL_H_
 #define MMS_COMMON_INTERNAL_H_
 
-#include "mms_value.h"
-#include "MmsPdu.h"
-#include "conversions.h"
-#include "byte_buffer.h"
-#include "mms_server.h"
+#include "ns3/mms_value.h"
+#include "ns3/MmsPdu.h"
+#include "ns3/conversions.h"
+#include "ns3/byte_buffer.h"
+#include "ns3/mms_server.h"
 
 #define DEFAULT_MAX_SERV_OUTSTANDING_CALLING 5
 #define DEFAULT_MAX_SERV_OUTSTANDING_CALLED 5
@@ -40,9 +40,11 @@
 #define CONFIG_MMS_MAX_NUMBER_OF_OPEN_FILES_PER_CONNECTION 5
 #endif
 
-#include "hal_filesystem.h"
+#include "ns3/hal_filesystem.h"
 
 typedef struct sMmsOutstandingCall* MmsOutstandingCall;
+
+using namespace libiec61850;
 
 typedef struct {
         int32_t frsmId;
@@ -56,7 +58,7 @@ typedef struct {
 } MmsFileReadStateMachine;
 
 /* include for MmsFileReadHandler definition */
-#include "mms_client_connection.h"
+#include "ns3/mms_client_connection.h"
 
 LIB61850_INTERNAL bool
 mmsMsg_parseFileOpenResponse(uint8_t* buffer, int bufPos, int maxBufPos, int32_t* frsmId, uint32_t* fileSize, uint64_t* lastModified);

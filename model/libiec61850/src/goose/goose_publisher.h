@@ -24,9 +24,11 @@
 #ifndef GOOSE_PUBLISHER_H_
 #define GOOSE_PUBLISHER_H_
 
-#include "iec61850_common.h"
-#include "linked_list.h"
-#include "mms_value.h"
+#include "ns3/iec61850_common.h"
+#include "ns3/linked_list.h"
+#include "ns3/mms_value.h"
+
+namespace libiec61850 {
 
 #ifdef __cplusplus
 extern "C" {
@@ -209,5 +211,7 @@ GoosePublisher_reset(GoosePublisher self);
 #ifdef __cplusplus
 }
 #endif
+
+}
 
 #endif /* GOOSE_PUBLISHER_H_ */

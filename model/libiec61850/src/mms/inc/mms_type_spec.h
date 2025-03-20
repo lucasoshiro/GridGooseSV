@@ -28,10 +28,10 @@
 #ifndef MMS_TYPE_SPEC_H_
 #define MMS_TYPE_SPEC_H_
 
-#include "libiec61850_common_api.h"
+#include "ns3/libiec61850_common_api.h"
 #include "mms_common.h"
 #include "mms_types.h"
-#include "linked_list.h"
+#include "ns3/linked_list.h"
 
 #ifdef __cplusplus
 extern "C" {

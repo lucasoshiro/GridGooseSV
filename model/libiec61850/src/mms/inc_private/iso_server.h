@@ -24,8 +24,8 @@
 #ifndef ISO_SERVER_H_
 #define ISO_SERVER_H_
 
-#include "byte_buffer.h"
-#include "iso_connection_parameters.h"
+#include "ns3/byte_buffer.h"
+#include "ns3/iso_connection_parameters.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -101,8 +101,8 @@ IsoConnection_getSecurityToken(IsoConnection self);
 LIB61850_INTERNAL bool
 IsoConnection_sendMessage(IsoConnection self, ByteBuffer* message);
 
-LIB61850_INTERNAL IsoServer
-IsoServer_create(TLSConfiguration tlsConfiguration);
+//LIB61850_INTERNAL IsoServer
+//IsoServer_create(TLSConfiguration tlsConfiguration);
 
 LIB61850_INTERNAL void
 IsoServer_setTcpPort(IsoServer self, int port);
@@ -129,8 +129,8 @@ IsoServer_getAuthenticator(IsoServer self);
 LIB61850_INTERNAL void*
 IsoServer_getAuthenticatorParameter(IsoServer self);
 
-LIB61850_INTERNAL TLSConfiguration
-IsoServer_getTLSConfiguration(IsoServer self);
+//LIB61850_INTERNAL TLSConfiguration
+//IsoServer_getTLSConfiguration(IsoServer self);
 
 LIB61850_INTERNAL void
 IsoServer_startListening(IsoServer self);
