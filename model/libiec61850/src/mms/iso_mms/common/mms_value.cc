@@ -286,3 +286,55 @@ MmsValue_newUtcTimeByMsTime(uint64_t timeval)
 
     return self;
 }
+
+MmsValue*
+MmsValue_newIntegerFromInt32(int32_t integer)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self) {
+        self->type = MMS_INTEGER;
+        self->value.integer = BerInteger_createFromInt32(integer);
+
+        if (self->value.integer == NULL) {
+            GLOBAL_FREEMEM(self);
+            self = NULL;
+        }
+    }
+
+    return self;
+}
+
+MmsValue*
+MmsValue_newBinaryTime(bool timeOfDay)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self) {
+        self->type = MMS_BINARY_TIME;
+
+        if (timeOfDay == true)
+            self->value.binaryTime.size = 4;
+        else
+            self->value.binaryTime.size = 6;
+    }
+
+    return self;
+}
+
+MmsValue*
+MmsValue_newBoolean(bool boolean)
+{
+    MmsValue* self = (MmsValue*) GLOBAL_CALLOC(1, sizeof(MmsValue));
+
+    if (self) {
+        self->type = MMS_BOOLEAN;
+
+        if (boolean)
+            self->value.boolean = 1;
+        else
+            self->value.boolean = 0;
+    }
+
+    return self;
+}
