@@ -26,7 +26,7 @@ you can follow the
 ### Built-in applications
 
 - [x] SV Publisher
-- [ ] SV Subscriber
+- [x] SV Subscriber
 - [ ] GOOSE Publisher
 - [ ] GOOSE Subscriber
 - [ ] MMS Server
