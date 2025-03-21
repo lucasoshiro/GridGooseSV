@@ -24,16 +24,17 @@
 #ifndef GOOSE_RECEIVER_H_
 #define GOOSE_RECEIVER_H_
 
+#include "ns3/hal_ethernet.h"
+#include "ns3/libiec61850_common_api.h"
+#include "goose_subscriber.h"
+
 namespace libiec61850 {
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdbool.h>
 
-#include "ns3/hal_ethernet.h"
-#include "goose_subscriber.h"
 
 /**
  * \addtogroup goose_api_group
