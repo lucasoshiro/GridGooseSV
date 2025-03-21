@@ -294,12 +294,14 @@ set(model_source_files
         model/ethernet-client.cc
         model/ethernet-server.cc
         model/goose-publisher.cc
+        model/goose-receiver.cc
         model/sv-publisher.cc
         model/sv-subscriber.cc
 )
 
 set(model_header_files
         model/goose-publisher.cc
+        model/goose-receiver.h
         model/sv-publisher.h
         model/sv-subscriber.h
 )
