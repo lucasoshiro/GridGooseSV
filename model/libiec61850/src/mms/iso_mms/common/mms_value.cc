@@ -4,6 +4,8 @@
 #include "ns3/mms_value_internal.h"
 #include "ns3/lib_memory.h"
 #include "ns3/string_utilities.h"
+#include "ns3/conversions.h"
+#include <cstdio>
 
 static int
 bitStringByteSize(const MmsValue* value)
@@ -604,4 +606,250 @@ MmsValue*
 MmsValue_newVisibleStringFromByteArray(const uint8_t* byteArray, int size)
 {
     return MmsValue_newStringFromByteArray(byteArray, size, MMS_VISIBLE_STRING);
+}
+
+const char*
+MmsValue_printToBuffer(const MmsValue* self, char* buffer, int bufferSize)
+{
+    if (self == NULL) {
+        StringUtils_copyStringMax(buffer, bufferSize, "(null)");
+
+        return buffer;
+    }
+
+    if (bufferSize)
+        buffer[0] = 0;
+
+    switch (MmsValue_getType(self))
+    {
+    case MMS_STRUCTURE:
+    case MMS_ARRAY:
+        {
+            if (bufferSize == 0)
+                break;
+            buffer[0] = '{';
+
+            int bufPos = 1;
+
+            int arraySize = MmsValue_getArraySize(self);
+            int i;
+            for (i = 0; i < arraySize; i++) {
+
+                const char* currentStr = MmsValue_printToBuffer((const MmsValue*) MmsValue_getElement(self, i), buffer + bufPos, bufferSize - bufPos);
+
+                bufPos += strlen(currentStr);
+
+                if (bufPos >= bufferSize)
+                    break;
+
+                if (i != (arraySize - 1)) {
+                    buffer[bufPos++] = ',';
+                }
+            }
+
+            if (bufPos < (bufferSize - 1)) {
+                buffer[bufPos++] = '}';
+                buffer[bufPos] = 0;
+            }
+            else
+                buffer[bufferSize - 1] = 0;
+
+        }
+        break;
+
+    case MMS_BINARY_TIME:
+        {
+            uint8_t tempBuf[20];
+            Conversions_msTimeToGeneralizedTime(MmsValue_getBinaryTimeAsUtcMs(self), tempBuf);
+            snprintf(buffer, bufferSize, "%s", tempBuf);
+        }
+        break;
+
+    case MMS_BIT_STRING:
+        {
+            int bufPos = 0;
+
+            int size = MmsValue_getBitStringSize(self);
+
+            /* fill buffer with zeros */
+            if (size > bufferSize) {
+                memset(buffer, 0, bufferSize);
+                break;
+            }
+
+            int i;
+            for (i = 0; i < size; i++) {
+                if (MmsValue_getBitStringBit(self, i))
+                    buffer[bufPos++] = '1';
+                else
+                    buffer[bufPos++] = '0';
+            }
+            buffer[bufPos] = 0;
+        }
+        break;
+
+    case MMS_BOOLEAN:
+        if (MmsValue_getBoolean(self))
+            StringUtils_copyStringMax(buffer, bufferSize, "true");
+        else
+            StringUtils_copyStringMax(buffer, bufferSize, "false");
+
+        break;
+
+    case MMS_DATA_ACCESS_ERROR:
+        snprintf(buffer, bufferSize, "error %i", self->value.dataAccessError);
+        break;
+
+    case MMS_FLOAT:
+        snprintf(buffer, bufferSize, "%f", MmsValue_toFloat(self));
+        break;
+
+    case MMS_GENERALIZED_TIME: /* type not supported */
+        StringUtils_copyStringMax(buffer, bufferSize, "generalized time");
+
+        break;
+
+    case MMS_INTEGER:
+        snprintf(buffer, bufferSize, "%lld", (long long) MmsValue_toInt64(self));
+        break;
+
+    case MMS_OCTET_STRING:
+        {
+            int size = MmsValue_getOctetStringSize(self);
+            int bufPos = 0;
+            int i;
+            for (i = 0; i < size; i++) {
+                snprintf(buffer + bufPos, bufferSize - bufPos, "%02x", self->value.octetString.buf[i]);
+                bufPos += 2;
+
+                if (bufPos >= bufferSize)
+                    break;
+            }
+        }
+        break;
+
+    case MMS_UNSIGNED:
+        snprintf(buffer, bufferSize, "%u", MmsValue_toUint32(self));
+        break;
+
+    case MMS_UTC_TIME:
+        {
+            uint8_t tempBuf[20];
+            Conversions_msTimeToGeneralizedTime(MmsValue_getUtcTimeInMs(self), tempBuf);
+            snprintf(buffer, bufferSize, "%s", tempBuf);
+        }
+        break;
+
+    case MMS_STRING:
+    case MMS_VISIBLE_STRING:
+        StringUtils_copyStringMax(buffer, bufferSize, MmsValue_toString((MmsValue*) self));
+
+        break;
+
+    default:
+        StringUtils_copyStringMax(buffer, bufferSize, "unknown type");
+
+        break;
+    }
+
+    return buffer;
+}
+
+bool
+MmsValue_getBoolean(const MmsValue* self)
+{
+    return self->value.boolean;
+}
+
+float
+MmsValue_toFloat(const MmsValue* self)
+{
+    if (self->type == MMS_FLOAT) {
+        if (self->value.floatingPoint.formatWidth == 32) {
+            float val;
+
+            memcpy(&val, self->value.floatingPoint.buf, sizeof(float));
+
+            return val;
+        }
+        else if (self->value.floatingPoint.formatWidth == 64) {
+            double val;
+
+            memcpy(&val, self->value.floatingPoint.buf, sizeof(double));
+
+            return (float) val;
+        }
+    }
+
+    return 0.f;
+}
+
+int64_t
+MmsValue_toInt64(const MmsValue* self)
+{
+    int64_t integerValue = 0;
+
+    if ((self->type == MMS_INTEGER) || (self->type == MMS_UNSIGNED))
+        BerInteger_toInt64(self->value.integer, &integerValue);
+
+    return integerValue;
+}
+
+uint16_t
+MmsValue_getOctetStringSize(const MmsValue* self)
+{
+    return self->value.octetString.size;
+}
+
+const char*
+MmsValue_toString(MmsValue* self)
+{
+    if ((self->type == MMS_VISIBLE_STRING) || (self->type == MMS_STRING))
+        return self->value.visibleString.buf;
+
+    return NULL;
+}
+
+uint32_t
+MmsValue_toUint32(const MmsValue* self)
+{
+    uint32_t integerValue = 0;
+
+    if ((self->type == MMS_INTEGER) || (self->type == MMS_UNSIGNED))
+        BerInteger_toUint32(self->value.integer, &integerValue);
+
+    return integerValue;
+}
+
+uint64_t
+MmsValue_getBinaryTimeAsUtcMs(const MmsValue* self)
+{
+    uint64_t timestamp = 0;
+
+    const uint8_t* binaryTimeBuf = self->value.binaryTime.buf;
+
+    if (self->value.binaryTime.size == 6) {
+
+        uint16_t daysDiff;
+
+        daysDiff = binaryTimeBuf[4] * 256;
+        daysDiff += binaryTimeBuf[5];
+
+        uint64_t mmsTime;
+
+        mmsTime = daysDiff * (86400000LL);
+
+        timestamp = mmsTime + (441763200000LL);
+    }
+
+    uint32_t msSinceMidnight = 0;
+
+    msSinceMidnight = binaryTimeBuf[0] << 24;
+    msSinceMidnight += binaryTimeBuf[1] << 16;
+    msSinceMidnight += binaryTimeBuf[2] << 8;
+    msSinceMidnight += binaryTimeBuf[3];
+
+    timestamp += msSinceMidnight;
+
+    return timestamp;
 }

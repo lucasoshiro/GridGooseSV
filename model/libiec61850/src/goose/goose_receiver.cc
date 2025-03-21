@@ -37,6 +37,8 @@
 #include "goose_receiver.h"
 #include "goose_receiver_internal.h"
 
+#include <fstream>
+
 #ifndef DEBUG_GOOSE_SUBSCRIBER
 #define DEBUG_GOOSE_SUBSCRIBER 0
 #endif
@@ -887,27 +889,27 @@ exit_with_fault:
 static void
 parseGooseMessage(GooseReceiver self, uint8_t* buffer, int numbytes)
 {
-    int bufPos;
+    int bufPos = 2;
     bool subscriberFound = false;
 
     if (numbytes < 22)
         return;
 
     /* skip ethernet addresses */
-    bufPos = 12;
-    int headerLength = 14;
-
-    uint8_t priority = 0;
-    uint16_t vlanId = 0;
-    bool vlanSet = false;
-    /* check for VLAN tag */
-    if ((buffer[bufPos] == 0x81) && (buffer[bufPos + 1] == 0x00)) {
-        priority = buffer[bufPos + 2] & 0xF8 >> 5;
-        vlanId = ((buffer[bufPos + 2] & 0x07) << 8) + buffer[bufPos + 3];
-        vlanSet = true;
-        bufPos += 4; /* skip VLAN tag */
-        headerLength += 4;
-    }
+    // bufPos = 12;
+    // int headerLength = 14;
+    //
+    // uint8_t priority = 0;
+    // uint16_t vlanId = 0;
+    //bool vlanSet = true;
+    // /* check for VLAN tag */
+    // if ((buffer[bufPos] == 0x81) && (buffer[bufPos + 1] == 0x00)) {
+    //     priority = buffer[bufPos + 2] & 0xF8 >> 5;
+    //     vlanId = ((buffer[bufPos + 2] & 0x07) << 8) + buffer[bufPos + 3];
+    //     vlanSet = true;
+    //     bufPos += 4; /* skip VLAN tag */
+    //     headerLength += 4;
+    // }
 
     /* check for GOOSE Ethertype */
     if (buffer[bufPos++] != 0x88)
@@ -936,12 +938,6 @@ parseGooseMessage(GooseReceiver self, uint8_t* buffer, int numbytes)
 
     int apduLength = length - 8;
 
-    if (numbytes < length + headerLength) {
-        if (DEBUG_GOOSE_SUBSCRIBER)
-            printf("GOOSE_SUBSCRIBER: Invalid PDU size\n");
-        return;
-    }
-
     if (DEBUG_GOOSE_SUBSCRIBER) {
         printf("GOOSE_SUBSCRIBER: GOOSE message:\nGOOSE_SUBSCRIBER: ----------------\n");
         printf("GOOSE_SUBSCRIBER:   DST-MAC: %02x:%02x:%02x:%02x:%02X:%02X\n",
@@ -963,9 +959,11 @@ parseGooseMessage(GooseReceiver self, uint8_t* buffer, int numbytes)
             memcpy(subscriber->srcMac, srcMac,6);
             memcpy(subscriber->dstMac, dstMac, 6);
             subscriberFound = true;
-            subscriber->vlanSet = vlanSet;
-            subscriber->vlanId = vlanId;
-            subscriber->vlanPrio = priority;
+
+            // TODO: why does this commented code exist?
+            // subscriber->vlanSet = vlanSet;
+            // subscriber->vlanId = vlanId;
+            // subscriber->vlanPrio = priority;
             break;
         }
 
@@ -978,7 +976,9 @@ parseGooseMessage(GooseReceiver self, uint8_t* buffer, int numbytes)
         element = LinkedList_getNext(element);
     }
 
-    if (subscriberFound)
+    // TODO: find out why subsscriberFound is not working
+    // if (subscriberFound)
+    if (1)
         parseGoosePayload(self, buffer + bufPos, apduLength);
     else {
         if (DEBUG_GOOSE_SUBSCRIBER)
@@ -986,61 +986,67 @@ parseGooseMessage(GooseReceiver self, uint8_t* buffer, int numbytes)
     }
 }
 
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-static void*
-gooseReceiverLoop(void *threadParameter)
+static void
+receiveCallback(
+    GooseReceiver self,
+    ns3::Ptr<ns3::Socket> socket)
 {
-    GooseReceiver self = (GooseReceiver) threadParameter;
-    EthernetHandleSet handleSet = EthernetHandleSet_new();
-    EthernetHandleSet_addSocket(handleSet, self->ethSocket);
-
-    if (self->running) {
-
-        while (self->running) {
-            switch (EthernetHandleSet_waitReady(handleSet, 100))
-            {
-            case -1:
-                if (DEBUG_GOOSE_SUBSCRIBER)
-                    printf("GOOSE_SUBSCRIBER: EhtnernetHandleSet_waitReady() failure\n");
-                break;
-            case 0:
-                break;
-            default:
-                GooseReceiver_tick(self);
-            }
-            if (self->stop)
-                break;
-        }
-
-        GooseReceiver_stopThreadless(self);
-    }
-
-    EthernetHandleSet_destroy(handleSet);
-
-    return NULL;
+    GooseReceiver_tick(self);
+    // GooseReceiver self = (GooseReceiver) threadParameter;
+    // EthernetHandleSet handleSet = EthernetHandleSet_new();
+    // EthernetHandleSet_addSocket(handleSet, self->ethSocket);
+    //
+    // if (self->running) {
+    //
+    //     while (self->running) {
+    //         switch (EthernetHandleSet_waitReady(handleSet, 100))
+    //         {
+    //         case -1:
+    //             if (DEBUG_GOOSE_SUBSCRIBER)
+    //                 printf("GOOSE_SUBSCRIBER: EhtnernetHandleSet_waitReady() failure\n");
+    //             break;
+    //         case 0:
+    //             break;
+    //         default:
+    //             GooseReceiver_tick(self);
+    //         }
+    //         if (self->stop)
+    //             break;
+    //     }
+    //
+    //     GooseReceiver_stopThreadless(self);
+    // }
+    //
+    // EthernetHandleSet_destroy(handleSet);
+    //
+    // return NULL;
 }
-#endif
 
 /* start GOOSE receiver in a separate thread */
 void
 GooseReceiver_start(GooseReceiver self)
 {
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    if (GooseReceiver_startThreadless(self)) {
-        self->thread = Thread_create((ThreadExecutionFunction) gooseReceiverLoop, (void*) self, false);
+    GooseReceiver_startThreadless(self);
+    auto socket = Ethernet_getNS3Socket(self->ethSocket);
+    auto callback = ns3::MakeBoundCallback(receiveCallback, self);
+    socket->SetRecvCallback(callback);
 
-        if (self->thread != NULL) {
-            if (DEBUG_GOOSE_SUBSCRIBER)
-                printf("GOOSE_SUBSCRIBER: GOOSE receiver started for interface %s\n", self->interfaceId);
-
-            Thread_start(self->thread);
-        }
-        else {
-            if (DEBUG_GOOSE_SUBSCRIBER)
-                printf("GOOSE_SUBSCRIBER: Starting GOOSE receiver failed for interface %s\n", self->interfaceId);
-        }
-    }
-#endif
+// #if (CONFIG_MMS_THREADLESS_STACK == 0)
+//     if () {
+//         self->thread = Thread_create((ThreadExecutionFunction) gooseReceiverLoop, (void*) self, false);
+//
+//         if (self->thread != NULL) {
+//             if (DEBUG_GOOSE_SUBSCRIBER)
+//                 printf("GOOSE_SUBSCRIBER: GOOSE receiver started for interface %s\n", self->interfaceId);
+//
+//             Thread_start(self->thread);
+//         }
+//         else {
+//             if (DEBUG_GOOSE_SUBSCRIBER)
+//                 printf("GOOSE_SUBSCRIBER: Starting GOOSE receiver failed for interface %s\n", self->interfaceId);
+//         }
+//     }
+// #endif
 }
 
 bool
