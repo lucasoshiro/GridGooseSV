@@ -4,8 +4,10 @@
 
 #include "test-goose.h"
 
-#include "ns3/ethernet-server.h"
+#include "ns3/goose-receiver.h"
+
 #include "ns3/csma-helper.h"
+#include "ns3/ethernet-server.h"
 #include "ns3/goose-helper.h"
 #include "ns3/node-container.h"
 #include "ns3/packet-socket-helper.h"
@@ -32,7 +34,7 @@ TestGOOSE::DoRun()
     //publisher.SetAttribute("MaxPackets", ns3::UintegerValue(10));
     publisher.Install(clientNode);
 
-    auto server = ns3::CreateObject<ns3::EthernetServer>();
+    auto server = ns3::CreateObject<ns3::GOOSEReceiver>();
     serverNode->AddApplication(server);
 
     csmaHelper.EnablePcapAll("GOOSE");
