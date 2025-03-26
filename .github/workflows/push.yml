@@ -1,0 +1,57 @@
+name: "Build and test"
+on: [push]
+jobs:
+  build_and_test:
+    runs-on: ubuntu-24.04
+    env:
+      ns3_version: "ns-3.43"
+    steps:
+      - name: "Get ns-3 cache"
+        id: get-ns3-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ns-3-dev
+          key: "ns-3.43"
+
+      - name: "Fetch ns-3"
+        uses: actions/checkout@v4
+        if: steps.get-ns3-cache.outputs.cache-hit != 'true'
+        with:
+          repository: "nsnam/ns-3-dev-git"
+          path: "ns-3-dev"
+          ref: "ns-3.43"
+
+      - name: "Build ns-3"
+        if: steps.get-ns3-cache.outputs.cache-hit != 'true'
+        run: |
+          pushd ns-3-dev
+          ./ns3 configure --build-profile=optimized --enable-examples --enable-tests
+          ./ns3 build -j4
+          popd
+
+      - name: "Save ns-3 cache"
+        if: steps.get-ns3-cache.outputs.cache-hit != 'true'
+        id: save-ns3-cache
+        uses: actions/cache/save@v4
+        with:
+          path: ns-3-dev
+          key: "ns-3.43"
+
+      - name: "Checkout module"
+        uses: actions/checkout@v4
+        with:
+          path: "ns-3-dev/contrib/libiec61850-ns3"
+
+      - name: "Build ns-3 with module"
+        run: |
+          pushd ns-3-dev 
+          ./ns3 configure --build-profile=optimized --enable-examples --enable-tests
+          ./ns3 build -j4
+          popd
+
+      - name: "Test"
+        run: |
+          pushd ns-3-dev
+          ./test.py --suite="libiec61850-ns3" --text=results.txt
+          cat results.txt
+          popd
