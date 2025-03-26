@@ -1,5 +1,7 @@
 # libiec61850-ns3 (provisional name)
 
+[![GitHub actions](https://github.com/lucasoshiro/libiec61850-ns3/actions/workflows/push.yml/badge.svg)](https://github.com/lucaoshiro/libiec61850-ns3/actions)
+
 Native implementation of IEC61850 protocols for the
 [ns-3](https://www.nsnam.org/) network simulator, based on
 [libiec61850](https://libiec61850.com/).
