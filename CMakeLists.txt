@@ -300,7 +300,7 @@ set(model_source_files
 )
 
 set(model_header_files
-        model/goose-publisher.cc
+        model/goose-publisher.h
         model/goose-receiver.h
         model/sv-publisher.h
         model/sv-subscriber.h
