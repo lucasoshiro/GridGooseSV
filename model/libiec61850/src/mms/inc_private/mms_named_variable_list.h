@@ -32,9 +32,9 @@ extern "C" {
  *  @{
  */
 
-#include "libiec61850_common_api.h"
-#include "linked_list.h"
-#include "mms_common.h"
+#include "ns3/libiec61850_common_api.h"
+#include "ns3/linked_list.h"
+#include "ns3/mms_common.h"
 
 struct sMmsNamedVariableList {
 	bool deletable;

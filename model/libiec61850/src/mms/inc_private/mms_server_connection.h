@@ -28,15 +28,15 @@
 #ifndef MMS_SERVER_CONNECTION_H_
 #define MMS_SERVER_CONNECTION_H_
 
-#include "libiec61850_platform_includes.h"
+#include "ns3/libiec61850_platform_includes.h"
 
-#include "mms_common.h"
+#include "ns3/mms_common.h"
 #include "mms_device_model.h"
-#include "mms_value.h"
-#include "mms_server.h"
+#include "ns3/mms_value.h"
+#include "ns3/mms_server.h"
 #include "iso_server.h"
-#include "linked_list.h"
-#include "byte_buffer.h"
+#include "ns3/linked_list.h"
+#include "ns3/byte_buffer.h"
 
 #ifdef __cplusplus
 extern "C" {

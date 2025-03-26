@@ -24,27 +24,27 @@
 #ifndef MMS_SERVER_INTERNAL_H_
 #define MMS_SERVER_INTERNAL_H_
 
-#include "libiec61850_platform_includes.h"
+#include "ns3/libiec61850_platform_includes.h"
 
-#include "MmsPdu.h"
-#include "mms_common.h"
+#include "ns3/MmsPdu.h"
+#include "ns3/mms_common.h"
 #include "mms_server_connection.h"
 #include "mms_device_model.h"
 #include "mms_common_internal.h"
-#include "stack_config.h"
+#include "ns3/stack_config.h"
 #include "mms_server_libinternal.h"
 
 
-#include "byte_buffer.h"
-#include "string_utilities.h"
-#include "map.h"
-#include "hal_thread.h"
+#include "ns3/byte_buffer.h"
+#include "ns3/string_utilities.h"
+#include "ns3/map.h"
+#include "ns3/hal_thread.h"
 
 #include "ber_encoder.h"
 #include "ber_decode.h"
 
 #if (MMS_OBTAIN_FILE_SERVICE == 1)
-#include "hal_filesystem.h"
+#include "ns3/hal_filesystem.h"
 #endif
 
 

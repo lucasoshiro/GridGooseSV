@@ -125,6 +125,7 @@ set(libiec61850_mms_header_files
 
 set(libiec61850_mms_files
         model/libiec61850/src/mms/iso_mms/common/mms_value.cc
+        model/libiec61850/src/mms/iso_mms/server/mms_access_result.cc
         model/libiec61850/src/mms/asn1/ber_decode.cc
         model/libiec61850/src/mms/asn1/asn1_ber_primitive_value.cc
         model/libiec61850/src/mms/asn1/ber_encoder.cc
@@ -224,6 +225,18 @@ set(libiec61850_asn1_source_files
         model/libiec61850/src/mms/iso_mms/asn1c/xer_support.cc
 )
 
+set(libiec61850_goose_source_files
+        model/libiec61850/src/goose/goose_publisher.cc
+        model/libiec61850/src/goose/goose_receiver.cc
+        model/libiec61850/src/goose/goose_subscriber.cc
+)
+
+set(libiec61850_goose_header_files
+        model/libiec61850/src/goose/goose_publisher.h
+        model/libiec61850/src/goose/goose_receiver.h
+        model/libiec61850/src/goose/goose_subscriber.h
+)
+
 set(libiec61850_sv_source_files
         model/libiec61850/src/sampled_values/sv_subscriber.cc
         model/libiec61850/src/sampled_values/sv_publisher.cc
@@ -241,6 +254,7 @@ set(libiec61850_source_files
         ${libiec61850_iec61850_source_files}
         ${libiec61850_mms_files}
         ${libiec61850_asn1_source_files}
+        ${libiec61850_goose_source_files}
         ${libiec61850_sv_source_files}
 )
 
@@ -251,6 +265,7 @@ set(libiec61850_header_files
         ${libiec61850_iec61850_header_files}
         ${libiec61850_hal_header_files}
         ${libiec61850_mms_header_files}
+        ${libiec61850_goose_header_files}
         ${libiec61850_sv_header_files}
 )
 
@@ -259,6 +274,7 @@ set(libiec61850_test_sources
         test/model/libiec61850/hal/thread/test-thread.cc
         test/model/libiec61850/hal/filesystem/test-filesystem.cc
         test/model/test-ethernet.cc
+        test/model/test-goose.cc
         test/model/test-sv.cc
 )
 
@@ -266,20 +282,26 @@ set(libiec61850_test_sources
 
 set(helper_source_files
         helper/sv-helper.cc
+        helper/goose-helper.cc
 )
 
 set(helper_header_files
         helper/sv-helper.h
+        helper/goose-helper.h
 )
 
 set(model_source_files
         model/ethernet-client.cc
         model/ethernet-server.cc
+        model/goose-publisher.cc
+        model/goose-receiver.cc
         model/sv-publisher.cc
         model/sv-subscriber.cc
 )
 
 set(model_header_files
+        model/goose-publisher.cc
+        model/goose-receiver.h
         model/sv-publisher.h
         model/sv-subscriber.h
 )

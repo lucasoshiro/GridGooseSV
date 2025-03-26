@@ -33,14 +33,14 @@ extern "C" {
  */
 /**@{*/
 
-#include "libiec61850_common_api.h"
+#include "ns3/libiec61850_common_api.h"
 
 #include "mms_common.h"
 #include "mms_type_spec.h"
 #include "mms_value.h"
 #include "iso_connection_parameters.h"
-#include "linked_list.h"
-#include "tls_config.h"
+#include "ns3/linked_list.h"
+//#include "tls_config.h"
 
 /**
  * Contains MMS layer specific parameters
@@ -94,8 +94,8 @@ MmsConnection_create(void);
  *
  * \return the newly created instance.
  */
-LIB61850_API MmsConnection
-MmsConnection_createSecure(TLSConfiguration tlsConfig);
+//LIB61850_API MmsConnection
+//MmsConnection_createSecure(TLSConfiguration tlsConfig);
 
 /**
  * \brief Create a new MmsConnection instance configured for non-threaded mode
@@ -108,8 +108,8 @@ MmsConnection_createSecure(TLSConfiguration tlsConfig);
  *
  * \return  the newly created instance.
  */
-LIB61850_API MmsConnection
-MmsConnection_createNonThreaded(TLSConfiguration tlsConfig);
+//LIB61850_API MmsConnection
+//MmsConnection_createNonThreaded(TLSConfiguration tlsConfig);
 
 /**
  * \brief Callback function to intercept raw MMS messages

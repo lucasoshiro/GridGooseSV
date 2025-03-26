@@ -24,12 +24,12 @@
 #ifndef MMS_DEVICE_MODEL_H_
 #define MMS_DEVICE_MODEL_H_
 
-#include "libiec61850_common_api.h"
+#include "ns3/libiec61850_common_api.h"
 
-#include "mms_type_spec.h"
-#include "mms_common.h"
+#include "ns3/mms_type_spec.h"
+#include "ns3/mms_common.h"
 #include "mms_named_variable_list.h"
-#include "logging_api.h"
+#include "ns3/logging_api.h"
 
 #ifdef __cplusplus
 extern "C" {

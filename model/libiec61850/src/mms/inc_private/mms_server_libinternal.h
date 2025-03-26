@@ -24,7 +24,7 @@
 #ifndef MMS_SERVER_LIBINTERNAL_H_
 #define MMS_SERVER_LIBINTERNAL_H_
 
-#include "mms_server.h"
+#include "ns3/mms_server.h"
 #include "mms_device_model.h"
 
 typedef MmsValue* (*MmsReadVariableHandler)(void* parameter, MmsDomain* domain,
@@ -40,8 +40,8 @@ typedef MmsDataAccessError (*MmsWriteVariableHandler)(void* parameter,
 typedef void (*MmsConnectionHandler)(void* parameter,
         MmsServerConnection connection, MmsServerEvent event);
 
-LIB61850_INTERNAL MmsServer
-MmsServer_create(MmsDevice* device, TLSConfiguration tlsConfiguration);
+//LIB61850_INTERNAL MmsServer
+//MmsServer_create(MmsDevice* device, TLSConfiguration tlsConfiguration);
 
 LIB61850_INTERNAL void
 MmsServer_destroy(MmsServer self);
@@ -49,8 +49,8 @@ MmsServer_destroy(MmsServer self);
 /**
  * \brief Add a new passive access point to the server
  */
-LIB61850_INTERNAL bool
-MmsServer_addAP(MmsServer self, const char* ipAddr, int tcpPort, TLSConfiguration tlsConfiguration);
+//LIB61850_INTERNAL bool
+//MmsServer_addAP(MmsServer self, const char* ipAddr, int tcpPort, TLSConfiguration tlsConfiguration);
 
 LIB61850_INTERNAL void
 MmsServer_installReadHandler(MmsServer self, MmsReadVariableHandler,
