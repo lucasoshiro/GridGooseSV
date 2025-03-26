@@ -20,15 +20,15 @@ you can follow the
 ### Built-in protocols
 
 - [x] SV
-- [ ] GOOSE
+- [x] GOOSE
 - [ ] MMS
 
 ### Built-in applications
 
 - [x] SV Publisher
 - [x] SV Subscriber
-- [ ] GOOSE Publisher
-- [ ] GOOSE Subscriber
+- [x] GOOSE Publisher
+- [x] GOOSE Subscriber
 - [ ] MMS Server
 - [ ] MMS Client
 
