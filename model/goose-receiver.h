@@ -17,6 +17,8 @@ private:
     void StopApplication() override;
 
     libiec61850::GooseReceiver receiver;
+
+    uint64_t deviceIndex;
 };
 
 

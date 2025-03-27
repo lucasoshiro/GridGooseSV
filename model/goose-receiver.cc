@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "ns3/uinteger.h"
+
 static void
 gooseListener(
     libiec61850::GooseSubscriber subscriber,
@@ -40,7 +42,14 @@ ns3::GOOSEReceiver::GetTypeId()
     static TypeId tid =TypeId("ns3::GOOSEReceiver")
        .SetParent<Application>()
        .SetGroupName("LibIEC61850")
-       .AddConstructor<GOOSEReceiver>();
+       .AddConstructor<GOOSEReceiver>()
+       .AddAttribute(
+           "DeviceIndex",
+           "Index of the NetDevice that will be used to send message. 0 by default",
+           UintegerValue(0),
+           MakeUintegerAccessor(&GOOSEReceiver::deviceIndex),
+           MakeUintegerChecker<u_int64_t>()
+       );
 
     return tid;
 }
@@ -51,8 +60,7 @@ ns3::GOOSEReceiver::StartApplication()
     NS_LOG_FUNCTION(this);
     auto nodeId = this->GetNode()->GetId();
 
-    //TODO: allow the user change the net device
-    auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/0";
+    auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/" + std::to_string(this->deviceIndex);
 
     this->receiver = libiec61850::GooseReceiver_create();
     libiec61850::GooseReceiver_setInterfaceId(receiver, path.c_str());
