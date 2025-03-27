@@ -19,6 +19,8 @@ private:
 
     libiec61850::SVReceiver receiver;
     libiec61850::SVSubscriber subscriber;
+
+    uint64_t deviceIndex;
 };
 
 

@@ -1,5 +1,6 @@
 #include "sv-subscriber.h"
 #include "ns3/sv_subscriber.h"
+#include "ns3/uinteger.h"
 
 static void svUpdateListener(
     libiec61850::SVSubscriber libiecSubscriber,
@@ -37,7 +38,14 @@ ns3::SVSubscriber::GetTypeId()
     static TypeId tid =TypeId("ns3::SVSubscriber")
        .SetParent<Application>()
        .SetGroupName("LibIEC61850")
-       .AddConstructor<SVSubscriber>();
+       .AddConstructor<SVSubscriber>()
+       .AddAttribute(
+           "DeviceIndex",
+           "Index of the NetDevice that will be used to send message. 0 by default",
+           UintegerValue(0),
+           MakeUintegerAccessor(&SVSubscriber::deviceIndex),
+           MakeUintegerChecker<u_int64_t>()
+    );
     return tid;
 }
 
@@ -47,8 +55,7 @@ ns3::SVSubscriber::StartApplication()
     NS_LOG_FUNCTION(this);
     auto nodeId = this->GetNode()->GetId();
 
-    //TODO: allow the user change the net device
-    auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/0";
+    auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/" + std::to_string(this->deviceIndex);
 
     this->receiver = libiec61850::SVReceiver_create();
 
