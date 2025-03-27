@@ -22,7 +22,6 @@ private:
     void Send();
 
     libiec61850::EthernetSocket ethSocket;
-
     libiec61850::SVPublisher svPublisher;
 
     int float1;
@@ -39,6 +38,8 @@ private:
     int ts2;
 
     uint64_t count;
+    uint64_t deviceIndex;
+
     ns3::TracedValue<uint64_t> sent;
     ns3::Time interval;
 };

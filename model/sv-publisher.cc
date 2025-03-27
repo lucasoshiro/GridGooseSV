@@ -37,6 +37,13 @@ ns3::SVPublisher::GetTypeId()
             MakeTimeAccessor(&SVPublisher::interval),
             MakeTimeChecker()
             )
+        .AddAttribute(
+            "DeviceIndex",
+            "Index of the NetDevice that will be used to send message. 0 by default",
+            UintegerValue(0),
+            MakeUintegerAccessor(&SVPublisher::deviceIndex),
+            MakeUintegerChecker<u_int64_t>()
+        )
         .AddTraceSource(
             "Sent",
             "Number of sent packages",
@@ -53,8 +60,7 @@ ns3::SVPublisher::StartApplication()
     NS_LOG_FUNCTION(this);
     auto nodeId = this->GetNode()->GetId();
 
-    // TODO: we should make this flexible for cases where the node has more than one net device!
-    auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/0";
+    auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/" + std::to_string(this->deviceIndex);
 
     this->svPublisher = libiec61850::SVPublisher_create(nullptr, path.c_str());
 
