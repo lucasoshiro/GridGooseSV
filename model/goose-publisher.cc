@@ -1,6 +1,7 @@
 #include "goose-publisher.h"
 #include "ns3/simulator.h"
 #include "ns3/goose_publisher.h"
+#include "ns3/uinteger.h"
 
 ns3::GOOSEPublisher::
 GOOSEPublisher()
@@ -15,7 +16,14 @@ ns3::GOOSEPublisher::GetTypeId()
     TypeId("ns3::GOOSEPublisher")
         .SetParent<Application>()
         .SetGroupName("LibIEC61850")
-        .AddConstructor<GOOSEPublisher>();
+        .AddConstructor<GOOSEPublisher>()
+        .AddAttribute(
+            "DeviceIndex",
+            "Index of the NetDevice that will be used to send message. 0 by default",
+            UintegerValue(0),
+            MakeUintegerAccessor(&GOOSEPublisher::deviceIndex),
+            MakeUintegerChecker<u_int64_t>()
+        );
 
     return tid;
 }
@@ -26,8 +34,7 @@ ns3::GOOSEPublisher::StartApplication()
     NS_LOG_FUNCTION(this);
     auto nodeId = this->GetNode()->GetId();
 
-    // TODO: we should make this flexible for cases where the node has more than one net device!
-    auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/0";
+    auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/" + std::to_string(this->deviceIndex);
 
     this->dataSetValues = LinkedList_create();
 

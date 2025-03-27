@@ -22,6 +22,8 @@ private:
     int i;
     LinkedList dataSetValues;
     libiec61850::GoosePublisher publisher;
+
+    uint64_t deviceIndex;
 };
 
 }
