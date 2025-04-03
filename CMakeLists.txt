@@ -14,7 +14,6 @@ endif()
 
 set(libiec61850_hal_source_files
         model/libiec61850/hal/time/ns3/time.cc
-        model/libiec61850/hal/thread/ns3/thread.cc
         model/libiec61850/hal/memory/lib_memory.cc
         model/libiec61850/hal/filesystem/ns3/filesystem.cc
         model/libiec61850/hal/ethernet/ns3/ethernet.cc
@@ -23,7 +22,6 @@ set(libiec61850_hal_source_files
 set(libiec61850_hal_header_files
         model/libiec61850/hal/inc/hal_base.h
         model/libiec61850/hal/inc/hal_time.h
-        model/libiec61850/hal/inc/hal_thread.h
         model/libiec61850/hal/inc/lib_memory.h
         model/libiec61850/hal/inc/hal_filesystem.h
         model/libiec61850/hal/inc/hal_socket.h
