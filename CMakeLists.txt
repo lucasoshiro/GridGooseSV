@@ -84,7 +84,6 @@ set(libiec61850_common_header_files
 )
 
 set(libiec61850_logging_source_files
-        model/libiec61850/src/logging/drivers/sqlite/log_storage_sqlite.cc
         model/libiec61850/src/logging/log_storage.cc
 )
 
