@@ -45,6 +45,12 @@ you can follow the
 
 ## Installing
 
+### Supported plaftorms
+
+- [x] Linux x86
+- [ ] macOS arm64
+- [ ] Windows x86
+
 ### Dependencies
 
 This module was developed using `ns-3 3.43`. Probably it will work with any
