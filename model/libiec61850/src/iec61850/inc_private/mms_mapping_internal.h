@@ -26,7 +26,6 @@
 
 #include "stack_config.h"
 
-#include "hal_thread.h"
 #include "linked_list.h"
 
 #if (CONFIG_IEC61850_SERVICE_TRACKING == 1)
@@ -299,11 +298,6 @@ struct sMmsMapping {
     LinkedList settingGroups;
 #endif
 
-#if (CONFIG_MMS_THREADLESS_STACK != 1)
-    bool reportThreadRunning;
-    Thread reportWorkerThread;
-#endif
-
 #if (CONFIG_IEC61850_SERVICE_TRACKING == 1)
     BrcbTrkInstance brcbTrk;
     UrcbTrkInstance urcbTrk;
@@ -325,7 +319,6 @@ struct sMmsMapping {
     /* flag indicates if data model is locked --> prevents reports to be sent */
 
     bool isModelLocked;
-    Semaphore isModelLockedMutex;
 
     IedServer iedServer;
 

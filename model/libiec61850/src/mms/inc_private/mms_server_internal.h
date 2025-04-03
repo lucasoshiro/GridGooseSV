@@ -38,7 +38,6 @@
 #include "ns3/byte_buffer.h"
 #include "ns3/string_utilities.h"
 #include "ns3/map.h"
-#include "ns3/hal_thread.h"
 
 #include "ber_encoder.h"
 #include "ber_decode.h"
@@ -98,9 +97,6 @@ struct sMmsObtainFileTask {
     uint64_t nextTimeout;
     int32_t frmsId;
     int state;
-#if (CONFIG_MMS_THREADLESS_STACK != 1)
-    Semaphore taskLock;
-#endif
 };
 
 #endif /* (MMS_OBTAIN_FILE_SERVICE == 1) */
@@ -129,22 +125,11 @@ struct sMmsServer {
     AcseAuthenticator authenticator;
     void* authenticatorParameter;
 
-#if (CONFIG_MMS_THREADLESS_STACK != 1)
-    Semaphore openConnectionsLock;
-#endif
-
     Map openConnections;
     Map valueCaches;
     bool isLocked;
 
     ByteBuffer* transmitBuffer; /* global buffer for encoding reports, delayed responses... */
-#if (CONFIG_MMS_THREADLESS_STACK != 1)
-    Semaphore transmitBufferMutex;
-#endif
-
-#if (CONFIG_MMS_THREADLESS_STACK != 1)
-    Semaphore modelMutex;
-#endif
 
 #if (MMS_STATUS_SERVICE == 1)
     int vmdLogicalStatus;

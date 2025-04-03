@@ -28,7 +28,6 @@
 #include "ns3/libiec61850_platform_includes.h"
 
 #include "ns3/hal_ethernet.h"
-#include "ns3/hal_thread.h"
 #include "ns3/ber_decode.h"
 #include "ns3/ber_encoder.h"
 #include "ns3/callback.h"
@@ -57,11 +56,6 @@ struct sSVReceiver {
     EthernetSocket ethSocket;
 
     LinkedList subscriberList;
-
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Semaphore subscriberListLock;
-#endif
-
 };
 
 struct sSVSubscriber {
@@ -99,10 +93,6 @@ SVReceiver_create(void)
         self->buffer = (uint8_t*) GLOBAL_MALLOC(ETH_BUFFER_LENGTH);
 
         self->checkDestAddr = false;
-
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-        self->subscriberListLock = Semaphore_create(1);
-#endif
     }
 
     return self;
@@ -132,29 +122,13 @@ SVReceiver_enableDestAddrCheck(SVReceiver self)
 void
 SVReceiver_addSubscriber(SVReceiver self, SVSubscriber subscriber)
 {
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Semaphore_wait(self->subscriberListLock);
-#endif
-
     LinkedList_add(self->subscriberList, (void*) subscriber);
-
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Semaphore_post(self->subscriberListLock);
-#endif
 }
 
 void
 SVReceiver_removeSubscriber(SVReceiver self, SVSubscriber subscriber)
 {
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Semaphore_wait(self->subscriberListLock);
-#endif
-
     LinkedList_remove(self->subscriberList, (void*) subscriber);
-
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Semaphore_post(self->subscriberListLock);
-#endif
 }
 
 static void receiveCallback(
@@ -186,9 +160,6 @@ SVReceiver_stop(SVReceiver self)
 {
     if (self->running) {
         SVReceiver_stopThreadless(self);
-
-        while (self->stopped == false)
-            Thread_sleep(1);
     }
 }
 
@@ -200,10 +171,6 @@ SVReceiver_destroy(SVReceiver self)
 
     if (self->interfaceId != NULL)
         GLOBAL_FREEMEM(self->interfaceId);
-
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Semaphore_destroy(self->subscriberListLock);
-#endif
 
     GLOBAL_FREEMEM(self->buffer);
     GLOBAL_FREEMEM(self);
@@ -463,11 +430,6 @@ parseSVMessage(SVReceiver self, int numbytes)
     }
 
     /* check if there is a matching subscriber */
-
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Semaphore_wait(self->subscriberListLock);
-#endif
-
     SVSubscriber subscriber = NULL;
 
     LinkedList element = LinkedList_getNext(self->subscriberList);
@@ -495,10 +457,6 @@ parseSVMessage(SVReceiver self, int numbytes)
 
         element = LinkedList_getNext(element);
     }
-
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Semaphore_post(self->subscriberListLock);
-#endif
 
     if (subscriber)
         parseSVPayload(self, subscriber, buffer + bufPos, apduLength);

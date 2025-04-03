@@ -30,8 +30,6 @@
 
 #include "iec61850_common_internal.h"
 
-#include "hal_thread.h"
-
 typedef struct sIedConnectionOutstandingCall* IedConnectionOutstandingCall;
 
 struct sIedConnectionOutstandingCall {
@@ -59,15 +57,10 @@ struct sIedConnection
     LinkedList enabledReports;
     LinkedList logicalDevices;
 
-    Semaphore clientControlsLock;
     LinkedList clientControls;
 
     LastApplError lastApplError;
 
-    Semaphore stateMutex;
-    Semaphore reportHandlerMutex;
-
-    Semaphore outstandingCallsLock;
     IedConnectionOutstandingCall outstandingCalls;
 
     IedConnectionClosedHandler connectionCloseHandler;

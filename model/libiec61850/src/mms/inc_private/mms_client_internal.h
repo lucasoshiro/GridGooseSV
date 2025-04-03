@@ -30,7 +30,6 @@
 #include "iso_client_connection.h"
 #include "ber_decode.h"
 
-#include "hal_thread.h"
 
 #include "mms_common_internal.h"
 
@@ -90,10 +89,8 @@ struct sMmsOutstandingCall
 
 /* private instance variables */
 struct sMmsConnection {
-    Semaphore nextInvokeIdLock;
     uint32_t nextInvokeId;
 
-    Semaphore outstandingCallsLock;
     MmsOutstandingCall outstandingCalls;
 
     uint32_t requestTimeout;
@@ -101,14 +98,7 @@ struct sMmsConnection {
 
     IsoClientConnection isoClient;
 
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Thread connectionHandlingThread;
-    bool createThread;
-    bool connectionThreadRunning;
-#endif
-
     volatile MmsConnectionState connectionState;
-    Semaphore associationStateLock;
 
     MmsConnectionParameters parameters;
     IsoConnectionParameters isoParameters;

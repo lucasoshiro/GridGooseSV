@@ -26,7 +26,6 @@
 #include "ns3/stack_config.h"
 #include "goose_subscriber.h"
 #include "ns3/hal_ethernet.h"
-#include "ns3/hal_thread.h"
 
 #include "ns3/ber_decode.h"
 

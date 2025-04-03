@@ -26,7 +26,6 @@
 #include "ns3/stack_config.h"
 #include "goose_subscriber.h"
 #include "ns3/hal_ethernet.h"
-#include "ns3/hal_thread.h"
 
 #include "ns3/ber_decode.h"
 
@@ -57,9 +56,6 @@ struct sGooseReceiver
     uint8_t* buffer;
     EthernetSocket ethSocket;
     LinkedList subscriberList;
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    Thread thread;
-#endif
 };
 
 GooseReceiver
@@ -74,9 +70,6 @@ GooseReceiver_createEx(uint8_t* buffer)
         self->buffer = buffer;
         self->ethSocket = NULL;
         self->subscriberList = LinkedList_create();
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-        self->thread = NULL;
-#endif
     }
 
     return self;
@@ -1058,26 +1051,12 @@ GooseReceiver_isRunning(GooseReceiver self)
 void
 GooseReceiver_stop(GooseReceiver self)
 {
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-    self->stop = true;
-    self->running = false;
-
-    if (self->thread)
-        Thread_destroy(self->thread);
-
-    self->stop = false;
-#endif
 }
 
 void
 GooseReceiver_destroy(GooseReceiver self)
 {
     if (self) {
-#if (CONFIG_MMS_THREADLESS_STACK == 0)
-        if ((self->thread != NULL) && (GooseReceiver_isRunning(self)))
-            GooseReceiver_stop(self);
-#endif
-
         if (self->interfaceId != NULL)
             GLOBAL_FREEMEM(self->interfaceId);
 
