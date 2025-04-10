@@ -31,19 +31,26 @@ ns3::SVPublisher::GetTypeId()
             MakeUintegerChecker<u_int64_t>()
             )
         .AddAttribute(
-            "Interval",
-            "Interval between packet sent. Equivalent to the SV sample rate",
-            TimeValue(MilliSeconds(50)),
-            MakeTimeAccessor(&SVPublisher::interval),
-            MakeTimeChecker()
-            )
-        .AddAttribute(
             "DeviceIndex",
             "Index of the NetDevice that will be used to send message. 0 by default",
             UintegerValue(0),
             MakeUintegerAccessor(&SVPublisher::deviceIndex),
             MakeUintegerChecker<u_int64_t>()
         )
+        .AddAttribute(
+            "Frequency",
+            "AC frequency",
+            UintegerValue(60),
+            MakeUintegerAccessor(&SVPublisher::frequency),
+            MakeUintegerChecker<u_int64_t>()
+        )
+        .AddAttribute(
+            "SamplesPerCycle",
+            "Samples per cycle",
+            UintegerValue(1),
+            MakeUintegerAccessor(&SVPublisher::samplesPerCycle),
+            MakeUintegerChecker<u_int64_t>()
+            )
         .AddTraceSource(
             "Sent",
             "Number of sent packages",
@@ -58,8 +65,10 @@ void
 ns3::SVPublisher::StartApplication()
 {
     NS_LOG_FUNCTION(this);
-    auto nodeId = this->GetNode()->GetId();
 
+    this->interval = MicroSeconds(1000000. / (this->frequency * this->samplesPerCycle));
+
+    auto nodeId = this->GetNode()->GetId();
     auto path = "/NodeList/" + std::to_string(nodeId) + "/DeviceList/" + std::to_string(this->deviceIndex);
 
     this->svPublisher = libiec61850::SVPublisher_create(nullptr, path.c_str());
