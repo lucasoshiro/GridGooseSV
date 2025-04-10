@@ -23,7 +23,9 @@ TestSV::DoRun()
     auto serverDevice = devices.Get(1);
 
     auto publisher = ns3::SVPublisherHelper();
-    publisher.SetAttribute("MaxPackets", ns3::UintegerValue(10));
+    publisher.SetAttribute("MaxPackets", ns3::UintegerValue(40));
+    publisher.SetAttribute("Frequency", ns3::UintegerValue(50));
+    publisher.SetAttribute("SamplesPerCycle", ns3::UintegerValue(100));
     publisher.Install(clientNode);
 
     auto subscriber = ns3::SVSubscriberHelper();
