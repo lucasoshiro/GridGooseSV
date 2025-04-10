@@ -30,9 +30,6 @@
 
 namespace libiec61850
 {
-#ifdef __cplusplus
-extern "C" {
-#endif
 
  /**
   * \defgroup sv_subscriber_api_group IEC 61850 Sampled Values (SV) subscriber API
@@ -618,9 +615,6 @@ extern "C" {
 
  /**@} @}*/
 
-#ifdef __cplusplus
-}
-#endif
 }
 #endif /* SAMPLED_VALUES_SV_SUBSCRIBER_ */
 
