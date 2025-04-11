@@ -73,7 +73,7 @@ We provided some test to assert that everything is working as expected. You can
 run them by calling:
 
 ~~~bash
-./test.py --suite="libiec61850-ns3" 
+./test.py --suite="gridgoosesv" 
 ~~~
 
 in `ns-3` top-level directory.
