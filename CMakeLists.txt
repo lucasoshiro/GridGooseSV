@@ -358,7 +358,7 @@ set (CMAKE_REQUIRED_FLAGS -Wno-write-strings)
 set (CXXFLAGS_EXTRA -Wno-write-strings)
 
 build_lib(
-    LIBNAME libiec61850-ns3
+    LIBNAME gridgoosesv
     SOURCE_FILES ${source_files}
     HEADER_FILES ${header_files}
     PRIVATE_HEADER_FILES ${private_header_files}
