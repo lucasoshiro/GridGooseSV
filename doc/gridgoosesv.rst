@@ -23,7 +23,7 @@ are defined in the file ``replace.txt``.
 Model Description
 *****************
 
-The source code for the new module lives in the directory ``contrib/libiec61850-ns3``.
+The source code for the new module lives in the directory ``contrib/gridgoosesv``.
 
 Add here a basic description of what is being modeled.
 
