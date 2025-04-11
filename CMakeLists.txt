@@ -296,15 +296,15 @@ set(model_source_files
         model/ethernet-server.cc
         model/goose-publisher-app.cc
         model/goose-receiver-app.cc
-        model/sv-publisher.cc
-        model/sv-subscriber.cc
+        model/sv-publisher-app.cc
+        model/sv-subscriber-app.cc
 )
 
 set(model_header_files
         model/goose-publisher-app.h
         model/goose-receiver-app.h
-        model/sv-publisher.h
-        model/sv-subscriber.h
+        model/sv-publisher-app.h
+        model/sv-subscriber-app.h
 )
 
 set(model_header_private_files

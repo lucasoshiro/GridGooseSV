@@ -1,6 +1,6 @@
 #include "sv-helper.h"
-#include "ns3/sv-publisher.h"
-#include "ns3/sv-subscriber.h"
+#include "ns3/sv-publisher-app.h"
+#include "ns3/sv-subscriber-app.h"
 
 ns3::SVPublisherHelper::
 SVPublisherHelper()
