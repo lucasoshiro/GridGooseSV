@@ -294,15 +294,15 @@ set(helper_header_files
 set(model_source_files
         model/ethernet-client.cc
         model/ethernet-server.cc
-        model/goose-publisher.cc
-        model/goose-receiver.cc
+        model/goose-publisher-app.cc
+        model/goose-receiver-app.cc
         model/sv-publisher.cc
         model/sv-subscriber.cc
 )
 
 set(model_header_files
-        model/goose-publisher.h
-        model/goose-receiver.h
+        model/goose-publisher-app.h
+        model/goose-receiver-app.h
         model/sv-publisher.h
         model/sv-subscriber.h
 )

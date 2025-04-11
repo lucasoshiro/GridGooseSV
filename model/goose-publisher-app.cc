@@ -1,4 +1,4 @@
-#include "goose-publisher.h"
+#include "goose-publisher-app.h"
 #include "ns3/simulator.h"
 #include "ns3/goose_publisher.h"
 #include "ns3/uinteger.h"

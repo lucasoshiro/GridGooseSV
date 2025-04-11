@@ -3,8 +3,8 @@
 //
 
 #include "goose-helper.h"
-#include "ns3/goose-publisher.h"
-#include "ns3/goose-receiver.h"
+#include "ns3/goose-publisher-app.h"
+#include "ns3/goose-receiver-app.h"
 
 ns3::GOOSEPublisherHelper::
 GOOSEPublisherHelper()

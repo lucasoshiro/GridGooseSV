@@ -4,7 +4,7 @@
 
 #include "test-goose.h"
 
-#include "ns3/goose-receiver.h"
+#include "ns3/goose-receiver-app.h"
 
 #include "ns3/csma-helper.h"
 #include "ns3/ethernet-server.h"
