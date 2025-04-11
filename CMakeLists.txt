@@ -6,7 +6,6 @@ endif()
 set(examples_as_tests_sources)
 if(${ENABLE_EXAMPLES})
     set(examples_as_tests_sources
-        #test/libiec61850-ns3-examples-test-suite.cc
         )
 endif()
 
