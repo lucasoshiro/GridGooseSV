@@ -1,4 +1,4 @@
-# libiec61850-ns3 (provisional name)
+# GridGooseSV
 
 [![GitHub actions](https://github.com/lucasoshiro/libiec61850-ns3/actions/workflows/push.yml/badge.svg)](https://github.com/lucaoshiro/libiec61850-ns3/actions)
 
