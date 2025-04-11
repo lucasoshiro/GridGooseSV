@@ -40,7 +40,7 @@ jobs:
       - name: "Checkout module"
         uses: actions/checkout@v4
         with:
-          path: "ns-3-dev/contrib/libiec61850-ns3"
+          path: "ns-3-dev/contrib/gridgoosesv"
 
       - name: "Build ns-3 with module"
         run: |
