@@ -348,7 +348,7 @@ set(private_header_files
 )
 
 set(test_sources
-        test/libiec61850-ns3-test-suite.cc
+        test/gridgoosesv-test-suite.cc
         ${util_test_sources}
         ${libiec61850_test_sources}
 )

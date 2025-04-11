@@ -52,6 +52,6 @@ jobs:
       - name: "Test"
         run: |
           pushd ns-3-dev
-          ./test.py --suite="libiec61850-ns3" --text=results.txt
+          ./test.py --suite="gridgoosesv" --text=results.txt
           cat results.txt
           popd
