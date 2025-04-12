@@ -11,23 +11,23 @@
 using namespace ns3;
 
 /**
- * \defgroup libiec61850-ns3-tests Tests for libiec61850-ns3
- * \ingroup libiec61850-ns3
+ * \defgroup gridgoosesv-tests Tests for GridGooseSV
+ * \ingroup gridgoosesv
  * \ingroup tests
  */
 
 /**
- * \ingroup libiec61850-ns3-tests
- * TestSuite for module libiec61850-ns3
+ * \ingroup gridgoosesv-tests
+ * TestSuite for module gridgoosesv
  */
-class Libiec61850Ns3TestSuite : public TestSuite
+class GridGooseSVTestSuite : public TestSuite
 {
   public:
-    Libiec61850Ns3TestSuite();
+    GridGooseSVTestSuite();
 };
 
-Libiec61850Ns3TestSuite::Libiec61850Ns3TestSuite()
-    : TestSuite("libiec61850-ns3", Type::UNIT)
+GridGooseSVTestSuite::GridGooseSVTestSuite()
+    : TestSuite("gridgoosesv", Type::UNIT)
 {
     TestCase *testCases[] = {
         reinterpret_cast<TestCase*>(new HalTimeTest),
@@ -50,7 +50,7 @@ Libiec61850Ns3TestSuite::Libiec61850Ns3TestSuite()
 }
 
 /**
- * \ingroup libiec61850-ns3-tests
+ * \ingroup gridgoosesv-tests
  * Static variable for test initialization
  */
-static Libiec61850Ns3TestSuite slibiec61850Ns3TestSuite;
+static GridGooseSVTestSuite gridGooseSVTestSuite;

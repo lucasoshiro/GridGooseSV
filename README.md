@@ -1,6 +1,6 @@
-# libiec61850-ns3 (provisional name)
+# GridGooseSV
 
-[![GitHub actions](https://github.com/lucasoshiro/libiec61850-ns3/actions/workflows/push.yml/badge.svg)](https://github.com/lucaoshiro/libiec61850-ns3/actions)
+[![GitHub actions](https://github.com/lucasoshiro/GridGooseSV/actions/workflows/push.yml/badge.svg)](https://github.com/lucaoshiro/GridGooseSV/actions)
 
 Native implementation of IEC61850 protocols for the
 [ns-3](https://www.nsnam.org/) network simulator, based on
@@ -73,7 +73,7 @@ We provided some test to assert that everything is working as expected. You can
 run them by calling:
 
 ~~~bash
-./test.py --suite="libiec61850-ns3" 
+./test.py --suite="gridgoosesv" 
 ~~~
 
 in `ns-3` top-level directory.

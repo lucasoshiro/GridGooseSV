@@ -6,7 +6,6 @@ endif()
 set(examples_as_tests_sources)
 if(${ENABLE_EXAMPLES})
     set(examples_as_tests_sources
-        #test/libiec61850-ns3-examples-test-suite.cc
         )
 endif()
 
@@ -348,7 +347,7 @@ set(private_header_files
 )
 
 set(test_sources
-        test/libiec61850-ns3-test-suite.cc
+        test/gridgoosesv-test-suite.cc
         ${util_test_sources}
         ${libiec61850_test_sources}
 )
@@ -358,7 +357,7 @@ set (CMAKE_REQUIRED_FLAGS -Wno-write-strings)
 set (CXXFLAGS_EXTRA -Wno-write-strings)
 
 build_lib(
-    LIBNAME libiec61850-ns3
+    LIBNAME gridgoosesv
     SOURCE_FILES ${source_files}
     HEADER_FILES ${header_files}
     PRIVATE_HEADER_FILES ${private_header_files}
