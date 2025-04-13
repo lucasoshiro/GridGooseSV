@@ -15,10 +15,6 @@
 #include "ns3/socket.h"
 #include "ns3/callback.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 namespace libiec61850 {
 
 /*! \addtogroup hal
@@ -198,9 +194,5 @@ Ethernet_getNS3Socket(EthernetSocket ethSocket);
 /*! @} */
 
 }
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* ETHERNET_HAL_H_ */
