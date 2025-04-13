@@ -4,14 +4,14 @@
 #include "ns3/packet-socket-helper.h"
 #include "ns3/sv-helper.h"
 
-int sent = 0;
-int received = 0;
+static int sent = 0;
+static int received = 0;
 
-void traceSent(uint64_t oldValue, uint64_t newValue) {
+static void traceSent(uint64_t oldValue, uint64_t newValue) {
     sent = newValue;
 }
 
-void traceReceived(uint64_t oldValue, uint64_t newValue) {
+static void traceReceived(uint64_t oldValue, uint64_t newValue) {
     received = newValue;
 }
 
