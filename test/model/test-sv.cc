@@ -4,9 +4,24 @@
 #include "ns3/packet-socket-helper.h"
 #include "ns3/sv-helper.h"
 
+int sent = 0;
+int received = 0;
+
+void traceSent(uint64_t oldValue, uint64_t newValue) {
+    sent = newValue;
+}
+
+void traceReceived(uint64_t oldValue, uint64_t newValue) {
+    received = newValue;
+}
+
 void
 TestSV::DoRun()
 {
+    constexpr int packetsToSend = 40;
+    constexpr int frequency = 50;
+    constexpr int samplesPerCycle = 100;
+
     auto nodes = ns3::NodeContainer();
     nodes.Create(2);
 
@@ -23,16 +38,25 @@ TestSV::DoRun()
     auto serverDevice = devices.Get(1);
 
     auto publisher = ns3::SVPublisherHelper();
-    publisher.SetAttribute("MaxPackets", ns3::UintegerValue(40));
-    publisher.SetAttribute("Frequency", ns3::UintegerValue(50));
-    publisher.SetAttribute("SamplesPerCycle", ns3::UintegerValue(100));
+    publisher.SetAttribute("MaxPackets", ns3::UintegerValue(packetsToSend));
+    publisher.SetAttribute("Frequency", ns3::UintegerValue(frequency));
+    publisher.SetAttribute("SamplesPerCycle", ns3::UintegerValue(samplesPerCycle));
     publisher.Install(clientNode);
 
     auto subscriber = ns3::SVSubscriberHelper();
     subscriber.Install(serverNode);
 
-    csmaHelper.EnablePcapAll("test-sv");
+    clientNode->GetApplication(0)->TraceConnectWithoutContext(
+        "Sent", ns3::MakeCallback(&traceSent)
+        );
+
+    serverNode->GetApplication(0)->TraceConnectWithoutContext(
+        "Received", ns3::MakeCallback(&traceReceived)
+        );
 
     ns3::Simulator::Run();
     ns3::Simulator::Destroy();
+
+    NS_TEST_ASSERT_MSG_EQ(sent, packetsToSend, "Number of sent packets must be 40");
+    NS_TEST_ASSERT_MSG_EQ(received, packetsToSend, "Number of sent packets must be 40");
 }
