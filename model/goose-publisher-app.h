@@ -4,6 +4,7 @@
 #include "ns3/application.h"
 #include "ns3/linked_list.h"
 #include "ns3/goose_publisher.h"
+#include "ns3/traced-value.h"
 
 namespace ns3
 {
@@ -19,11 +20,11 @@ private:
     void StopApplication() override;
 
     void Send();
-    int i;
     LinkedList dataSetValues;
     libiec61850::GoosePublisher publisher;
 
     uint64_t deviceIndex;
+    ns3::TracedValue<uint64_t> sent;
 };
 
 }

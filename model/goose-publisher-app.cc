@@ -23,7 +23,14 @@ ns3::GOOSEPublisher::GetTypeId()
             UintegerValue(0),
             MakeUintegerAccessor(&GOOSEPublisher::deviceIndex),
             MakeUintegerChecker<u_int64_t>()
-        );
+        )
+    .AddTraceSource(
+        "Sent",
+        "Number of sent packages",
+        MakeTraceSourceAccessor(&GOOSEPublisher::sent),
+        "ns3::TracedValueCallback::Uint64"
+        )
+    ;
 
     return tid;
 }
@@ -67,7 +74,7 @@ ns3::GOOSEPublisher::StartApplication()
     GoosePublisher_setDataSetRef(publisher, dataSetRef);
     GoosePublisher_setTimeAllowedToLive(publisher, 500);
 
-    this->i = 0;
+    this->sent = 0;
 
     ns3::Simulator::Schedule(
         ns3::MilliSeconds(1000),
@@ -79,9 +86,9 @@ ns3::GOOSEPublisher::StartApplication()
 void
 ns3::GOOSEPublisher::Send()
 {
-    if (this->i >= 4) return;
+    if (this->sent >= 4) return;
 
-    if (this->i == 3) {
+    if (this->sent == 3) {
         /* now change dataset to send an invalid GOOSE message */
         LinkedList_add(dataSetValues, MmsValue_newBoolean(true));
         libiec61850::GoosePublisher_publish(
@@ -94,7 +101,7 @@ ns3::GOOSEPublisher::Send()
         }
     }
 
-    this->i++;
+    this->sent++;
 
     ns3::Simulator::Schedule(
         ns3::MilliSeconds(1000),
