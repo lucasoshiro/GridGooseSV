@@ -10,24 +10,7 @@ gooseListener(
     void* parameter
     )
 {
-    // std::ofstream output("/dev/pts/2");
-    std::cout << "GOOSE event:" << std::endl;
-    std::cout << "  stNum: " << GooseSubscriber_getStNum(subscriber) << "sqNum: " << GooseSubscriber_getSqNum(subscriber) << std::endl;
-
-    std::cout <<"  timeToLive: " << GooseSubscriber_getTimeAllowedToLive(subscriber) << std::endl;
-
-    uint64_t timestamp = GooseSubscriber_getTimestamp(subscriber);
-
-    std::cout << "  timestamp: " <<  (uint32_t) (timestamp / 1000) << "." << (uint32_t) (timestamp % 1000) << std::endl;
-    std::cout << "  message is " << (GooseSubscriber_isValid(subscriber) ? "valid" : "INVALID") << std::endl;
-
-    MmsValue* values = GooseSubscriber_getDataSetValues(subscriber);
-
-    char buffer[1024];
-
-    MmsValue_printToBuffer(values, buffer, 1024);
-
-    std::cout << "  allData: " << buffer << std::endl;
+    static_cast<ns3::GOOSEReceiver *>(parameter)->Receive(subscriber);
 }
 
 ns3::GOOSEReceiver::
@@ -49,7 +32,13 @@ ns3::GOOSEReceiver::GetTypeId()
            UintegerValue(0),
            MakeUintegerAccessor(&GOOSEReceiver::deviceIndex),
            MakeUintegerChecker<u_int64_t>()
-       );
+       )
+       .AddTraceSource(
+           "Received",
+           "Received packets",
+           MakeTraceSourceAccessor(&GOOSEReceiver::received),
+           "ns3::TracedValueCallback::Uint64"
+    );
 
     return tid;
 }
@@ -75,7 +64,9 @@ ns3::GOOSEReceiver::StartApplication()
     libiec61850::GooseSubscriber_setDstMac(subscriber, dstMac);
     libiec61850::GooseSubscriber_setAppId(subscriber, 1000);
 
-    libiec61850::GooseSubscriber_setListener(subscriber, gooseListener, NULL);
+    libiec61850::GooseSubscriber_setListener(subscriber, gooseListener, this);
+
+    this->received = 0;
 
     libiec61850::GooseReceiver_addSubscriber(this->receiver, subscriber);
 
@@ -89,4 +80,27 @@ ns3::GOOSEReceiver::StopApplication()
 
     libiec61850::GooseReceiver_stop(receiver);
     libiec61850::GooseReceiver_destroy(receiver);
+}
+
+void ns3::GOOSEReceiver::Receive(libiec61850::GooseSubscriber subscriber) {
+    // std::ofstream output("/dev/pts/2");
+    std::cout << "GOOSE event:" << std::endl;
+    std::cout << "  stNum: " << GooseSubscriber_getStNum(subscriber) << "sqNum: " << GooseSubscriber_getSqNum(subscriber) << std::endl;
+
+    std::cout <<"  timeToLive: " << GooseSubscriber_getTimeAllowedToLive(subscriber) << std::endl;
+
+    uint64_t timestamp = GooseSubscriber_getTimestamp(subscriber);
+
+    std::cout << "  timestamp: " <<  (uint32_t) (timestamp / 1000) << "." << (uint32_t) (timestamp % 1000) << std::endl;
+    std::cout << "  message is " << (GooseSubscriber_isValid(subscriber) ? "valid" : "INVALID") << std::endl;
+
+    MmsValue* values = GooseSubscriber_getDataSetValues(subscriber);
+
+    char buffer[1024];
+
+    MmsValue_printToBuffer(values, buffer, 1024);
+
+    std::cout << "  allData: " << buffer << std::endl;
+
+    this->received++;
 }
