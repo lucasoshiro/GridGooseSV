@@ -2,34 +2,18 @@
 #include "ns3/sv_subscriber.h"
 #include "ns3/uinteger.h"
 
-static void svUpdateListener(
-    libiec61850::SVSubscriber libiecSubscriber,
-    void *ns3Subscriber,
-    libiec61850::SVSubscriber_ASDU asdu
-    )
-{
-    // std::ofstream output("/dev/pts/1");
-    auto &output = std::cout;
-    output << "svUpdateListener called" << std::endl;
-
-    auto subscriber = static_cast<ns3::SVSubscriber*>(ns3Subscriber);
-
-    auto svID = libiec61850::SVSubscriber_ASDU_getSvId(asdu);
-
-    output << "  svID: " << svID << std::endl;
-    output << "  smpCnt: " << libiec61850::SVSubscriber_ASDU_getSmpCnt(asdu) << std::endl;
-    output << "  confRev: " << libiec61850::SVSubscriber_ASDU_getConfRev(asdu)<< std::endl;
-    output << "  DATA[0]: " << libiec61850::SVSubscriber_ASDU_getFLOAT32(asdu, 0) << std::endl;
-    output << "  DATA[1]: " << libiec61850::SVSubscriber_ASDU_getFLOAT32(asdu, 4) << std::endl;
-    output << std::endl;
-
-    //output.close();
-}
-
 ns3::SVSubscriber::
 SVSubscriber()
 {
     NS_LOG_FUNCTION(this);
+}
+
+static void svUpdateListener(
+    libiec61850::SVSubscriber subscriber,
+    void *subscriberApp,
+    libiec61850::SVSubscriber_ASDU asdu
+    ) {
+    static_cast<ns3::SVSubscriber *>(subscriberApp)->Receive(asdu);
 }
 
 ns3::TypeId
@@ -45,7 +29,14 @@ ns3::SVSubscriber::GetTypeId()
            UintegerValue(0),
            MakeUintegerAccessor(&SVSubscriber::deviceIndex),
            MakeUintegerChecker<u_int64_t>()
-    );
+       )
+       .AddTraceSource(
+           "Received",
+           "Received sensed data. Equals the number of messages times the number of ASDUs per message",
+           MakeTraceSourceAccessor(&SVSubscriber::received),
+           "ns3::TracedValueCallback::Uint64"
+       );
+
     return tid;
 }
 
@@ -65,6 +56,8 @@ ns3::SVSubscriber::StartApplication()
     this->subscriber = libiec61850::SVSubscriber_create(nullptr, 0x4000);
     libiec61850::SVSubscriber_setListener(subscriber, svUpdateListener, this);
 
+    this->received = 0;
+
     libiec61850::SVReceiver_addSubscriber(receiver, subscriber);
     libiec61850::SVReceiver_start(receiver);
 }
@@ -75,3 +68,21 @@ ns3::SVSubscriber::StopApplication()
     libiec61850::SVReceiver_destroy(receiver);
     NS_LOG_FUNCTION(this);
 }
+
+void
+ns3::SVSubscriber::Receive(
+    libiec61850::SVSubscriber_ASDU asdu
+    )
+{
+    auto svID = libiec61850::SVSubscriber_ASDU_getSvId(asdu);
+
+    std::cout << "  svID: " << svID << std::endl;
+    std::cout << "  smpCnt: " << libiec61850::SVSubscriber_ASDU_getSmpCnt(asdu) << std::endl;
+    std::cout << "  confRev: " << libiec61850::SVSubscriber_ASDU_getConfRev(asdu)<< std::endl;
+    std::cout << "  DATA[0]: " << libiec61850::SVSubscriber_ASDU_getFLOAT32(asdu, 0) << std::endl;
+    std::cout << "  DATA[1]: " << libiec61850::SVSubscriber_ASDU_getFLOAT32(asdu, 4) << std::endl;
+    std::cout << std::endl;
+
+    this->received++;
+}
+
