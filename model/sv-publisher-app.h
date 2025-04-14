@@ -24,10 +24,7 @@ private:
     libiec61850::EthernetSocket ethSocket;
     libiec61850::SVPublisher svPublisher;
 
-    int float1;
-    int float2;
-    int float3;
-    int float4;
+    int offsets[8];
 
     libiec61850::SVPublisher_ASDU asdu1;
 

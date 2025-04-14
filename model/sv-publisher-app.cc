@@ -75,8 +75,11 @@ ns3::SVPublisher::StartApplication()
 
     // TODO: we should allow the user to add as many ASDUs as wanted
     this->asdu1 = libiec61850::SVPublisher_addASDU(this->svPublisher, "svpub1", nullptr, 1);
-    this->float1 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu1);
-    this->float2 = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu1);
+
+    for (int i = 0; i < 8; i++) {
+        this->offsets[i] = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu1);
+    }
+
     this->ts1 = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdu1);
 
     libiec61850::SVPublisher_setupComplete(this->svPublisher);
@@ -111,8 +114,10 @@ ns3::SVPublisher::Send()
     Timestamp_clearFlags(&ts);
     Timestamp_setTimeInMilliseconds(&ts, libiec61850::Hal_getTimeInMs());
 
-    SVPublisher_ASDU_setFLOAT(this->asdu1, float1, fVal1);
-    SVPublisher_ASDU_setFLOAT(this->asdu1, float2, fVal2);
+    for (int i = 0; i < 8; i++) {
+        auto val = i % 2 == 0 ? fVal1 : fVal2;
+        SVPublisher_ASDU_setFLOAT(this->asdu1, this->offsets[i], val);
+    }
 
     SVPublisher_ASDU_increaseSmpCnt(asdu1);
 
