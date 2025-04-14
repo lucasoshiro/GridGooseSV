@@ -87,14 +87,17 @@ ns3::SVPublisher::StartApplication()
     if (this->count <= 0) this->count = -1;
     this->sent.Set(0);
 
-    ns3::Simulator::ScheduleNow(&SVPublisher::Send, this);
+    this->eventId = ns3::Simulator::ScheduleNow(&SVPublisher::Send, this);
 }
 
 void
 ns3::SVPublisher::StopApplication()
 {
     NS_LOG_FUNCTION(this);
-    libiec61850::Ethernet_destroySocket(this->ethSocket);
+    ns3::Simulator::Cancel(this->eventId);
+
+    // TODO: find out why this is leading to segfault. Probably, something is going on under PacketSocket->Close()
+    //libiec61850::Ethernet_destroySocket(this->ethSocket);
 }
 
 void
@@ -121,5 +124,5 @@ ns3::SVPublisher::Send()
     this->count--;
     this->sent++;
 
-    Simulator::Schedule(this->interval, &SVPublisher::Send, this);
+    this->eventId = Simulator::Schedule(this->interval, &SVPublisher::Send, this);
 }

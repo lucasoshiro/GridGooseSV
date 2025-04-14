@@ -42,6 +42,8 @@ private:
     uint64_t frequency;
     uint64_t samplesPerCycle;
 
+    ns3::EventId eventId;
+
     ns3::TracedValue<uint64_t> sent;
     ns3::Time interval;
 };
