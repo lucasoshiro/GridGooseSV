@@ -1,12 +1,10 @@
 #include "sv-publisher-app.h"
-
-#include "../../../src/core/model/integer.h"
 #include "ethernet-client.h"
-
 #include "ns3/simulator.h"
 #include "ns3/uinteger.h"
 
 #include <fstream>
+#include <cmath>
 
 ns3::SVPublisher::
 SVPublisher()
@@ -84,9 +82,6 @@ ns3::SVPublisher::StartApplication()
 
     libiec61850::SVPublisher_setupComplete(this->svPublisher);
 
-    this->fVal1 = 1234.5678f;
-    this->fVal2 = 0.12345f;
-
     if (this->count <= 0) this->count = -1;
     this->sent.Set(0);
 
@@ -112,17 +107,16 @@ ns3::SVPublisher::Send()
 
     Timestamp ts;
     Timestamp_clearFlags(&ts);
-    Timestamp_setTimeInMilliseconds(&ts, libiec61850::Hal_getTimeInMs());
+    Timestamp_setTimeInNanoseconds(&ts, libiec61850::Hal_getTimeInNs());
+
+    this->UpdateValues();
 
     for (int i = 0; i < 8; i++) {
-        auto val = i % 2 == 0 ? fVal1 : fVal2;
-        SVPublisher_ASDU_setFLOAT(this->asdu1, this->offsets[i], val);
+        SVPublisher_ASDU_setFLOAT(this->asdu1, this->offsets[i], this->vals[i]);
     }
 
     SVPublisher_ASDU_increaseSmpCnt(asdu1);
-
-    fVal1 += 1.1f;
-    fVal2 += 0.1f;
+    libiec61850::SVPublisher_ASDU_setTimestamp(this->asdu1, this->ts1, ts);
 
     SVPublisher_publish(svPublisher);
 
@@ -130,4 +124,28 @@ ns3::SVPublisher::Send()
     this->sent++;
 
     this->eventId = Simulator::Schedule(this->interval, &SVPublisher::Send, this);
+}
+
+void ns3::SVPublisher::UpdateValues() {
+    const float twoPi = 2 * std::numbers::pi;
+    const float nowNs = Simulator::Now().GetNanoSeconds();
+    const float periodNs = 1000000000.0 / this->frequency;
+
+    // TODO: this should be a parameter
+    const float amplitude = 18000;
+
+    // Current readings
+    for (int i = 0; i < 3; i++) {
+        const float phaseAngle = i * twoPi / 3;
+        const float angle = phaseAngle + twoPi * nowNs / periodNs;
+        const float value = sin(angle) * amplitude;
+        this->vals[i] = value;
+    }
+    this->vals[3] = 0;
+
+    // Voltage readings
+    for (int i = 4; i < 7; i++) {
+        this->vals[i] = 0;
+    }
+    this->vals[7] = 0;
 }

@@ -20,16 +20,15 @@ private:
     void StopApplication() override;
 
     void Send();
+    void UpdateValues();
 
     libiec61850::EthernetSocket ethSocket;
     libiec61850::SVPublisher svPublisher;
 
     int offsets[8];
-
     libiec61850::SVPublisher_ASDU asdu1;
 
-    float fVal1;
-    float fVal2;
+    float vals[8];
 
     int ts1;
     int ts2;
