@@ -74,15 +74,6 @@ ns3::SVSubscriber::Receive(
     libiec61850::SVSubscriber_ASDU asdu
     )
 {
-    auto svID = libiec61850::SVSubscriber_ASDU_getSvId(asdu);
-
-    std::cout << "  svID: " << svID << std::endl;
-    std::cout << "  smpCnt: " << libiec61850::SVSubscriber_ASDU_getSmpCnt(asdu) << std::endl;
-    std::cout << "  confRev: " << libiec61850::SVSubscriber_ASDU_getConfRev(asdu)<< std::endl;
-    std::cout << "  DATA[0]: " << libiec61850::SVSubscriber_ASDU_getFLOAT32(asdu, 0) << std::endl;
-    std::cout << "  DATA[1]: " << libiec61850::SVSubscriber_ASDU_getFLOAT32(asdu, 4) << std::endl;
-    std::cout << std::endl;
-
     this->received++;
 }
 
