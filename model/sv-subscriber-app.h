@@ -23,7 +23,16 @@ private:
     libiec61850::SVSubscriber subscriber;
 
     uint64_t deviceIndex;
+
     ns3::TracedValue<uint64_t> received;
+    ns3::TracedValue<uint16_t> lastSmpCnt;
+
+    ns3::TracedValue<uint64_t> mts;
+    ns3::TracedValue<uint64_t> rts;
+
+    ns3::TracedValue<double> ia;
+    ns3::TracedValue<double> ib;
+    ns3::TracedValue<double> ic;
 };
 
 
