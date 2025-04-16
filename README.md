@@ -36,12 +36,9 @@ you can follow the
 
 ### Built-in examples
 
-- [ ] SV Publisher
-- [ ] SV Subscriber
-- [ ] GOOSE Publisher
-- [ ] GOOSE Subscriber
-- [ ] MMS Server
-- [ ] MMS Client
+- [x] Simple SV publisher/subscriber 
+- [ ] SV Load test
+- [ ] Realtime SV publisher/subscriber
 
 ## Installing
 
