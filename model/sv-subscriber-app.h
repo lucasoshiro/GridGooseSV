@@ -11,9 +11,29 @@ namespace ns3
 class SVSubscriber : public Application
 {
 public:
+    class _SVSample {
+    public:
+        _SVSample():
+        sampleTimestamp(0),
+        receivedTimestamp(0),
+        smpCnt(0),
+        ia(0),
+        ib(0),
+        ic(0) {};
+
+        uint64_t sampleTimestamp;
+        uint64_t receivedTimestamp;
+
+        uint16_t smpCnt;
+        double ia;
+        double ib;
+        double ic;
+    };
+
     SVSubscriber();
     static TypeId GetTypeId();
     void Receive(libiec61850::SVSubscriber_ASDU asdu);
+    _SVSample GetLastSample() const;
 
 private:
     void StartApplication() override;
@@ -25,14 +45,8 @@ private:
     uint64_t deviceIndex;
 
     ns3::TracedValue<uint64_t> received;
-    ns3::TracedValue<uint16_t> lastSmpCnt;
 
-    ns3::TracedValue<uint64_t> mts;
-    ns3::TracedValue<uint64_t> rts;
-
-    ns3::TracedValue<double> ia;
-    ns3::TracedValue<double> ib;
-    ns3::TracedValue<double> ic;
+    _SVSample lastSample;
 };
 
 

@@ -2,29 +2,17 @@
 #include "ns3/csma-helper.h"
 #include "ns3/sv-helper.h"
 #include "ns3/global-value.h"
+#include "ns3/sv-subscriber-app.h"
 
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("SimpleSV");
 
-static struct {
-    double a;
-    double b;
-    double c;
-} current;
-
-static void getIA(double oldValue, double newValue) {
-    current.a = newValue;
-}
-
-static void getIB(double oldValue, double newValue) {
-    current.b = newValue;
-}
-
-static void getIC(double oldValue, double newValue) {
-    float now = Simulator::Now().GetMicroSeconds() / 1000.0;
-    current.c = newValue;
-    std::cout << now << ";" << current.a << ";" << current.b << ";" << current.c << std::endl;
+static void onReceive(Ptr<Application> app, uint64_t oldValue, uint64_t newValue) {
+     auto subscriber = DynamicCast<SVSubscriber>(app);
+     auto lastSample = subscriber->GetLastSample();
+     float timestamp = lastSample.sampleTimestamp / 1000000.0;
+     std::cout << timestamp << ";" << lastSample.ia << ";" << lastSample.ib << ";" << lastSample.ic << std::endl;
 }
 
 static void sample(int frequency, int samplesPerCycle, Time stopTime) {
@@ -49,9 +37,10 @@ static void sample(int frequency, int samplesPerCycle, Time stopTime) {
 
     publisherApps.Stop(stopTime);
 
-    subscriberNode->GetApplication(0)->TraceConnectWithoutContext("IA", MakeCallback(&getIA));
-    subscriberNode->GetApplication(0)->TraceConnectWithoutContext("IB", MakeCallback(&getIB));
-    subscriberNode->GetApplication(0)->TraceConnectWithoutContext("IC", MakeCallback(&getIC));
+    auto application = subscriberNode->GetApplication(0);
+    application->TraceConnectWithoutContext(
+        "Received", MakeBoundCallback(&onReceive, application)
+    );
 
     Simulator::Run();
     Simulator::Destroy();
