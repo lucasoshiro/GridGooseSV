@@ -7,7 +7,6 @@
 #include "ns3/goose-receiver-app.h"
 
 #include "ns3/csma-helper.h"
-#include "ns3/ethernet-server.h"
 #include "ns3/goose-helper.h"
 #include "ns3/node-container.h"
 #include "ns3/packet-socket-helper.h"

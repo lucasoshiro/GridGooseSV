@@ -271,6 +271,8 @@ set(libiec61850_header_files
 )
 
 set(libiec61850_test_sources
+        test/model/test-model/ethernet-client.cc
+        test/model/test-model/ethernet-server.cc
         test/model/libiec61850/hal/time/test-time.cc
         test/model/libiec61850/hal/filesystem/test-filesystem.cc
         test/model/test-ethernet.cc
@@ -291,8 +293,6 @@ set(helper_header_files
 )
 
 set(model_source_files
-        model/ethernet-client.cc
-        model/ethernet-server.cc
         model/goose-publisher-app.cc
         model/goose-receiver-app.cc
         model/sv-publisher-app.cc
@@ -307,8 +307,6 @@ set(model_header_files
 )
 
 set(model_header_private_files
-        model/ethernet-client.h
-        model/ethernet-server.h
 )
 
 set(util_source_files

@@ -1,11 +1,10 @@
 #include "test-ethernet.h"
 
-#include "../../util/address-util.h"
-
+#include "ns3/address-util.h"
 #include "ns3/core-module.h"
 #include "ns3/csma-helper.h"
-#include "ns3/ethernet-client.h"
-#include "ns3/ethernet-server.h"
+#include "test-model/ethernet-client.h"
+#include "test-model/ethernet-server.h"
 #include "ns3/packet-socket-helper.h"
 
 void
