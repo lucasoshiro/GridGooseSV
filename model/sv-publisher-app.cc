@@ -93,7 +93,7 @@ ns3::SVPublisher::StopApplication()
 {
     NS_LOG_FUNCTION(this);
     ns3::Simulator::Cancel(this->eventId);
-
+    libiec61850::SVPublisher_destroy(this->svPublisher);
     // TODO: find out why this is leading to segfault. Probably, something is going on under PacketSocket->Close()
     //libiec61850::Ethernet_destroySocket(this->ethSocket);
 }
