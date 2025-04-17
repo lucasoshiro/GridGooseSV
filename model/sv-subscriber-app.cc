@@ -68,8 +68,8 @@ ns3::SVSubscriber::StartApplication()
 void
 ns3::SVSubscriber::StopApplication()
 {
-    libiec61850::SVReceiver_destroy(receiver);
     NS_LOG_FUNCTION(this);
+    libiec61850::SVReceiver_destroy(receiver);
 }
 
 void
@@ -94,4 +94,3 @@ ns3::SVSubscriber::Receive(
 ns3::SVSubscriber::_SVSample ns3::SVSubscriber::GetLastSample() const {
     return this->lastSample;
 }
-
