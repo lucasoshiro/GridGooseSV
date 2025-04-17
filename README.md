@@ -37,8 +37,8 @@ you can follow the
 ### Built-in examples
 
 - [x] Simple SV publisher/subscriber 
-- [ ] SV Load test
-- [ ] Realtime SV publisher/subscriber
+- [x] SV Load test
+- [x] Realtime SV publisher/subscriber
 
 ## Installing
 
