@@ -85,7 +85,7 @@ ns3::GOOSEPublisher::StartApplication()
     this->sent = 0;
     if (this->count <= 0) this->count = -1;
 
-    ns3::Simulator::Schedule(
+    this->eventId = ns3::Simulator::Schedule(
         ns3::MilliSeconds(1000),
         &GOOSEPublisher::Send,
         this
@@ -105,7 +105,7 @@ ns3::GOOSEPublisher::Send()
     this->sent++;
     this->count--;
 
-    ns3::Simulator::Schedule(
+    this->eventId = ns3::Simulator::Schedule(
         ns3::MilliSeconds(1000),
         &GOOSEPublisher::Send,
         this
@@ -116,10 +116,10 @@ void
 ns3::GOOSEPublisher::StopApplication()
 {
     NS_LOG_FUNCTION(this);
+    Simulator::Cancel(this->eventId);
     libiec61850::GoosePublisher_destroy(this->publisher);
     LinkedList_destroyDeep(
         this->dataSetValues,
         reinterpret_cast<LinkedListValueDeleteFunction>(MmsValue_delete)
         );
 }
-

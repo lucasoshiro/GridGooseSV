@@ -26,6 +26,8 @@ private:
     uint64_t deviceIndex;
     uint64_t count;
 
+    ns3::EventId eventId;
+
     ns3::TracedValue<uint64_t> sent;
 };
 
