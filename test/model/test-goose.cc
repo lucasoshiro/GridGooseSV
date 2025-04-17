@@ -43,7 +43,7 @@ TestGOOSE::DoRun()
     auto serverDevice = devices.Get(1);
 
     auto publisher = ns3::GOOSEPublisherHelper();
-    //publisher.SetAttribute("MaxPackets", ns3::UintegerValue(10));
+    publisher.SetAttribute("MaxPackets", ns3::UintegerValue(packetsToSend));
     publisher.Install(clientNode);
 
     auto server = ns3::CreateObject<ns3::GOOSEReceiver>();

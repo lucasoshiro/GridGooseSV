@@ -24,6 +24,8 @@ private:
     libiec61850::GoosePublisher publisher;
 
     uint64_t deviceIndex;
+    uint64_t count;
+
     ns3::TracedValue<uint64_t> sent;
 };
 

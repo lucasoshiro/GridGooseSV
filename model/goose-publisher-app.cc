@@ -23,12 +23,20 @@ ns3::GOOSEPublisher::GetTypeId()
             UintegerValue(0),
             MakeUintegerAccessor(&GOOSEPublisher::deviceIndex),
             MakeUintegerChecker<u_int64_t>()
+
         )
-    .AddTraceSource(
-        "Sent",
-        "Number of sent packages",
-        MakeTraceSourceAccessor(&GOOSEPublisher::sent),
-        "ns3::TracedValueCallback::Uint64"
+        .AddAttribute(
+            "MaxPackets",
+            "Maximum number of packets to send or 0 for inifinite",
+             UintegerValue(0),
+            MakeUintegerAccessor(&GOOSEPublisher::count),
+            MakeUintegerChecker<u_int64_t>()
+        )
+        .AddTraceSource(
+            "Sent",
+            "Number of sent packages",
+            MakeTraceSourceAccessor(&GOOSEPublisher::sent),
+            "ns3::TracedValueCallback::Uint64"
         )
     ;
 
@@ -75,6 +83,7 @@ ns3::GOOSEPublisher::StartApplication()
     GoosePublisher_setTimeAllowedToLive(publisher, 500);
 
     this->sent = 0;
+    if (this->count <= 0) this->count = -1;
 
     ns3::Simulator::Schedule(
         ns3::MilliSeconds(1000),
@@ -86,22 +95,15 @@ ns3::GOOSEPublisher::StartApplication()
 void
 ns3::GOOSEPublisher::Send()
 {
-    if (this->sent >= 4) return;
+    if (this->count == 0) return;
 
-    if (this->sent == 3) {
-        /* now change dataset to send an invalid GOOSE message */
-        LinkedList_add(dataSetValues, MmsValue_newBoolean(true));
-        libiec61850::GoosePublisher_publish(
-            this->publisher, dataSetValues
-            );
-    }
-    else {
-        if (libiec61850::GoosePublisher_publish(this->publisher, dataSetValues) == -1) {
-            printf("Error sending message!\n");
-        }
-    }
+    libiec61850::GoosePublisher_publish(
+        this->publisher,
+        dataSetValues
+    );
 
     this->sent++;
+    this->count--;
 
     ns3::Simulator::Schedule(
         ns3::MilliSeconds(1000),
