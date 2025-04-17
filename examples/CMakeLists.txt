@@ -11,3 +11,9 @@ build_lib_example(
         SOURCE_FILES sv_load_test.cc
         LIBRARIES_TO_LINK ${libraries_to_link}
 )
+
+build_lib_example(
+        NAME gridgoosesv-sv_realtime
+        SOURCE_FILES sv_realtime.cc
+        LIBRARIES_TO_LINK ${libraries_to_link}
+)
