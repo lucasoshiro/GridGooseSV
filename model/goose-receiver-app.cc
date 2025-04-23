@@ -83,24 +83,5 @@ ns3::GOOSEReceiver::StopApplication()
 }
 
 void ns3::GOOSEReceiver::Receive(libiec61850::GooseSubscriber subscriber) {
-    // std::ofstream output("/dev/pts/2");
-    std::cout << "GOOSE event:" << std::endl;
-    std::cout << "  stNum: " << GooseSubscriber_getStNum(subscriber) << "sqNum: " << GooseSubscriber_getSqNum(subscriber) << std::endl;
-
-    std::cout <<"  timeToLive: " << GooseSubscriber_getTimeAllowedToLive(subscriber) << std::endl;
-
-    uint64_t timestamp = GooseSubscriber_getTimestamp(subscriber);
-
-    std::cout << "  timestamp: " <<  (uint32_t) (timestamp / 1000) << "." << (uint32_t) (timestamp % 1000) << std::endl;
-    std::cout << "  message is " << (GooseSubscriber_isValid(subscriber) ? "valid" : "INVALID") << std::endl;
-
-    MmsValue* values = GooseSubscriber_getDataSetValues(subscriber);
-
-    char buffer[1024];
-
-    MmsValue_printToBuffer(values, buffer, 1024);
-
-    std::cout << "  allData: " << buffer << std::endl;
-
     this->received++;
 }
