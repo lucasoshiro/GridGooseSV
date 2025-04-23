@@ -33,6 +33,13 @@ ns3::GOOSEPublisher::GetTypeId()
             MakeUintegerChecker<u_int64_t>()
         )
         .AddAttribute(
+            "AppId",
+            "The application id",
+            UintegerValue(1000),
+            MakeUintegerAccessor(&GOOSEPublisher::appId),
+            MakeUintegerChecker<uint16_t>()
+        )
+        .AddAttribute(
             "T0",
             "The T0 time",
             TimeValue(MilliSeconds(20)),
@@ -66,8 +73,7 @@ ns3::GOOSEPublisher::StartApplication()
 
     libiec61850::CommParameters gooseCommParameters;
 
-    // TODO: this should be an attribute
-    gooseCommParameters.appId = 1000;
+    gooseCommParameters.appId = this->appId;
 
     // TODO: this should be an attribute
     gooseCommParameters.dstAddress[0] = 0x01;

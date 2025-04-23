@@ -26,6 +26,7 @@ private:
     uint64_t deviceIndex;
     uint64_t count;
 
+    uint16_t appId;
     ns3::EventId eventId;
     ns3::Time t0;
 
