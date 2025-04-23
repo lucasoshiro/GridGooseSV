@@ -20,6 +20,8 @@ private:
     void StopApplication() override;
 
     void Send();
+    void SendEvent();
+
     ns3::Time T(uint8_t n);
 
     LinkedList dataSetValues;
@@ -28,10 +30,12 @@ private:
     uint64_t deviceIndex;
     uint64_t count;
     uint8_t eventMessages;
+    uint8_t eventCount;
     bool sendEvents;
 
     uint16_t appId;
     ns3::EventId eventId;
+    ns3::EventId gooseEventId;
     ns3::Time t0;
     ns3::Time t1;
 

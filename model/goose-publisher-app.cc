@@ -96,7 +96,8 @@ ns3::GOOSEPublisher::StartApplication()
 
     gooseCommParameters.appId = this->appId;
 
-    this->sendEvents = this->eventInterval == Time(0);
+    this->sendEvents = this->eventInterval != Time(0);
+    this->eventCount = 1;
 
     // TODO: this should be an attribute
     gooseCommParameters.dstAddress[0] = 0x01;
@@ -124,6 +125,14 @@ ns3::GOOSEPublisher::StartApplication()
     this->sent = 0;
     if (this->count <= 0) this->count = -1;
 
+    if (this->sendEvents) {
+        this->gooseEventId = ns3::Simulator::Schedule(
+            this->eventInterval,
+            &GOOSEPublisher::SendEvent,
+            this
+            );
+    }
+
     this->eventId = ns3::Simulator::ScheduleNow(
         &GOOSEPublisher::Send,
         this
@@ -150,6 +159,39 @@ ns3::GOOSEPublisher::Send()
         );
 }
 
+void ns3::GOOSEPublisher::SendEvent() {
+    if (this->count == 0) return;
+    Simulator::Cancel(this->eventId);
+
+    if (this->eventCount > this->eventMessages) {
+        this->eventCount = 1;
+
+        this->gooseEventId = ns3::Simulator::Schedule(
+            this->eventInterval,
+            &GOOSEPublisher::SendEvent,
+            this
+            );
+
+        return this->Send();
+    }
+
+    libiec61850::GoosePublisher_publish(
+        this->publisher,
+        dataSetValues
+    );
+
+    this->sent++;
+    this->count--;
+
+    this->eventId = ns3::Simulator::Schedule(
+        this->T(this->eventCount),
+        &GOOSEPublisher::SendEvent,
+        this
+        );
+
+    this->eventCount++;
+}
+
 ns3::Time ns3::GOOSEPublisher::T(const uint8_t n) {
     switch (n) {
         case 0:
@@ -166,6 +208,7 @@ ns3::GOOSEPublisher::StopApplication()
 {
     NS_LOG_FUNCTION(this);
     Simulator::Cancel(this->eventId);
+    if (this->sendEvents) Simulator::Cancel(this->gooseEventId);
     libiec61850::GoosePublisher_destroy(this->publisher);
     LinkedList_destroyDeep(
         this->dataSetValues,
