@@ -67,7 +67,7 @@ int main() {
     }
 
     std::cout << "n_publishers;message_timestamp;receive_timestamp" << std::endl;
-    for (int i = 0; i < 16; i++)
+    for (int i = 1; i < 18; i++)
         sample(frequency, messagesPerCycle, i, Seconds(10));
     return 0;
 }
