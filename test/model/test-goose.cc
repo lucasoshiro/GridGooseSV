@@ -59,8 +59,6 @@ TestGOOSE::DoRun()
         "Received", ns3::MakeCallback(&traceReceived)
         );
 
-    csmaHelper.EnablePcapAll("GOOSE");
-
     ns3::Simulator::Run();
     ns3::Simulator::Destroy();
 
