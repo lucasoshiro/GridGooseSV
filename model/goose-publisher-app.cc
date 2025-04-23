@@ -193,13 +193,18 @@ void ns3::GOOSEPublisher::SendEvent() {
 }
 
 ns3::Time ns3::GOOSEPublisher::T(const uint8_t n) {
+    const auto rate = std::pow(
+        this->t0.GetNanoSeconds() / this->t1.GetNanoSeconds(),
+        1. / (this->eventMessages)
+    );
+
     switch (n) {
         case 0:
             return this->t0;
         case 1:
             return this->t1;
         default:
-            return T(n - 1) * 1.5;
+            return NanoSeconds(this->t1.GetNanoSeconds() * pow(rate, n - 1));
     }
 }
 
