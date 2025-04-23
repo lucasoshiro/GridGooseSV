@@ -46,6 +46,27 @@ ns3::GOOSEPublisher::GetTypeId()
             MakeTimeAccessor(&GOOSEPublisher::t0),
             MakeTimeChecker()
         )
+        .AddAttribute(
+            "T1",
+            "The T1 time",
+            TimeValue(MilliSeconds(3)),
+            MakeTimeAccessor(&GOOSEPublisher::t1),
+            MakeTimeChecker()
+        )
+        .AddAttribute(
+            "EventInterval",
+            "Interval between events. Disable events with 0s",
+            TimeValue(Seconds(0)),
+            MakeTimeAccessor(&GOOSEPublisher::eventInterval),
+            MakeTimeChecker()
+        )
+        .AddAttribute(
+            "EventMessages",
+            "Number of messages sent when an event occures",
+            UintegerValue(5),
+            MakeUintegerAccessor(&GOOSEPublisher::eventMessages),
+            MakeUintegerChecker<uint8_t>()
+        )
         .AddTraceSource(
             "Sent",
             "Number of sent packages",
@@ -74,6 +95,8 @@ ns3::GOOSEPublisher::StartApplication()
     libiec61850::CommParameters gooseCommParameters;
 
     gooseCommParameters.appId = this->appId;
+
+    this->sendEvents = this->eventInterval == Time(0);
 
     // TODO: this should be an attribute
     gooseCommParameters.dstAddress[0] = 0x01;
@@ -125,6 +148,17 @@ ns3::GOOSEPublisher::Send()
         &GOOSEPublisher::Send,
         this
         );
+}
+
+ns3::Time ns3::GOOSEPublisher::T(const uint8_t n) {
+    switch (n) {
+        case 0:
+            return this->t0;
+        case 1:
+            return this->t1;
+        default:
+            return T(n - 1) * 1.5;
+    }
 }
 
 void

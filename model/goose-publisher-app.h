@@ -20,16 +20,22 @@ private:
     void StopApplication() override;
 
     void Send();
+    ns3::Time T(uint8_t n);
+
     LinkedList dataSetValues;
     libiec61850::GoosePublisher publisher;
 
     uint64_t deviceIndex;
     uint64_t count;
+    uint8_t eventMessages;
+    bool sendEvents;
 
     uint16_t appId;
     ns3::EventId eventId;
     ns3::Time t0;
+    ns3::Time t1;
 
+    ns3::Time eventInterval;
     ns3::TracedValue<uint64_t> sent;
 };
 
