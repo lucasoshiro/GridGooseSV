@@ -17,3 +17,9 @@ build_lib_example(
         SOURCE_FILES sv_realtime.cc
         LIBRARIES_TO_LINK ${libraries_to_link}
 )
+
+build_lib_example(
+        NAME gridgoosesv-simple_goose
+        SOURCE_FILES simple_goose.cc
+        LIBRARIES_TO_LINK ${libraries_to_link}
+)
