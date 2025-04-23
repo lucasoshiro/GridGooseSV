@@ -27,6 +27,7 @@ private:
     uint64_t count;
 
     ns3::EventId eventId;
+    ns3::Time t0;
 
     ns3::TracedValue<uint64_t> sent;
 };

@@ -32,6 +32,13 @@ ns3::GOOSEPublisher::GetTypeId()
             MakeUintegerAccessor(&GOOSEPublisher::count),
             MakeUintegerChecker<u_int64_t>()
         )
+        .AddAttribute(
+            "T0",
+            "The T0 time",
+            TimeValue(MilliSeconds(100)),
+            MakeTimeAccessor(&GOOSEPublisher::t0),
+            MakeTimeChecker()
+        )
         .AddTraceSource(
             "Sent",
             "Number of sent packages",
@@ -59,7 +66,10 @@ ns3::GOOSEPublisher::StartApplication()
 
     libiec61850::CommParameters gooseCommParameters;
 
+    // TODO: this should be an attribute
     gooseCommParameters.appId = 1000;
+
+    // TODO: this should be an attribute
     gooseCommParameters.dstAddress[0] = 0x01;
     gooseCommParameters.dstAddress[1] = 0x0c;
     gooseCommParameters.dstAddress[2] = 0xcd;
@@ -85,8 +95,7 @@ ns3::GOOSEPublisher::StartApplication()
     this->sent = 0;
     if (this->count <= 0) this->count = -1;
 
-    this->eventId = ns3::Simulator::Schedule(
-        ns3::MilliSeconds(1000),
+    this->eventId = ns3::Simulator::ScheduleNow(
         &GOOSEPublisher::Send,
         this
         );
@@ -106,7 +115,7 @@ ns3::GOOSEPublisher::Send()
     this->count--;
 
     this->eventId = ns3::Simulator::Schedule(
-        ns3::MilliSeconds(1000),
+        this->t0,
         &GOOSEPublisher::Send,
         this
         );

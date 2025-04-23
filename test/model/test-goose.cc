@@ -26,6 +26,7 @@ void
 TestGOOSE::DoRun()
 {
     constexpr int packetsToSend = 4;
+    auto t0 = ns3::TimeValue(ns3::MilliSeconds(200));
 
     auto nodes = ns3::NodeContainer();
     nodes.Create(2);
@@ -44,6 +45,7 @@ TestGOOSE::DoRun()
 
     auto publisher = ns3::GOOSEPublisherHelper();
     publisher.SetAttribute("MaxPackets", ns3::UintegerValue(packetsToSend));
+    publisher.SetAttribute("T0", t0);
     publisher.Install(clientNode);
 
     auto server = ns3::CreateObject<ns3::GOOSEReceiver>();
