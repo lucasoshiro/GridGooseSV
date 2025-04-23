@@ -35,7 +35,7 @@ ns3::GOOSEPublisher::GetTypeId()
         .AddAttribute(
             "T0",
             "The T0 time",
-            TimeValue(MilliSeconds(100)),
+            TimeValue(MilliSeconds(20)),
             MakeTimeAccessor(&GOOSEPublisher::t0),
             MakeTimeChecker()
         )
