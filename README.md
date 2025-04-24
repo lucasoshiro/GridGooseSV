@@ -1,6 +1,7 @@
 # GridGooseSV
 
 [![GitHub actions](https://github.com/lucasoshiro/GridGooseSV/actions/workflows/push.yml/badge.svg)](https://github.com/lucaoshiro/GridGooseSV/actions)
+[![GitHub actions](https://github.com/lucasoshiro/GridGooseSV/actions/workflows/mac.yml/badge.svg)](https://github.com/lucaoshiro/GridGooseSV/actions)
 
 Native implementation of IEC61850 protocols for the
 [ns-3](https://www.nsnam.org/) network simulator, based on
