@@ -359,7 +359,7 @@ build_lib(
     SOURCE_FILES ${source_files}
     HEADER_FILES ${header_files}
     PRIVATE_HEADER_FILES ${private_header_files}
-    LIBRARIES_TO_LINK ${libcore}
+    LIBRARIES_TO_LINK ${libcore} ${libapplications} ${libcsma}
     TEST_SOURCES ${test_sources}
                  ${examples_as_tests_sources}
 )
