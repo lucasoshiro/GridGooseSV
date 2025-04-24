@@ -4,14 +4,14 @@ jobs:
   build_and_test:
     runs-on: ubuntu-24.04
     env:
-      ns3_version: "ns-3.43"
+      ns3_version: "ns-3.44-linux"
     steps:
       - name: "Get ns-3 cache"
         id: get-ns3-cache
         uses: actions/cache/restore@v4
         with:
           path: ns-3-dev
-          key: "ns-3.43"
+          key: "ns-3.44-linux"
 
       - name: "Fetch ns-3"
         uses: actions/checkout@v4
@@ -19,7 +19,7 @@ jobs:
         with:
           repository: "nsnam/ns-3-dev-git"
           path: "ns-3-dev"
-          ref: "ns-3.43"
+          ref: "ns-3.44"
 
       - name: "Build ns-3"
         if: steps.get-ns3-cache.outputs.cache-hit != 'true'
@@ -35,7 +35,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ns-3-dev
-          key: "ns-3.43"
+          key: "ns-3.44-linux"
 
       - name: "Checkout module"
         uses: actions/checkout@v4
