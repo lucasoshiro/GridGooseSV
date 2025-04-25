@@ -3,6 +3,7 @@
 #include "ns3/packet-socket-helper.h"
 #include "ns3/csma-helper.h"
 #include "ns3/goose-helper.h"
+#include "ns3/command-line.h"
 
 using namespace ns3;
 
@@ -13,14 +14,22 @@ static void onReceive(
     uint64_t oldValue, uint64_t newValue
     ) {
     auto subscriberApp = DynamicCast<ns3::GOOSEReceiver>(app);
-    auto sendTime = subscriberApp->lastReceivedTime.GetMicroSeconds();
+    auto stNum = subscriberApp->lastStNum;
     auto receiveTime = Simulator::Now().GetMicroSeconds();
-    std::cout << sendTime << ";" << receiveTime << std::endl;
+    std::cout << stNum << ";" << receiveTime << std::endl;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    CommandLine cmd(__FILE__);
+
     auto stopTime = Seconds(0.3);
+    auto delay = MilliSeconds(10);
     auto nodes = NodeContainer(2);
+
+    cmd.AddValue("stop-time", "Total time of the simulation", stopTime);
+    cmd.AddValue("delay", "Channel delay", delay);
+
+    cmd.Parse(argc, argv);
 
     auto publisherNode = nodes.Get(0);
     auto receiverNode = nodes.Get(1);
@@ -29,7 +38,7 @@ int main() {
     packetSocketHelper.Install(nodes);
 
     auto csmaHelper = CsmaHelper();
-    csmaHelper.SetChannelAttribute("Delay", TimeValue(MilliSeconds(10)));
+    csmaHelper.SetChannelAttribute("Delay", TimeValue(delay));
 
     auto devices = csmaHelper.Install(nodes);
 
@@ -49,7 +58,7 @@ int main() {
 
     csmaHelper.EnablePcapAll("simple-goose");
 
-    std::cout << "send_time" << ";" << "receive_time" << std::endl;
+    std::cout << "st_num" << ";" << "receive_time" << std::endl;
     Simulator::Run();
     Simulator::Destroy();
 }
