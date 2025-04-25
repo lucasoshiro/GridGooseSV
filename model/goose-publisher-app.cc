@@ -144,6 +144,8 @@ ns3::GOOSEPublisher::Send()
 {
     if (this->count == 0) return;
 
+    libiec61850::GoosePublisher_increaseStNum(this->publisher);
+
     libiec61850::GoosePublisher_publish(
         this->publisher,
         dataSetValues
@@ -174,6 +176,8 @@ void ns3::GOOSEPublisher::SendEvent() {
 
         return this->Send();
     }
+
+    libiec61850::GoosePublisher_increaseStNum(this->publisher);
 
     libiec61850::GoosePublisher_publish(
         this->publisher,

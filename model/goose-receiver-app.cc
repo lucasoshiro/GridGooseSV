@@ -55,16 +55,16 @@ ns3::GOOSEReceiver::StartApplication()
     libiec61850::GooseReceiver_setInterfaceId(receiver, path.c_str());
 
     char goCbRef[] = "simpleIOGenericIO/LLN0$GO$gcbAnalogValues";
-    auto subscriber = libiec61850::GooseSubscriber_create(
+    this->subscriber = libiec61850::GooseSubscriber_create(
         goCbRef,
         nullptr
         );
 
     uint8_t dstMac[6] = {0x01,0x0c,0xcd,0x01,0x00,0x01};
-    libiec61850::GooseSubscriber_setDstMac(subscriber, dstMac);
-    libiec61850::GooseSubscriber_setAppId(subscriber, 1000);
+    libiec61850::GooseSubscriber_setDstMac(this->subscriber, dstMac);
+    libiec61850::GooseSubscriber_setAppId(this->subscriber, 1000);
 
-    libiec61850::GooseSubscriber_setListener(subscriber, gooseListener, this);
+    libiec61850::GooseSubscriber_setListener(this->subscriber, gooseListener, this);
 
     this->received = 0;
 
@@ -83,5 +83,8 @@ ns3::GOOSEReceiver::StopApplication()
 }
 
 void ns3::GOOSEReceiver::Receive(libiec61850::GooseSubscriber subscriber) {
+    this->lastReceivedTime = ns3::MilliSeconds(
+        libiec61850::GooseSubscriber_getTimestamp(this->subscriber)
+    );
     this->received++;
 }
