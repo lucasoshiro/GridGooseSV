@@ -16,7 +16,7 @@ EthernetClient::GetTypeId()
     static TypeId tid =
         TypeId("ns3::EthernetClient")
             .SetParent<Application>()
-            .SetGroupName("LibIEC61850")
+            .SetGroupName("GridGooseSV")
             .AddConstructor<EthernetClient>();
     return tid;
 }

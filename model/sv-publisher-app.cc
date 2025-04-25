@@ -19,7 +19,7 @@ ns3::SVPublisher::GetTypeId()
     static TypeId tid =
     TypeId("ns3::SVPublisher")
         .SetParent<Application>()
-        .SetGroupName("LibIEC61850")
+        .SetGroupName("GridGooseSV")
         .AddConstructor<SVPublisher>()
         .AddAttribute(
             "MaxPackets",

@@ -23,7 +23,7 @@ ns3::SVSubscriber::GetTypeId()
 {
     static TypeId tid =TypeId("ns3::SVSubscriber")
        .SetParent<Application>()
-       .SetGroupName("LibIEC61850")
+       .SetGroupName("GridGooseSV")
        .AddConstructor<SVSubscriber>()
        .AddAttribute(
            "DeviceIndex",

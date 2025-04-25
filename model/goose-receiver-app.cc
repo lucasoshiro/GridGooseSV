@@ -24,7 +24,7 @@ ns3::GOOSEReceiver::GetTypeId()
 {
     static TypeId tid =TypeId("ns3::GOOSEReceiver")
        .SetParent<Application>()
-       .SetGroupName("LibIEC61850")
+       .SetGroupName("GridGooseSV")
        .AddConstructor<GOOSEReceiver>()
        .AddAttribute(
            "DeviceIndex",

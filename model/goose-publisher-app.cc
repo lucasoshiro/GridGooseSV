@@ -15,7 +15,7 @@ ns3::GOOSEPublisher::GetTypeId()
     static TypeId tid =
     TypeId("ns3::GOOSEPublisher")
         .SetParent<Application>()
-        .SetGroupName("LibIEC61850")
+        .SetGroupName("GridGooseSV")
         .AddConstructor<GOOSEPublisher>()
         .AddAttribute(
             "DeviceIndex",
