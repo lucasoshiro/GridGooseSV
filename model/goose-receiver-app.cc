@@ -86,5 +86,6 @@ void ns3::GOOSEReceiver::Receive(libiec61850::GooseSubscriber subscriber) {
     this->lastReceivedTime = ns3::MilliSeconds(
         libiec61850::GooseSubscriber_getTimestamp(this->subscriber)
     );
+    this->lastStNum = libiec61850::GooseSubscriber_getStNum(this->subscriber);
     this->received++;
 }

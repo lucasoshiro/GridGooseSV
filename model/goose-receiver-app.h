@@ -15,6 +15,7 @@ public:
     void Receive(libiec61850::GooseSubscriber subscriber);
 
     ns3::Time lastReceivedTime;
+    uint16_t lastStNum;
 
 private:
     void StartApplication() override;
@@ -26,7 +27,6 @@ private:
     uint64_t deviceIndex;
     ns3::TracedValue<uint64_t> received;
 };
-
 
 }
 
