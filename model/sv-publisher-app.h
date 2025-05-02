@@ -19,6 +19,7 @@ private:
     void StartApplication() override;
     void StopApplication() override;
 
+    void Measure();
     void Send();
     void UpdateValues();
 
@@ -35,6 +36,7 @@ private:
     uint64_t frequency;
     uint64_t samplesPerCycle;
     uint8_t samplesPerMessage;
+    uint8_t sampleIndex;
 
     ns3::EventId eventId;
 

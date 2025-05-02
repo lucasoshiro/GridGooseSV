@@ -79,7 +79,6 @@ ns3::SVSubscriber::Receive(
 {
     auto ts = libiec61850::SVSubscriber_ASDU_getTimestamp(asdu, 32);
 
-
     this->lastSample.sampleTimestamp = Timestamp_getTimeInNs(&ts);
     this->lastSample.receivedTimestamp = Simulator::Now().GetNanoSeconds();
 

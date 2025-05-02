@@ -98,8 +98,9 @@ ns3::SVPublisher::StartApplication()
 
     if (this->count <= 0) this->count = -1;
     this->sent.Set(0);
+    this->sampleIndex = 0;
 
-    this->eventId = ns3::Simulator::ScheduleNow(&SVPublisher::Send, this);
+    this->eventId = ns3::Simulator::ScheduleNow(&SVPublisher::Measure, this);
 }
 
 void
@@ -112,12 +113,13 @@ ns3::SVPublisher::StopApplication()
     //libiec61850::Ethernet_destroySocket(this->ethSocket);
 }
 
-void
-ns3::SVPublisher::Send()
-{
+void ns3::SVPublisher::Measure() {
+
     NS_LOG_FUNCTION(this);
 
     if (this->count == 0) return;
+
+    const auto j = sampleIndex;
 
     Timestamp ts;
     Timestamp_clearFlags(&ts);
@@ -126,19 +128,33 @@ ns3::SVPublisher::Send()
     this->UpdateValues();
 
     for (int i = 0; i < 8; i++) {
-        SVPublisher_ASDU_setFLOAT(this->asdus[0], this->offsets[0][i], this->vals[0][i]);
+        SVPublisher_ASDU_setFLOAT(this->asdus[j], this->offsets[j][i], this->vals[j][i]);
     }
 
-    SVPublisher_ASDU_increaseSmpCnt(this->asdus[0]);
-    libiec61850::SVPublisher_ASDU_setTimestamp(this->asdus[0], this->tss[0], ts);
+    SVPublisher_ASDU_increaseSmpCnt(this->asdus[j]);
+    libiec61850::SVPublisher_ASDU_setTimestamp(this->asdus[j], this->tss[j], ts);
+
+    this->sampleIndex++;
+
+    if (this->sampleIndex == this->samplesPerMessage) {
+        this->sampleIndex = 0;
+        this->Send();
+    }
+
+    this->eventId = Simulator::Schedule(this->interval, &SVPublisher::Measure, this);
+}
+
+void
+ns3::SVPublisher::Send()
+{
+    NS_LOG_FUNCTION(this);
 
     SVPublisher_publish(svPublisher);
 
     this->count--;
     this->sent++;
-
-    this->eventId = Simulator::Schedule(this->interval, &SVPublisher::Send, this);
 }
+
 
 void ns3::SVPublisher::UpdateValues() {
     const float twoPi = 2 * std::numbers::pi;
@@ -153,13 +169,14 @@ void ns3::SVPublisher::UpdateValues() {
         const float phaseAngle = i * twoPi / 3;
         const float angle = phaseAngle + twoPi * nowNs / periodNs;
         const float value = sin(angle) * amplitude;
-        this->vals[0][i] = value;
+        this->vals[this->sampleIndex][i] = value;
     }
-    this->vals[0][3] = 0;
+    this->vals[this->sampleIndex][3] = 0;
 
+    // TODO: voltage readings currently set 0.
     // Voltage readings
     for (int i = 4; i < 7; i++) {
-        this->vals[0][i] = 0;
+        this->vals[this->sampleIndex][i] = 0;
     }
-    this->vals[0][7] = 0;
+    this->vals[this->sampleIndex][7] = 0;
 }
