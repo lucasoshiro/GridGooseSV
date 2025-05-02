@@ -30,7 +30,7 @@ static void traceReceived(Ptr<Application> app, uint64_t oldValue, uint64_t newV
 }
 
 void
-TestSV::DoRun()
+TestSVProtection::DoRun()
 {
     constexpr int packetsToSend = 40;
     constexpr int frequency = 50;

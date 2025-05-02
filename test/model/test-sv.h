@@ -3,10 +3,10 @@
 
 #include "ns3/test.h"
 
-class TestSV : ns3::TestCase
+class TestSVProtection : ns3::TestCase
 {
   public:
-    TestSV() : ns3::TestCase("TestSV") {};
+    TestSVProtection() : ns3::TestCase("TestSVProtection") {};
 private:
     void DoRun() override;
 };

@@ -40,7 +40,7 @@ GridGooseSVTestSuite::GridGooseSVTestSuite()
         reinterpret_cast<TestCase*>(new TestEthernet),
         reinterpret_cast<TestCase*>(new TestGetInterfaceMACAddress),
         reinterpret_cast<TestCase*>(new TestGOOSE),
-        reinterpret_cast<TestCase*>(new TestSV)
+        reinterpret_cast<TestCase*>(new TestSVProtection)
     };
 
     for (TestCase *testCase : testCases)
