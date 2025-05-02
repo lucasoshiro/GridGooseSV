@@ -12,4 +12,12 @@ private:
     void DoRun() override;
 };
 
+class TestSVMeasurement : ns3::TestCase {
+public:
+    TestSVMeasurement() : ns3::TestCase("TestSVMeasurement") {};
+
+private:
+    void DoRun() override;
+};
+
 #endif //TEST_SV_H
