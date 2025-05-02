@@ -25,13 +25,10 @@ private:
     libiec61850::EthernetSocket ethSocket;
     libiec61850::SVPublisher svPublisher;
 
-    int offsets[8];
-    libiec61850::SVPublisher_ASDU asdu1;
-
-    float vals[8];
-
-    int ts1;
-    int ts2;
+    int offsets[8][8];
+    libiec61850::SVPublisher_ASDU asdus[8];
+    float vals[8][8];
+    int tss[8];
 
     uint64_t count;
     uint64_t deviceIndex;

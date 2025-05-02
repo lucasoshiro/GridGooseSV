@@ -72,13 +72,13 @@ ns3::SVPublisher::StartApplication()
     this->svPublisher = libiec61850::SVPublisher_create(nullptr, path.c_str());
 
     // TODO: we should allow the user to add as many ASDUs as wanted
-    this->asdu1 = libiec61850::SVPublisher_addASDU(this->svPublisher, "svpub1", nullptr, 1);
+    this->asdus[0] = libiec61850::SVPublisher_addASDU(this->svPublisher, "svpub1", nullptr, 1);
 
     for (int i = 0; i < 8; i++) {
-        this->offsets[i] = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdu1);
+        this->offsets[0][i] = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdus[0]);
     }
 
-    this->ts1 = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdu1);
+    this->tss[0] = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdus[0]);
 
     libiec61850::SVPublisher_setupComplete(this->svPublisher);
 
@@ -112,11 +112,11 @@ ns3::SVPublisher::Send()
     this->UpdateValues();
 
     for (int i = 0; i < 8; i++) {
-        SVPublisher_ASDU_setFLOAT(this->asdu1, this->offsets[i], this->vals[i]);
+        SVPublisher_ASDU_setFLOAT(this->asdus[0], this->offsets[0][i], this->vals[0][i]);
     }
 
-    SVPublisher_ASDU_increaseSmpCnt(asdu1);
-    libiec61850::SVPublisher_ASDU_setTimestamp(this->asdu1, this->ts1, ts);
+    SVPublisher_ASDU_increaseSmpCnt(this->asdus[0]);
+    libiec61850::SVPublisher_ASDU_setTimestamp(this->asdus[0], this->tss[0], ts);
 
     SVPublisher_publish(svPublisher);
 
@@ -139,13 +139,13 @@ void ns3::SVPublisher::UpdateValues() {
         const float phaseAngle = i * twoPi / 3;
         const float angle = phaseAngle + twoPi * nowNs / periodNs;
         const float value = sin(angle) * amplitude;
-        this->vals[i] = value;
+        this->vals[0][i] = value;
     }
-    this->vals[3] = 0;
+    this->vals[0][3] = 0;
 
     // Voltage readings
     for (int i = 4; i < 7; i++) {
-        this->vals[i] = 0;
+        this->vals[0][i] = 0;
     }
-    this->vals[7] = 0;
+    this->vals[0][7] = 0;
 }
