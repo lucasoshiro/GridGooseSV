@@ -7,26 +7,27 @@
 
 #include <cmath>
 
-static int sent = 0;
-static int received = 0;
-static double firstSamples[8];
-
-
 using namespace ns3;
 
-static void traceSent(uint64_t oldValue, uint64_t newValue) {
-    sent = newValue;
+struct Observed {
+    int sent;
+    int received;
+    double firstSamples[8];
+};
+
+static void traceSent(Observed *test, uint64_t oldValue, uint64_t newValue) {
+    test->sent = newValue;
 }
 
-static void traceReceived(Ptr<Application> app, uint64_t oldValue, uint64_t newValue) {
+static void traceReceived(Observed *test, Ptr<Application> app, uint64_t oldValue, uint64_t newValue) {
     const auto subscriber = DynamicCast<SVSubscriber>(app);
     const auto sample = subscriber->GetLastSample();
 
     if (oldValue < 8) {
-        firstSamples[oldValue] = sample.ia;
+        test->firstSamples[oldValue] = sample.ia;
     }
 
-    received = newValue;
+    test->received = newValue;
 }
 
 void
@@ -60,25 +61,28 @@ TestSVProtection::DoRun()
     auto subscriber = ns3::SVSubscriberHelper();
     subscriber.Install(serverNode);
 
-    clientNode->GetApplication(0)->TraceConnectWithoutContext(
-        "Sent", ns3::MakeCallback(&traceSent)
+    auto observed = Observed();
+
+    auto publisherApp = clientNode->GetApplication(0);
+    publisherApp->TraceConnectWithoutContext(
+        "Sent", ns3::MakeBoundCallback(&traceSent, &observed)
         );
 
     auto subscriberApp = serverNode->GetApplication(0);
     subscriberApp->TraceConnectWithoutContext(
-        "Received", ns3::MakeBoundCallback(&traceReceived, subscriberApp)
+        "Received", ns3::MakeBoundCallback(&traceReceived, &observed, subscriberApp)
         );
 
     ns3::Simulator::Run();
     ns3::Simulator::Destroy();
 
-    NS_TEST_ASSERT_MSG_EQ(sent, packetsToSend, "Number of sent packets must be 40");
-    NS_TEST_ASSERT_MSG_EQ(received, packetsToSend, "Number of sent packets must be 40");
+    NS_TEST_ASSERT_MSG_EQ(observed.sent, packetsToSend, "Number of sent packets must be 40");
+    NS_TEST_ASSERT_MSG_EQ(observed.received, packetsToSend, "Number of sent packets must be 40");
 
     double expectedSamples[] = {0, 1130.23, 2256, 3372.86, 4476.42, 5562.31, 6626.24, 7664.03};
 
     for (int i = 0; i < 8; i++) {
-        auto sample = firstSamples[i];
+        auto sample = observed.firstSamples[i];
         auto expectedSample = expectedSamples[i];
         auto msg = std::stringstream();
         msg << "Expected sample " << i << " to be " << expectedSample;

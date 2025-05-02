@@ -5,8 +5,9 @@
 
 class TestSVProtection : ns3::TestCase
 {
-  public:
+public:
     TestSVProtection() : ns3::TestCase("TestSVProtection") {};
+
 private:
     void DoRun() override;
 };
