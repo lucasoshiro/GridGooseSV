@@ -34,6 +34,7 @@ private:
     uint64_t deviceIndex;
     uint64_t frequency;
     uint64_t samplesPerCycle;
+    uint8_t samplesPerMessage;
 
     ns3::EventId eventId;
 

@@ -49,6 +49,13 @@ ns3::SVPublisher::GetTypeId()
             MakeUintegerAccessor(&SVPublisher::samplesPerCycle),
             MakeUintegerChecker<u_int64_t>()
             )
+        .AddAttribute(
+            "SamplesPerMessage",
+            "Number of samples per message. Typically, 1 for protection and 8 for measurements. 1 By default",
+            UintegerValue(1),
+            MakeUintegerAccessor(&SVPublisher::samplesPerMessage),
+            MakeUintegerChecker<u_int8_t>()
+        )
         .AddTraceSource(
             "Sent",
             "Number of sent packages",
@@ -71,14 +78,21 @@ ns3::SVPublisher::StartApplication()
 
     this->svPublisher = libiec61850::SVPublisher_create(nullptr, path.c_str());
 
-    // TODO: we should allow the user to add as many ASDUs as wanted
-    this->asdus[0] = libiec61850::SVPublisher_addASDU(this->svPublisher, "svpub1", nullptr, 1);
+    for (int j = 0; j < this->samplesPerMessage; j++) {
+        auto svID = "sv" + std::to_string(j);
+        this->asdus[j] = libiec61850::SVPublisher_addASDU(
+            this->svPublisher,
+            svID.c_str(),
+            nullptr,
+            1
+            );
 
-    for (int i = 0; i < 8; i++) {
-        this->offsets[0][i] = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdus[0]);
+        for (int i = 0; i < 8; i++) {
+            this->offsets[j][i] = libiec61850::SVPublisher_ASDU_addFLOAT(this->asdus[j]);
+        }
+
+        this->tss[j] = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdus[j]);
     }
-
-    this->tss[0] = libiec61850::SVPublisher_ASDU_addTimestamp(this->asdus[0]);
 
     libiec61850::SVPublisher_setupComplete(this->svPublisher);
 
