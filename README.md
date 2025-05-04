@@ -52,19 +52,34 @@ you can follow the
 
 ### Dependencies
 
-This module was developed using `ns-3 3.43`. Probably it will work with any
+This module was developed using `ns-3 3.44`. Probably it will work with any
 `ns-3` versions based on CMake (i.e. >= 3.36). Currently, only **Linux** and
-**Mac** supported.
+**Mac** are supported.
 
 ### Installation steps
 
-1. Download and install `ns-3`, following the 
-   [official documentation](https://www.nsnam.org/docs/installation/html/index.html).
+1. Download `ns-3`, following the [official documentation](https://www.nsnam.org/docs/installation/html/index.html).
    Note that it's not required to have `bake` installed;
+  - Suggestion: clone directly from GitLab:
+    ~~~bash
+    git clone git@gitlab.com:nsnam/ns-3-dev.git
+    ~~~
 2. Clone this repository inside the `contrib` directory in ns-3;
-3. Build ns-3 using your favorite method (calling `./ns3`, using CMake or an IDE).
+3. Configure `ns-3` using the `optimized` profile, enabling tests and examples:
+   ~~~bash
+   ./ns3 configure --build-profile=optimized --enable-examples --enable-tests
+   ~~~
+4. Build `ns-3` with GridGooseSV:
+   ~~~bash
+   ./ns3 build -j $(nproc)
+   ~~~
 
 And that's it. No further steps!
+
+> Note: some warnings are expected. Because of them, only the `optimized`
+> build profile is supported. They don't affect the working of this module,
+> but, of course, they need to be solved. By now we haven't had enough
+> time to fix them, but contributions are welcome!
 
 ## Testing
 
