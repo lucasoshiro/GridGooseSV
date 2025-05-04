@@ -2,16 +2,24 @@
 #include "ns3/csma-helper.h"
 #include "ns3/sv-helper.h"
 #include "ns3/global-value.h"
+#include "ns3/command-line.h"
 
 #include <chrono>
 
 using namespace ns3;
 
+struct Parameters {
+    int frequency;
+    int numberOfPublishers;
+    Time stopTime;
+    bool measurement;
+};
+
 NS_LOG_COMPONENT_DEFINE("SVLoadTest");
 
-static int sample(int frequency, int samplesPerCycle, int numberOfPublishers, Time stopTime) {
+static int sample(Parameters params) {
     auto publisherNodes = NodeContainer();
-    publisherNodes.Create(numberOfPublishers);
+    publisherNodes.Create(params.numberOfPublishers);
 
     auto subscriberNodes = NodeContainer();
     subscriberNodes.Create(1);
@@ -24,16 +32,21 @@ static int sample(int frequency, int samplesPerCycle, int numberOfPublishers, Ti
     auto csmaHelper = CsmaHelper();
     auto devices = csmaHelper.Install(nodes);
 
+    auto samplesPerCycle = params.measurement ? 256 : 80;
+    auto samplesPerMessage = params.measurement ? 8 : 1;
+
     auto publisher = SVPublisherHelper();
     publisher.SetAttribute("MaxPackets", ns3::UintegerValue(0));
-    publisher.SetAttribute("Frequency", ns3::UintegerValue(frequency));
+    publisher.SetAttribute("Frequency", ns3::UintegerValue(params.frequency));
     publisher.SetAttribute("SamplesPerCycle", ns3::UintegerValue(samplesPerCycle));
+    publisher.SetAttribute("SamplesPerMessage", ns3::UintegerValue(samplesPerMessage));
+
     auto publisherApps = publisher.Install(publisherNodes);
 
     auto subscriber = SVSubscriberHelper();
     auto subscriberApps = subscriber.Install(subscriberNodes);
 
-    publisherApps.Stop(stopTime);
+    publisherApps.Stop(params.stopTime);
 
     auto begin = std::chrono::steady_clock::now();
     Simulator::Run();
@@ -45,19 +58,33 @@ static int sample(int frequency, int samplesPerCycle, int numberOfPublishers, Ti
     return elapsed;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    CommandLine cmd(__FILE__);
     constexpr int frequency = 60;
-    constexpr int messagesPerCycle = 80;
+
+    auto mode = std::string("protection");
+    cmd.AddValue("mode", "measurement or protection", mode);
+    cmd.Parse(argc, argv);
+
+    bool measurement;
+    if (mode == "protection") measurement = false;
+    else if (mode == "measurement") measurement = true;
+    else NS_ABORT_MSG("Unknown mode");
 
     std::cout << "publishers;simulated_time;real_time" << std::endl;
-    std::cout << "ia;ib;ic" << std::endl;
 
     for (int publishers = 1; publishers <= 50; publishers++) {
-        for (int i = 0; i < 1; i++) {
-            constexpr int seconds = 1;
-            const int realTime = sample(frequency, messagesPerCycle, publishers, Seconds(seconds));
-            std::cout << publishers << ";" << seconds * 1000 << ";" << realTime << std::endl;
-        }
+        constexpr int seconds = 1;
+
+        Parameters params = {
+            .frequency = frequency,
+            .numberOfPublishers = publishers,
+            .stopTime = Seconds(seconds),
+            .measurement = measurement
+        };
+
+        const int realTime = sample(params);
+        std::cout << publishers << ";" << seconds * 1000 << ";" << realTime << std::endl;
     }
 
     return 0;
