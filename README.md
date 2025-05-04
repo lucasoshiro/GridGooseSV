@@ -40,6 +40,7 @@ you can follow the
 - [x] Simple SV publisher/subscriber 
 - [x] SV Load test
 - [x] Realtime SV publisher/subscriber
+- [x] Simple GOOSE publisher/subscriber
 
 ## Installing
 
