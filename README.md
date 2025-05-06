@@ -2,6 +2,7 @@
 
 [![GitHub actions](https://github.com/lucasoshiro/GridGooseSV/actions/workflows/linux.yml/badge.svg)](https://github.com/lucaoshiro/GridGooseSV/actions)
 [![GitHub actions](https://github.com/lucasoshiro/GridGooseSV/actions/workflows/mac.yml/badge.svg)](https://github.com/lucaoshiro/GridGooseSV/actions)
+[![GitHub actions](https://github.com/lucasoshiro/GridGooseSV/actions/workflows/windows.yml/badge.svg)](https://github.com/lucaoshiro/GridGooseSV/actions)
 
 Native implementation of IEC61850 protocols for the
 [ns-3](https://www.nsnam.org/) network simulator, based on
@@ -48,13 +49,12 @@ you can follow the
 
 - [x] Linux
 - [x] macOS
-- [ ] Windows
+- [x] Windows
 
 ### Dependencies
 
 This module was developed using `ns-3 3.44`. Probably it will work with any
-`ns-3` versions based on CMake (i.e. >= 3.36). Currently, only **Linux** and
-**Mac** are supported.
+`ns-3` versions based on CMake (i.e. >= 3.36). 
 
 ### Installation steps
 
