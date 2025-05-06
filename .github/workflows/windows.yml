@@ -1,0 +1,74 @@
+name: "Windows build and test"
+on: [push]
+jobs:
+  windows_build_and_test:
+    runs-on: windows-2025
+    env:
+      ns3_version: "ns-3.44-windows"
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          cache: true
+          install: >-
+            curl
+            git
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-grep
+            mingw-w64-x86_64-sed
+            mingw-w64-x86_64-python
+
+      - name: "Get ns-3 cache"
+        id: get-ns3-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ns-3-dev
+          key: "ns-3.44-windows"
+
+      - name: "Fetch ns-3"
+        uses: actions/checkout@v4
+        if: steps.get-ns3-cache.outputs.cache-hit != 'true'
+        with:
+          repository: "nsnam/ns-3-dev-git"
+          path: "ns-3-dev"
+          ref: "ns-3.44"
+
+      - name: "Build ns-3"
+        if: steps.get-ns3-cache.outputs.cache-hit != 'true'
+        shell: msys2 {0}
+        run: |
+          pushd ns-3-dev
+          ./ns3 configure --build-profile=optimized --enable-examples --enable-tests
+          ./ns3 build -j4
+          popd
+
+      - name: "Save ns-3 cache"
+        if: steps.get-ns3-cache.outputs.cache-hit != 'true'
+        id: save-ns3-cache
+        uses: actions/cache/save@v4
+        with:
+          path: ns-3-dev
+          key: "ns-3.44-windows"
+
+      - name: "Checkout module"
+        uses: actions/checkout@v4
+        with:
+          path: "ns-3-dev/contrib/gridgoosesv"
+
+      - name: "Build ns-3 with module"
+        shell: msys2 {0}
+        run: |
+          pushd ns-3-dev 
+          ./ns3 configure --build-profile=optimized --enable-examples --enable-tests
+          ./ns3 build -j4
+          popd
+
+      - name: "Test"
+        shell: msys2 {0}
+        run: |
+          pushd ns-3-dev
+          ./test.py --suite="gridgoosesv" --text=results.txt
+          cat results.txt
+          popd
