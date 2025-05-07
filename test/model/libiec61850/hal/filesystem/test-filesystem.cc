@@ -23,7 +23,7 @@ void
 TestFilesystem::DoRun()
 {
     char fileFoobar[1024];
-    u_int8_t buffer[8];
+    uint8_t buffer[8];
     strcpy(fileFoobar, mockFilePath("foobar.txt").c_str());
 
     auto file = libiec61850::FileSystem_openFile(fileFoobar, false);

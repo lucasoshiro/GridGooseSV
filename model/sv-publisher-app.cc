@@ -54,7 +54,7 @@ ns3::SVPublisher::GetTypeId()
             "Number of samples per message. Typically, 1 for protection and 8 for measurements. 1 By default",
             UintegerValue(1),
             MakeUintegerAccessor(&SVPublisher::samplesPerMessage),
-            MakeUintegerChecker<u_int8_t>()
+            MakeUintegerChecker<uint8_t>()
         )
         .AddTraceSource(
             "Sent",
