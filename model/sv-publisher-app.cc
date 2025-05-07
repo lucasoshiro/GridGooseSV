@@ -26,28 +26,28 @@ ns3::SVPublisher::GetTypeId()
             "Maximum number of packets to send or 0 for inifinite",
             UintegerValue(0),
             MakeUintegerAccessor(&SVPublisher::count),
-            MakeUintegerChecker<u_int64_t>()
+            MakeUintegerChecker<uint64_t>()
             )
         .AddAttribute(
             "DeviceIndex",
             "Index of the NetDevice that will be used to send message. 0 by default",
             UintegerValue(0),
             MakeUintegerAccessor(&SVPublisher::deviceIndex),
-            MakeUintegerChecker<u_int64_t>()
+            MakeUintegerChecker<uint64_t>()
         )
         .AddAttribute(
             "Frequency",
             "AC frequency",
             UintegerValue(60),
             MakeUintegerAccessor(&SVPublisher::frequency),
-            MakeUintegerChecker<u_int64_t>()
+            MakeUintegerChecker<uint64_t>()
         )
         .AddAttribute(
             "SamplesPerCycle",
             "Samples per cycle",
             UintegerValue(1),
             MakeUintegerAccessor(&SVPublisher::samplesPerCycle),
-            MakeUintegerChecker<u_int64_t>()
+            MakeUintegerChecker<uint64_t>()
             )
         .AddAttribute(
             "SamplesPerMessage",

@@ -31,7 +31,7 @@ ns3::GOOSEReceiver::GetTypeId()
            "Index of the NetDevice that will be used to send message. 0 by default",
            UintegerValue(0),
            MakeUintegerAccessor(&GOOSEReceiver::deviceIndex),
-           MakeUintegerChecker<u_int64_t>()
+           MakeUintegerChecker<uint64_t>()
        )
        .AddTraceSource(
            "Received",

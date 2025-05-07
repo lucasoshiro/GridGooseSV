@@ -22,7 +22,7 @@ ns3::GOOSEPublisher::GetTypeId()
             "Index of the NetDevice that will be used to send message. 0 by default",
             UintegerValue(0),
             MakeUintegerAccessor(&GOOSEPublisher::deviceIndex),
-            MakeUintegerChecker<u_int64_t>()
+            MakeUintegerChecker<uint64_t>()
 
         )
         .AddAttribute(
@@ -30,7 +30,7 @@ ns3::GOOSEPublisher::GetTypeId()
             "Maximum number of packets to send or 0 for inifinite",
              UintegerValue(0),
             MakeUintegerAccessor(&GOOSEPublisher::count),
-            MakeUintegerChecker<u_int64_t>()
+            MakeUintegerChecker<uint64_t>()
         )
         .AddAttribute(
             "AppId",

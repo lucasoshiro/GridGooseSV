@@ -30,7 +30,7 @@ ns3::SVSubscriber::GetTypeId()
            "Index of the NetDevice that will be used to send message. 0 by default",
            UintegerValue(0),
            MakeUintegerAccessor(&SVSubscriber::deviceIndex),
-           MakeUintegerChecker<u_int64_t>()
+           MakeUintegerChecker<uint64_t>()
        )
        .AddTraceSource(
            "Received",
