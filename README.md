@@ -128,3 +128,12 @@ This way, we needed to:
   expects the interface names provided by the operating system);
 - Replace the time readings by the simulated time readings;
 - Replace the `sleep`s by event scheduling.
+
+## Publication
+
+GridGooseSV was developed under the master's research of
+[Lucas Oshiro](https://github.com/lucasoshiro). It was described in the paper
+entitled "GridGooseSV: a Module for ns-3 to Simulate Realistic Smart Grids
+Communications following IEC61850 Specification", authored by Lucas Seiki
+Oshiro, Daniel Macêdo Batista and Natalia Castro Fernandes, currently under
+submission.
