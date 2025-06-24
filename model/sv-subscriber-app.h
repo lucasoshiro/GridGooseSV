@@ -21,8 +21,8 @@ public:
         ib(0),
         ic(0) {};
 
-        uint64_t sampleTimestamp;
-        uint64_t receivedTimestamp;
+        uint64_t sampleTimestamp; // nanoseconds
+        uint64_t receivedTimestamp; // nanoseconds
 
         uint16_t smpCnt;
         double ia;

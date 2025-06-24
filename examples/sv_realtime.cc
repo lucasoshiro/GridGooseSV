@@ -19,12 +19,15 @@ struct Parameters {
     Time stopTime;
     int numberOfPublishers;
     bool measurement;
+    Time delay;
 };
+
+static void onSend(Ptr<Application> app, uint64_t)
 
 static void onReceive(Ptr<Application> app, int numberOfPublishers, uint64_t oldValue, uint64_t newValue) {
     auto subscriber = DynamicCast<SVSubscriber>(app);
     auto lastSample = subscriber->GetLastSample();
-    float timestamp = lastSample.sampleTimestamp / 1000000.0;
+    // publishers; sample timestamp (ns); received timestamp (ns)
     std::cout << numberOfPublishers << ";" << lastSample.sampleTimestamp << ";" << lastSample.receivedTimestamp << std::endl;
 }
 
@@ -38,6 +41,7 @@ static void sample(Parameters params) {
     packetSocketHelper.Install(nodes);
 
     auto csmaHelper = CsmaHelper();
+    csmaHelper.SetChannelAttribute("Delay", TimeValue(params.delay));
     auto devices = csmaHelper.Install(nodes);
 
     auto samplesPerCycle = params.measurement ? 256 : 80;
@@ -62,6 +66,8 @@ static void sample(Parameters params) {
         MakeBoundCallback(&onReceive, subscriberApp, params.numberOfPublishers)
         );
 
+
+
     Simulator::Run();
 
     Simulator::Destroy();
@@ -72,9 +78,11 @@ int main(int argc, char *argv[]) {
     const bool realtime = true;
 
     auto mode = std::string("protection");
+    auto delay = Time(0);
 
     CommandLine cmd(__FILE__);
     cmd.AddValue("mode", "measurement or protection", mode);
+    cmd.AddValue("delay", "Channel delay", delay);
     cmd.Parse(argc, argv);
 
     if (realtime) {
@@ -94,6 +102,7 @@ int main(int argc, char *argv[]) {
             .stopTime = Seconds(10),
             .numberOfPublishers = i,
             .measurement = measurement,
+            .delay = delay
         };
 
         sample(params);
