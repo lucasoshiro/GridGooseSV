@@ -50,7 +50,7 @@ static int sample(Parameters params) {
     publisherApps.Stop(params.stopTime);
 
     if (params.pcap) {
-        csmaHelper.EnablePcapAll(std::format("sv_load_test_{}", params.numberOfPublishers));
+        csmaHelper.EnablePcapAll("sv_load_test");
     }
 
     auto begin = std::chrono::steady_clock::now();
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << "timestamp;publishers;simulated_time;real_time" << std::endl;
 
-    for (int publishers = 1; publishers <= 50; publishers++) {
+    for (int publishers = 1; publishers <= 256; publishers *= 2) {
         constexpr int seconds = 1;
 
         double now = std::chrono::duration_cast<std::chrono::microseconds>(
