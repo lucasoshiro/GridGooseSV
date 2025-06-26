@@ -13,6 +13,7 @@ struct Parameters {
     int numberOfPublishers;
     Time stopTime;
     bool measurement;
+    bool pcap;
 };
 
 NS_LOG_COMPONENT_DEFINE("SVLoadTest");
@@ -48,6 +49,10 @@ static int sample(Parameters params) {
 
     publisherApps.Stop(params.stopTime);
 
+    if (params.pcap) {
+        csmaHelper.EnablePcapAll(std::format("sv_load_test_{}", params.numberOfPublishers));
+    }
+
     auto begin = std::chrono::steady_clock::now();
     Simulator::Run();
     Simulator::Destroy();
@@ -63,7 +68,10 @@ int main(int argc, char *argv[]) {
     constexpr int frequency = 60;
 
     auto mode = std::string("protection");
+    auto pcap = false;
+
     cmd.AddValue("mode", "measurement or protection", mode);
+    cmd.AddValue("pcap", "generate pcaps", pcap);
     cmd.Parse(argc, argv);
 
     bool measurement;
@@ -71,21 +79,26 @@ int main(int argc, char *argv[]) {
     else if (mode == "measurement") measurement = true;
     else NS_ABORT_MSG("Unknown mode");
 
-    std::cout << "publishers;simulated_time;real_time" << std::endl;
+    std::cout << "timestamp;publishers;simulated_time;real_time" << std::endl;
 
     for (int publishers = 1; publishers <= 50; publishers++) {
         constexpr int seconds = 1;
+
+        double now = std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::system_clock::now().time_since_epoch()
+            ).count() / 1.e6;
 
         Parameters params = {
             .frequency = frequency,
             .numberOfPublishers = publishers,
             .stopTime = Seconds(seconds),
-            .measurement = measurement
+            .measurement = measurement,
+            .pcap = pcap
         };
 
         const int realTime = sample(params);
-        std::cout << publishers << ";" << seconds * 1000 << ";" << realTime << std::endl;
+        std::cout << std::format("{}", now) << ";" << publishers << ";" << seconds * 1000 << ";" << realTime << std::endl;
     }
 
-    return 0;
+     return 0;
 }
