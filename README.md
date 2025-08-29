@@ -137,3 +137,10 @@ entitled "GridGooseSV: a Module for ns-3 to Simulate Realistic Smart Grids
 Communications following IEC61850 Specification", authored by Lucas Seiki
 Oshiro, Daniel Macêdo Batista and Natalia Castro Fernandes, currently (May 
 2025) under submission.
+
+## Funding
+
+This software is one of the results of the project STARLING: Security and
+Resource Allocation on B5G via Artificial Intelligence Techniques, funded by
+FAPESP (proc. 21/06995-0). The development was also carried out with funding
+from FAPESP proc. 2024/09448-9.
