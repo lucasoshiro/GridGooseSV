@@ -1,0 +1,50 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "type": "SoftwareSourceCode",
+    "applicationCategory": "Network Simulation",
+    "author": [
+        {
+            "id": "https://orcid.org/0000-0003-2327-2714",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Department of Computer Science, University of São Paulo"
+            },
+            "email": "lucas.oshiro@ime.usp.br",
+            "familyName": "Oshiro",
+            "givenName": "Lucas"
+        }
+    ],
+    "codeRepository": "https://github.com/lucasoshiro/GridGooseSV.git",
+    "dateCreated": "2025-02-05",
+    "datePublished": "2025-08-29",
+    "description": "ns-3 module for GOOSE and SV",
+    "funder": {
+        "type": "Organization",
+        "name": "FAPESP"
+    },
+    "keywords": [
+        "simulation",
+        "ns-3",
+        "iec61850",
+        "goose",
+        "sv"
+    ],
+    "license": "https://spdx.org/licenses/GPL-3.0",
+    "name": "GridGooseSV",
+    "operatingSystem": [
+        "Linux",
+        "macOS"
+    ],
+    "programmingLanguage": [
+        "C++",
+        "C"
+    ],
+    "contIntegration": "https://github.com/lucasoshiro/GridGooseSV/actions",
+    "codemeta:continuousIntegration": {
+        "id": "https://github.com/lucasoshiro/GridGooseSV/actions"
+    },
+    "developmentStatus": "active",
+    "funding": "21/06995-0",
+    "issueTracker": "https://github.com/lucasoshiro/GridGooseSV/issues"
+}
