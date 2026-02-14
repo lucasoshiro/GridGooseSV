@@ -42,13 +42,28 @@ you can follow the
 - [x] Realtime SV publisher/subscriber
 - [x] Simple GOOSE publisher/subscriber
 
-## Installing
-
 ### Supported plaftorms
 
 - [x] Linux
 - [x] macOS
 - [ ] Windows
+
+## Using pre-built Docker image
+
+If you only want to see GridGooseSV in action, this is the way to go!
+We provide a pre-built Docker image at
+[Docker Hub](https://hub.docker.com/repository/docker/lucasoshiro/gridgoosesv/),
+which you can run this way:
+
+~~~bash
+docker run -it lucasoshiro/gridgoosesv:latest
+~~~
+
+## Manual install
+
+Follow the steps here if you want to build ns-3 with GridGooseSV by yourself.
+This is especially useful if you want to incorporate GridGooseSV to your
+environment.
 
 ### Dependencies
 
@@ -60,26 +75,44 @@ This module was developed using `ns-3 3.44`. Probably it will work with any
 
 1. Download `ns-3`, following the [official documentation](https://www.nsnam.org/docs/installation/html/index.html).
    Note that it's not required to have `bake` installed;
-  - Suggestion: clone directly from GitLab:
-    ~~~bash
-    git clone git@gitlab.com:nsnam/ns-3-dev.git
-    ~~~
 2. Clone this repository inside the `contrib` directory in ns-3;
-3. Configure `ns-3` using the `optimized` profile, enabling tests and examples:
-   ~~~bash
-   ./ns3 configure --build-profile=optimized --enable-examples --enable-tests
-   ~~~
-4. Build `ns-3` with GridGooseSV:
-   ~~~bash
-   ./ns3 build -j $(nproc)
-   ~~~
-
-And that's it. No further steps!
+3. Configure `ns-3` using the `optimized` profile, enabling tests and examples;
+4. Build `ns-3` with GridGooseSV.
 
 > Note: some warnings are expected. Because of them, only the `optimized`
 > build profile is supported. They don't affect the working of this module,
 > but, of course, they need to be solved. By now we haven't had enough
 > time to fix them, but contributions are welcome!
+
+The following script performs all those steps:
+
+~~~bash
+# Step 1
+git clone https://gitlab.com/nsnam/ns-3-dev.git -b ns-3.44
+cd ns-3-dev
+
+# Step 2
+git clone https://github.com/lucasoshiro/GridGooseSV.git contrib/GridGooseSV/
+
+# Step 3
+./ns3 configure --build-profile=optimized --enable-examples --enable-tests
+
+# Step 4
+./ns3 build
+~~~
+
+After running all those steps, you'll the executable examples in
+`build/contrib/GridGooseSV/examples`.
+
+### Building Docker image
+
+If you want to build the Docker image, use the Dockerfile provided in the
+`docker` directory:
+
+~~~bash
+cd docker
+docker build -t gridgoosesv .
+~~~
 
 ## Testing
 
@@ -87,10 +120,15 @@ We provided some test to assert that everything is working as expected. You can
 run them by calling:
 
 ~~~bash
-./test.py --suite="gridgoosesv" 
+./test.py --suite="gridgoosesv"
 ~~~
 
 in `ns-3` top-level directory.
+
+## Examples
+
+The examples are located in `examples` folder. After building ns-3 with
+GridGooseSV you'll find their executables in `build/contrib/GridGooseSV/examples`.
 
 ## Using
 
