@@ -134,7 +134,37 @@ GridGooseSV you'll find their executables in `build/contrib/GridGooseSV/examples
 
 ### Low-level API
 
+The GOOSE and SV features from `libiec61850` are exposed as a low-level API
+through these headers:
+
+- `ns3/sv_publisher.h` ([Documentation]())
+- `ns3/sv_subscriber.h` ([Documentation]())
+- `ns3/goose_publisher.h` ([Documentation]())
+- `ns3/goose_receiverr.h` ([Documentation]())
+
+They are described in `libiec61850`'s documentation:
+
+- [GOOSE](https://support.mz-automation.de/doc/libiec61850/c/latest/dir_9635cd859d6833098d90e9f407133914.html)
+- [SV](https://support.mz-automation.de/doc/libiec61850/c/latest/dir_5e7a12e67607ea5cdbf2e5dd855be1e2.html)
+
+You can also see the source code of the applications we provide as an example of
+the use of those APIs.
+
+> **IMPORTANT**: the `libiec61850` API is wrapped in the `libiec61850` namespace.
+> This way, you should use `using namespace libiec61850` or prepend
+> `libiec61850::` to each of the exposed types and functions!
+
 ### `ns-3` Applications
+
+We provide four ready-to-use applications:
+
+- SV Publisher
+- SV Subscriber
+- GOOSE Publisher
+- GOOSE Receiver
+
+You can also take a look at the examples to see how those applications can be
+used.
 
 ## Implementation details
 
