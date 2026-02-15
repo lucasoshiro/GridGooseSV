@@ -4,7 +4,7 @@ jobs:
   mac_build_and_test:
     runs-on: macos-14
     env:
-      ns3_version: "ns-3.44-mac"
+      ns3_version: "ns-3.46-mac"
     steps:
       - name: "Install dependencies"
         uses: tecolicom/actions-use-homebrew-tools@v1
@@ -18,7 +18,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ns-3-dev
-          key: "ns-3.44-mac"
+          key: "ns-3.46-mac"
 
       - name: "Fetch ns-3"
         uses: actions/checkout@v4
@@ -26,7 +26,7 @@ jobs:
         with:
           repository: "nsnam/ns-3-dev-git"
           path: "ns-3-dev"
-          ref: "ns-3.44"
+          ref: "ns-3.46"
 
       - name: "Build ns-3"
         if: steps.get-ns3-cache.outputs.cache-hit != 'true'
@@ -42,7 +42,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ns-3-dev
-          key: "ns-3.44-mac"
+          key: "ns-3.46-mac"
 
       - name: "Checkout module"
         uses: actions/checkout@v4
