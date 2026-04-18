@@ -3,9 +3,27 @@
 [![GitHub actions](https://github.com/lucasoshiro/GridGooseSV/actions/workflows/push.yml/badge.svg)](https://github.com/lucaoshiro/GridGooseSV/actions)
 [![GitHub actions](https://github.com/lucasoshiro/GridGooseSV/actions/workflows/mac.yml/badge.svg)](https://github.com/lucaoshiro/GridGooseSV/actions)
 
-Native implementation of IEC61850 protocols for the
+Native implementation of IEC 61850 protocols (GOOSE and SV) for the
 [ns-3](https://www.nsnam.org/) network simulator, based on
 [libiec61850](https://libiec61850.com/).
+
+This module enables realistic simulation of Smart Grid communications for
+performance and security analysis. It is described in the paper: **"GridGooseSV:
+um Módulo do NS-3 para Simular Protocolos de Comunicação de Smart Grids
+definidos na IEC 61850"** by Lucas Seiki Oshiro, Daniel Macêdo Batista, and
+Natalia Castro Fernandes (in Portuguese).
+
+## Repository Structure
+
+The repository following the [ns-3 module structure](https://www.nsnam.org/docs/release/3.47/manual/html/new-modules.html):
+
+- `model/`: Core implementation of the IEC 61850 protocols (based on `libiec61850`) and application classes
+- `helper/`: ns-3 helper classes to simplify the setup of publishers and subscribers.
+- `examples/`: Example scripts demonstrating various simulation scenarios and load tests.
+- `test/`: Suite of unit and integration tests.
+- `docker/`: Dockerfile and related files for containerized execution.
+- `util/`: Common utilities for network address and device management.
+- `doc/`: Additional documentation and resources.
 
 ## Features
 
@@ -59,7 +77,7 @@ which you can run this way:
 docker run -it lucasoshiro/gridgoosesv:latest
 ~~~
 
-## Manual install
+## Manual installation steps
 
 Follow the steps here if you want to build ns-3 with GridGooseSV by yourself.
 This is especially useful if you want to incorporate GridGooseSV to your
@@ -67,9 +85,14 @@ environment.
 
 ### Dependencies
 
-This module was developed using `ns-3 3.44`. Probably it will work with any
-`ns-3` versions based on CMake (i.e. >= 3.36). Currently, only **Linux** and
-**Mac** are supported.
+We recommend using `ns-3 3.46`, but probably it will work with any `ns-3`
+versions based on CMake (i.e. >= 3.36).
+
+Be sure that you have the `ns-3` dependencies satisfied in the correct versions,
+such as Python, GCC, Make and CMake.
+Check them [here](https://www.nsnam.org/docs/installation/singlehtml/index.html#prerequisites).
+
+Currently, only **Linux** and **Mac** are supported.
 
 ### Installation steps
 
@@ -125,10 +148,59 @@ run them by calling:
 
 in `ns-3` top-level directory.
 
-## Examples
+A successful run indicates that the core components of GridGooseSV are properly
+integrated.
 
-The examples are located in `examples` folder. After building ns-3 with
-GridGooseSV you'll find their executables in `build/contrib/GridGooseSV/examples`.
+## Examples and experiments
+
+The examples are located in `examples` folder. They correspond to the
+experiments described in the paper. After building ns-3 with GridGooseSV you'll
+find their executables in `build/contrib/GridGooseSV/examples`.
+
+Their names will be in the format `ns<ns-3 version>-gridgoosesv-<experiment name>-optimized`.
+
+### GOOSE and SV Communication
+
+Two of the mentioned example scenarios (named `simple_goose` and `simple_sv`)
+demonstrate that `GridGooseSV` is able to generate GOOSE and SV traffic. In
+order to run them, you'll only need to call in the terminal:
+
+~~~bash
+# simple_sv
+./ns<ns-3 version>-gridgoosesv-simple_sv-optimized
+
+# simple_goose
+./ns<ns-3 version>-gridgoosesv-simple_goose-optimized
+~~~
+
+`simple_sv` sends SV messages from a publisher to a subscriber. Those messages
+carry current measurements of a 3-phase alternate current power network. It
+outputs the measurements received by the subscriber following a
+semicolon-separated format, composed by the timestamp of the sample and current
+measurements of each of the three phases.
+
+`simple_goose` sends GOOSE periodic messages from a publisher to a subscriber.
+It also simulates a critical event, where the interval between the messages
+drops and increases following a geometric progression. It outputs the received
+time of each message.
+
+### SV load test
+
+`sv_load_test` demonstrates the GridGooseSV capabilites of simulating several
+SV publishers at the same time. It runs independent simulations, each one
+doubling the number of publishers and measuring their elapsed time to simulate 1
+second of SV traffic. Its output follows a semicolon-based format where each
+line represent a different simulation, having as its fields its number of
+publishers and its elapsed time.
+
+### SV realtime
+
+`sv_realtime` demonstrates the GridGooseSV capabilites in the `ns-3` realtime
+scheduler, which can be used for emulation or hardware-in-the-loop
+simulations. It performs several simulations with different numbers of
+publishers generating SV traffic. The messages send and release timestamps
+are logged into the output, which can be used to evaluate the impact of the
+computational resources in message delays.
 
 ## Using
 
@@ -197,14 +269,34 @@ This way, we needed to:
 - Replace the time readings by the simulated time readings;
 - Replace the `sleep`s by event scheduling.
 
+## Security Concerns
+
+The only risk that this software offers is that it can generate large files,
+especially when generating `.pcap` files. Users who prefer an isolated
+environment, can benefit from our pre-built Docker image or build a Docker
+image by their own using our Dockerfile.
+
 ## Publication
 
 GridGooseSV was developed under the master's research of
-[Lucas Oshiro](https://github.com/lucasoshiro). It was described in the paper
-entitled "GridGooseSV: a Module for ns-3 to Simulate Realistic Smart Grids
-Communications following IEC61850 Specification", authored by Lucas Seiki
-Oshiro, Daniel Macêdo Batista and Natalia Castro Fernandes, currently (May 
-2025) under submission.
+[Lucas Oshiro](https://github.com/lucasoshiro). It was described in the paper entitled
+"GridGooseSV: um Módulo do NS-3 para Simular Protocolos de Comunicação de Smart
+Grids definidos na IEC 61850", authored by Lucas Seiki Oshiro, Daniel Macêdo
+Batista and Natalia Castro Fernandes, currently (Apr 2026) under submission.
+
+## Considered Badges (SBRC)
+
+The badges considered for this artifact evaluation are:
+
+- SeloD
+- SeloF
+- SeloS
+- SeloR
+
+## License
+
+This project is licensed under the terms of the license found in the `COPYING`
+file.
 
 ## Funding
 
