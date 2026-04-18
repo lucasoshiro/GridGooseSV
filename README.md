@@ -13,6 +13,22 @@ um Módulo do NS-3 para Simular Protocolos de Comunicação de Smart Grids
 definidos na IEC 61850"** by Lucas Seiki Oshiro, Daniel Macêdo Batista, and
 Natalia Castro Fernandes (in Portuguese).
 
+## Table of Contents
+
+- [Repository Structure](#repository-structure): Overview of the project's directory organization;
+- [Features](#features): List of supported and planned features;
+- [Using pre-built Docker image](#using-pre-built-docker-image): Quick start guide using our Docker Hub image;
+- [Manual installation steps](#manual-installation-steps): Guide for building from source and satisfying dependencies;
+- [Testing](#testing): Instructions for running the test suite;
+- [Examples and experiments](#examples-and-experiments): Examples of simulation scenarios and experiments;
+- [Using as a library](#using-as-a-library): How to use the low-level API and the built-in ns-3 applications;
+- [Implementation details](#implementation-details): Details the porting process and the HAL implementation;
+- [Security Concerns](#security-concerns): Security concerns session (as required by SBRC CTA);
+- [Publication](#publication): Information about the related research paper;
+- [Considered Badges (SBRC)](#considered-badges-sbrc): Badges for artifact evaluation (required by SBRC CTA);
+- [License](#license): Terms of use for this software;
+- [Funding](#funding): Funding research acknowledgements.
+
 ## Repository Structure
 
 The repository following the [ns-3 module structure](https://www.nsnam.org/docs/release/3.47/manual/html/new-modules.html):
@@ -202,7 +218,7 @@ publishers generating SV traffic. The messages send and release timestamps
 are logged into the output, which can be used to evaluate the impact of the
 computational resources in message delays.
 
-## Using
+## Using as a library
 
 ### Low-level API
 
