@@ -13,6 +13,8 @@ um Módulo do NS-3 para Simular Protocolos de Comunicação de Smart Grids
 definidos na IEC 61850"** by Lucas Seiki Oshiro, Daniel Macêdo Batista, and
 Natalia Castro Fernandes (in Portuguese).
 
+More information (in Portuguese) can be seen in [this video](https://www.youtube.com/watch?v=lkWwmxJp6Ls).
+
 ## Table of Contents
 
 - [Repository Structure](#repository-structure): Overview of the project's directory organization;
