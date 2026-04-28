@@ -110,6 +110,16 @@ Be sure that you have the `ns-3` dependencies satisfied in the correct versions,
 such as Python, GCC, Make and CMake.
 Check them [here](https://www.nsnam.org/docs/installation/singlehtml/index.html#prerequisites).
 
+Since we're using
+[`std::format`](https://cplusplus.com/reference/string/string/), your C++
+compiler needs to support this feature. We recommend `gcc` 14 (or newer) or
+`clang` 21 (or newer)
+
+Since we're using
+[`std::format`](https://cplusplus.com/reference/string/string/), your C++
+compiler needs to support this feature. We recommend `gcc` 14 (or newer) or
+`clang` 21 (or newer).
+
 Currently, only **Linux** and **Mac** are supported.
 
 ### Installation steps
