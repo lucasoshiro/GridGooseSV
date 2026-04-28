@@ -115,12 +115,13 @@ Since we're using
 compiler needs to support this feature. We recommend `gcc` 14 (or newer) or
 `clang` 21 (or newer)
 
-Since we're using
-[`std::format`](https://cplusplus.com/reference/string/string/), your C++
-compiler needs to support this feature. We recommend `gcc` 14 (or newer) or
-`clang` 21 (or newer).
+Currently, only **Linux** and **Mac** are supported. We recommend using
+**Debian Trixie** or newer, which you can install all the dependencies by
+running:
 
-Currently, only **Linux** and **Mac** are supported.
+~~~bash
+apt-get update && apt-get install -y build-essential python3 cmake
+~~~
 
 ### Installation steps
 
